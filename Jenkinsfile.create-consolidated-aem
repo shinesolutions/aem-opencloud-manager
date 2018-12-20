@@ -1,0 +1,43 @@
+@Library('aem') _
+
+pipeline {
+    agent any
+    parameters {
+        string(name: 'VERSION_AEM_AWS_STACK_BUILDER', defaultValue: '3.3.1', description: 'Version of aem-aws-stack-builder repo to retrieve')
+        string(name: 'VERSION_AEM_STACK_MANAGER_MESSENGER', defaultValue: '2.0.0', description: 'Version of aem-stack-manager-messenger repo to retrieve')
+        string(name: 'VERSION_AEM_TEST_SUITE', defaultValue: '0.9.10', description: 'Version of aem-test-suite repo to retrieve')
+        string(name: 'S3_ENDPOINT', defaultValue: 'aem-opencloud/library-kai', description: 'S3 Endpoint where we stored the artefacts.')
+    }
+    stages {
+        stage('Setup') {
+            steps {
+                SetupEnv this
+            }
+        }
+        stage('Retrieve artefacts') {
+            steps {
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aem']]) {
+                    RetrieveRepo(this, params.S3_ENDPOINT, "aem-aws-stack-builder", params.VERSION_AEM_AWS_STACK_BUILDER)
+                    RetrieveRepo(this, params.S3_ENDPOINT, "aem-stack-manager-messenger", params.VERSION_AEM_STACK_MANAGER_MESSENGER)
+                    RetrieveRepo(this, params.S3_ENDPOINT, "aem-test-suite", params.VERSION_AEM_TEST_SUITE)
+                }
+            }
+        }
+        stage('Create Consolidated Stack') {
+            steps {
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aem']]) {
+                    RunMake(this, "aem-aws-stack-builder", "make deps")
+                    RunMake(this, "aem-aws-stack-builder", "make config-examples-aem64-rhel7-consolidated")
+                    // This is a hack to prepare the config file for the build.
+                    // Ideally, we should have a checkout step which would get a repo that contains the config files.
+                    sh """
+                        mkdir -p /opt/shinesolutions/aem_config/
+                        cd /opt/shinesolutions/aem-aws-stack-builder/stage/user-config/aem64-rhel7-consolidated/
+                        cp consolidated.yaml aem64-rhel7.yaml /opt/shinesolutions/aem_config/
+                    """
+                    RunMake(this, "aem-aws-stack-builder", "make create-consolidated stack_prefix=kai config_path=/opt/shinesolutions/aem_config")
+                }
+            }
+        }
+    }
+}
