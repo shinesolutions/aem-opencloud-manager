@@ -23,19 +23,31 @@ pipeline {
                 }
             }
         }
+        stage('Create Config') {
+            // This is a hack to prepare the config file for the build.
+            // Ideally, we should have a checkout step which would get a repo that contains the config files.
+            steps {
+                RunMake(this, "aem-aws-stack-builder", "make deps")
+                RunMake(this, "aem-aws-stack-builder", "make config-examples-aem64-rhel7-consolidated")
+                sh """
+                    mkdir -p /opt/shinesolutions/aem_config/
+                    cd /opt/shinesolutions/aem-aws-stack-builder/stage/user-config/aem64-rhel7-consolidated/
+                    cp consolidated.yaml aem64-rhel7.yaml /opt/shinesolutions/aem_config/
+                """
+            }
+        }
         stage('Create Consolidated Stack') {
             steps {
                 withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aem']]) {
-                    RunMake(this, "aem-aws-stack-builder", "make deps")
-                    RunMake(this, "aem-aws-stack-builder", "make config-examples-aem64-rhel7-consolidated")
-                    // This is a hack to prepare the config file for the build.
-                    // Ideally, we should have a checkout step which would get a repo that contains the config files.
-                    sh """
-                        mkdir -p /opt/shinesolutions/aem_config/
-                        cd /opt/shinesolutions/aem-aws-stack-builder/stage/user-config/aem64-rhel7-consolidated/
-                        cp consolidated.yaml aem64-rhel7.yaml /opt/shinesolutions/aem_config/
-                    """
                     RunMake(this, "aem-aws-stack-builder", "make create-consolidated stack_prefix=kai config_path=/opt/shinesolutions/aem_config")
+                }
+            }
+        }
+        stage('Create Manager Stack') {
+            steps {
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aem']]) {
+                    RunMake(this, "aem-aws-stack-builder", "make create-stack-manager stack_prefix=kai2 config_path=/opt/shinesolutions/aem_config")
+
                 }
             }
         }
