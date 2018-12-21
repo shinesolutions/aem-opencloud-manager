@@ -26,6 +26,8 @@ pipeline {
         stage('Create Config') {
             // This is a hack to prepare the config file for the build.
             // Ideally, we should have a checkout step which would get a repo that contains the config files.
+            // The configurations created here are only working for the ShineSolutions AWS account, I hope
+            // they will serve as a reference.
             steps {
                 RunMake(this, "aem-aws-stack-builder", "make deps")
                 RunMake(this, "aem-aws-stack-builder", "make config-examples-aem64-rhel7-consolidated")
@@ -33,6 +35,7 @@ pipeline {
                     mkdir -p /opt/shinesolutions/aem_config/
                     cd /opt/shinesolutions/aem-aws-stack-builder/stage/user-config/aem64-rhel7-consolidated/
                     cp consolidated.yaml aem64-rhel7.yaml /opt/shinesolutions/aem_config/
+                    echo -e "---\naws:\n  region: ap-southeast-2" > /opt/shinesolutions/aem_config/messenger.yaml
                 """
             }
         }
@@ -47,6 +50,16 @@ pipeline {
             steps {
                 withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aem']]) {
                     RunMake(this, "aem-aws-stack-builder", "make create-stack-manager stack_prefix=kai2 config_path=/opt/shinesolutions/aem_config")
+
+                }
+            }
+        }
+        stage('Flush Dispatcher Cache') {
+            steps {
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aem']]) {
+                    RunMake(this, "aem-stack-manager-messenger", "make deps")
+                    // This last step is not working for now. The lambda runs ok, could be some error on the instance.
+                    RunMake(this, "aem-stack-manager-messenger", "make flush-dispatcher-cache stack_prefix=kai2 target_aem_stack_prefix=kai config_path=/opt/shinesolutions/aem_config component=author-publish-dispatcher")
 
                 }
             }
