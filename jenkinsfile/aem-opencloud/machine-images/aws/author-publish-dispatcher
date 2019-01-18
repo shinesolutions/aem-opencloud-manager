@@ -1,0 +1,91 @@
+@Library('aem-opencloud') _
+
+pipeline {
+    agent any
+    environment {
+        TMPDIR = "/tmp/shinesolutions/jenkins"
+        OC_CONFIG_DIR = "${env.TMPDIR}/opencloud_config"
+    }
+    parameters {
+
+        string(name: 'VERSION_PACKER_AEM', defaultValue: '3.4.2', description: 'Version of packer-aem repo to retrieve')
+    }
+    stages {
+        stage('Setup') {
+            steps {
+                // Setup Jenkins environment
+                SetupEnv this
+                // Running global prerun-script
+                JenkinsGlobalJobPreScript this
+            }
+        }
+        stage('Prepare artifacts') {
+            steps {
+
+                    // Running Stage Prerun-Script
+                    JenkinsStageJobPreScript this
+                    // Prepare repositories
+                    AwsPrepareRepo(this, "packer-aem", params.VERSION_PACKER_AEM, params.AWS_REPOSITORY_PATH, env.TMPDIR)
+                    // Prepare AEM OpenCloud configuration
+                    AemOcPrepareConfig(this, params.AEM_OC_CONFIG_REPO_URL, env.TMPDIR)
+            }
+            post {
+                always {
+                  // Running stage post-script
+                  JenkinsStageJobPostScript this
+                }
+            }
+        }
+        stage('Resolve dependencies') {
+            steps {
+
+                    // Running Stage Prerun-Script
+                    JenkinsStageJobPreScript this
+                    // Resolve dependencies
+                    RunMake(this, env.TMPDIR, "packer-aem", "make deps")
+            }
+            post {
+                always {
+                  // Running stage post-script
+                  JenkinsStageJobPostScript this
+                }
+            }
+        }
+        stage('Prepare configuration') {
+            steps {
+
+                    // Running Stage Prerun-Script
+                    JenkinsStageJobPreScript this
+                    // Create packer-aem configuration
+                    RunMake(this, env.TMPDIR, "packer-aem", "make config config_path=${env.OC_CONFIG_DIR}/packer-aem/${params.AEM_OC_CONFIG_PROFILE}/")
+            }
+            post {
+                always {
+                  // Running stage post-script
+                  JenkinsStageJobPostScript this
+                }
+            }
+        }
+        stage('Create machine image') {
+            steps {
+
+                    // Running Stage Prerun-Script
+                    JenkinsStageJobPreScript this
+                    // Create machine image
+                    RunMake(this, env.TMPDIR, "packer-aem", "make aws-author-publish-dispatcher version=${env.BUILD_ID} config_path=${env.OC_CONFIG_DIR}/packer-aem/${params.AEM_OC_CONFIG_PROFILE}/")
+            }
+            post {
+                always {
+                  // Running stage post-script
+                  JenkinsStageJobPostScript this
+                }
+            }
+        }
+    }
+    post {
+        always {
+          // Running global post-script
+          JenkinsGlobalJobPostScript this
+        }
+    }
+}

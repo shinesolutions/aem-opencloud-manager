@@ -1,0 +1,15 @@
+aws:
+  s3_library_bucket: aem-opencloud
+  s3_library_path: jenkins/library
+
+opencloud:
+  config_archive_url: https://github.com/shinesolutions/aem-helloworld-config/archive/master.tar.gz
+  manager:
+    repo_url: https://github.com/shinesolutions/aem-opencloud-manager
+    branch: master
+
+jenkins:
+  url: http://localhost
+  port: 8080
+  username: jadmin
+  password: jadmin

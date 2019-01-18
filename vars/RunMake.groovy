@@ -1,8 +1,8 @@
 #!/usr/bin/env groovy
 
-def call(script, repo_name, command) {
+def call(script, repoRootDir, repoName, command) {
   script.sh """
-    cd /opt/shinesolutions/${repo_name}
+    cd ${repoRootDir}/${repoName}
     eval ${command}
   """
 }

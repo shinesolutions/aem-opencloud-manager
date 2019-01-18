@@ -1,0 +1,90 @@
+@Library('aem-opencloud') _
+
+pipeline {
+    agent any
+    environment {
+        TMPDIR = "/tmp/shinesolutions/jenkins"
+        OC_CONFIG_DIR = "${env.TMPDIR}/opencloud_config"
+    }
+    parameters {
+
+        string(name: 'STACK_PREFIX', defaultValue: '', description: 'AEM OpenCloud Stack prefix.')
+        string(name: 'VERSION_AEM_AWS_STACK_BUILDER', defaultValue: '3.3.1', description: 'Version of aem-aws-stack-builder repo to archive')
+    }
+    stages {
+        stage('Setup') {
+            steps {
+                // Setup Jenkins environment
+                SetupEnv this
+                // Running global prerun-script
+                JenkinsGlobalJobPreScript this
+            }
+        }
+        stage('Prepare artifacts') {
+            steps {
+
+                    // Running Stage Prerun-Script
+                    JenkinsStageJobPreScript this
+                    // Prepare repositories
+                    AwsPrepareRepo(this, "aem-aws-stack-builder", params.VERSION_AEM_AWS_STACK_BUILDER, params.AWS_REPOSITORY_PATH, env.TMPDIR)
+            }
+            post {
+                always {
+                  // Running stage post-script
+                  JenkinsStageJobPostScript this
+                }
+            }
+        }
+        stage('Resolve dependencies') {
+            steps {
+
+                    // Running Stage Prerun-Script
+                    JenkinsStageJobPreScript this
+                    // Resolve dependencies
+                    RunMake(this, env.TMPDIR, "aem-aws-stack-builder", "make deps")
+            }
+            post {
+                always {
+                  // Running stage post-script
+                  JenkinsStageJobPostScript this
+                }
+            }
+        }
+        stage('Prepare configuration') {
+            steps {
+
+                    // Running Stage Prerun-Script
+                    JenkinsStageJobPreScript this
+                    // Create aem-aws-stack-builder configuration
+                    RunMake(this, env.TMPDIR, "aem-aws-stack-builder", "make config config_path=${env.OC_CONFIG_DIR}/aem-aws-stack-builder/${params.AEM_OC_CONFIG_PROFILE}/")
+            }
+            post {
+                always {
+                  // Running stage post-script
+                  JenkinsStageJobPostScript this
+                }
+            }
+        }
+        stage('Delete AEM OpenCloud Stack') {
+            steps {
+
+                    // Running Stage Prerun-Script
+                    JenkinsStageJobPreScript this
+                    // Delete AEM OpenCloud Full-Set Prerequisites Stack
+                    RunMake(this, env.TMPDIR, "aem-aws-stack-builder", "make delete-full-set-prerequisites config_path=${env.OC_CONFIG_DIR}/aem-aws-stack-builder/${params.AEM_OC_CONFIG_PROFILE}/ stack_prefix=${params.STACK_PREFIX}")
+            }
+            post {
+                always {
+                  // Running stage post-script
+                  JenkinsStageJobPostScript this
+                }
+            }
+        }
+    }
+    post {
+        always {
+          // Running global post-script
+          JenkinsGlobalJobPostScript this
+        }
+    }
+}

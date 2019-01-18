@@ -1,0 +1,84 @@
+@Library('aem-opencloud') _
+
+pipeline {
+    agent any
+    environment {
+        TMPDIR = "/tmp/shinesolutions/jenkins"
+        OC_CONFIG_DIR = "${env.TMPDIR}/opencloud_config"
+    }
+    parameters {
+        string(name: 'AEM_ARTIFACTS_BASE', defaultValue: '', description: 'URL where all AEM Artifacts are located.')
+        string(name: 'AEM_BASE', defaultValue: '/opt', description: 'AEM Base installation directory.')
+        choice(name: 'AEM_COMPONENT', choices: ['author-primary', 'publish', 'author-publish-dispatcher'], description: 'AEM Component')
+        string(name: 'AEM_HEALTHCHECK_VERSION', defaultValue: '1.3.3', description: 'Version of the AEM healthcheck.')
+        choice(name: 'AEM_ID', choices: ['author', 'publish'], description: 'AEM ID')
+        string(name: 'AEM_PORT', defaultValue: '4502', description: 'HTTP port for specific AEM ID')
+        choice(name: 'AEM_PROFILE', choices: ['aem62', 'aem62_sp1_cfp2', 'aem62_sp1_cfp3', 'aem62_sp1_cfp5', 'aem62_sp1_cfp9', 'aem62_sp1_cfp13', 'aem62_sp1_cfp15', 'aem63', 'aem63_sp1', 'aem63_sp1_cfp2', 'aem63_sp2', 'aem63_sp2_cfp1', 'aem63_sp2_cfp2', 'aem64', 'aem64_sp1', 'aem64_sp2', 'aem65'], description: 'AEM installation profile')
+        string(name: 'AEM_SSL_PORT', defaultValue: '5432', description: 'HTTPS port for specific AEM ID')
+
+        string(name: 'STACK_MANAGER_PREFIX', defaultValue: '', description: 'AEM OpenCloud Stack Manager prefix.')
+        string(name: 'STACK_PREFIX', defaultValue: '', description: 'AEM OpenCloud Stack prefix.')
+        string(name: 'VERSION_AEM_STACK_MANAGER_MESSENGER', defaultValue: '2.0.0', description: 'Version of aem-stack-manager-messenger repo')
+    }
+    stages {
+        stage('Setup') {
+            steps {
+                // Setup Jenkins environment
+                SetupEnv this
+                // Running global prerun-script
+                JenkinsGlobalJobPreScript this
+            }
+        }
+        stage('Prepare artifacts') {
+            steps {
+
+                    // Running Stage Prerun-Script
+                    JenkinsStageJobPreScript this
+                    // Prepare repositories
+                    AwsPrepareRepo(this, "aem-stack-manager-messenger", params.VERSION_AEM_STACK_MANAGER_MESSENGER, params.AWS_REPOSITORY_PATH, env.TMPDIR)
+            }
+            post {
+                always {
+                    // Running stage post-script
+                    JenkinsStageJobPostScript this
+                }
+            }
+        }
+        stage('Resolve dependencies') {
+            steps {
+
+                    // Running Stage Prerun-Script
+                    JenkinsStageJobPreScript this
+                    // Resolve dependencies
+                    RunMake(this, env.TMPDIR, "aem-stack-manager-messenger", "make deps")
+            }
+            post {
+                always {
+                    // Running stage post-script
+                    JenkinsStageJobPostScript this
+                }
+            }
+        }
+        stage('Trigger Stack Manager Event') {
+            steps {
+
+                    // Running Stage Prerun-Script
+                    JenkinsStageJobPreScript this
+                    // Trigger Stack Manager Event
+                    RunMake(this, env.TMPDIR, "aem-stack-manager-messenger", "make install-aem-profile stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.OC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AEM_OC_CONFIG_PROFILE}/ component=${params.AEM_COMPONENT} aem_profile=${params.AEM_PROFILE} aem_artifacts_base=${params.AEM_ARTIFACTS_BASE} aem_base=${params.AEM_BASE} aem_healthcheck_version=${params.AEM_HEALTHCHECK_VERSION} aem_id=${params.AEM_ID} aem_port=${params.AEM_PORT} aem_ssl_port=${params.AEM_SSL_PORT}")
+            }
+            post {
+                always {
+                    // Running stage post-script
+                    JenkinsStageJobPostScript this
+                }
+            }
+        }
+    }
+    post {
+        always {
+            // Running global post-script
+            JenkinsGlobalJobPostScript this
+        }
+    }
+}

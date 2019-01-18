@@ -1,0 +1,11 @@
+.DS_Store
+.idea/
+*.retry
+*.cert
+*.key
+logs/
+stage
+*.pyc
+backup/
+output/
+trash/

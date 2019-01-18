@@ -1,0 +1,76 @@
+@Library('aem-opencloud') _
+
+pipeline {
+    agent any
+    environment {
+        TMPDIR = "/tmp/shinesolutions/jenkins"
+        OC_CONFIG_DIR = "${env.TMPDIR}/opencloud_config"
+    }
+    parameters {
+
+        string(name: 'STACK_MANAGER_PREFIX', defaultValue: '', description: 'AEM OpenCloud Stack Manager prefix.')
+        string(name: 'STACK_PREFIX', defaultValue: '', description: 'AEM OpenCloud Stack prefix.')
+        string(name: 'VERSION_AEM_STACK_MANAGER_MESSENGER', defaultValue: '2.0.0', description: 'Version of aem-stack-manager-messenger repo')
+    }
+    stages {
+        stage('Setup') {
+            steps {
+                // Setup Jenkins environment
+                SetupEnv this
+                // Running global prerun-script
+                JenkinsGlobalJobPreScript this
+            }
+        }
+        stage('Prepare artifacts') {
+            steps {
+
+                    // Running Stage Prerun-Script
+                    JenkinsStageJobPreScript this
+                    // Prepare repositories
+                    AwsPrepareRepo(this, "aem-stack-manager-messenger", params.VERSION_AEM_STACK_MANAGER_MESSENGER, params.AWS_REPOSITORY_PATH, env.TMPDIR)
+            }
+            post {
+                always {
+                    // Running stage post-script
+                    JenkinsStageJobPostScript this
+                }
+            }
+        }
+        stage('Resolve dependencies') {
+            steps {
+
+                    // Running Stage Prerun-Script
+                    JenkinsStageJobPreScript this
+                    // Resolve dependencies
+                    RunMake(this, env.TMPDIR, "aem-stack-manager-messenger", "make deps")
+            }
+            post {
+                always {
+                    // Running stage post-script
+                    JenkinsStageJobPostScript this
+                }
+            }
+        }
+        stage('Trigger Stack Manager Event') {
+            steps {
+
+                    // Running Stage Prerun-Script
+                    JenkinsStageJobPreScript this
+                    // Trigger Stack Manager Event
+                    RunMake(this, env.TMPDIR, "aem-stack-manager-messenger", "make unschedule-offline-snapshot-full-set stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.OC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AEM_OC_CONFIG_PROFILE}/")
+            }
+            post {
+                always {
+                    // Running stage post-script
+                    JenkinsStageJobPostScript this
+                }
+            }
+        }
+    }
+    post {
+        always {
+            // Running global post-script
+            JenkinsGlobalJobPostScript this
+        }
+    }
+}
