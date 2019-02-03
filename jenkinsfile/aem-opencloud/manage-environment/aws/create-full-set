@@ -1,0 +1,159 @@
+@Library('aem-opencloud') _
+
+pipeline {
+    agent any
+    environment {
+        TMPDIR = "/tmp/shinesolutions/jenkins"
+        OC_CONFIG_DIR = "${env.TMPDIR}/opencloud_config"
+    }
+    parameters {
+        string(name: 'AEM_OC_AEM_TEST_SUITE_CONFIG_PROFILE', defaultValue: '', description: 'Name of the config profile for AEM Test Suite')
+        string(name: 'AEM_OC_STACK_MANAGER_MESSENGER_CONFIG_PROFILE', defaultValue: '', description: 'Name of the config profile for the AEM OpenCloud Stack Manager Messenger')
+        string(name: 'PACKAGE_DESCRIPTOR_FILE', defaultValue: 'deploy-artifacts-descriptor.json', description: 'Name of the descriptor file to deploy on the target AEM Stack')
+
+        string(name: 'STACK_MANAGER_PREFIX', defaultValue: '', description: 'AEM OpenCloud Stack Manager prefix.')
+        string(name: 'STACK_PREFIX', defaultValue: '', description: 'AEM OpenCloud Stack prefix.')
+        string(name: 'VERSION_AEM_AWS_STACK_BUILDER', defaultValue: '3.3.1', description: 'Version of aem-aws-stack-builder repo to archive')
+        string(name: 'VERSION_AEM_STACK_MANAGER_MESSENGER', defaultValue: '2.0.0', description: 'Version of aem-stack-manager-messenger repo')
+        string(name: 'VERSION_AEM_TEST_SUITE', defaultValue: '0.9.10', description: 'Version of aem-test-suite repo to archive')
+    }
+    stages {
+        stage('Setup') {
+            steps {
+                // Setup Jenkins environment
+                SetupEnv this
+                // Running global prerun-script
+                JenkinsGlobalJobPreScript this
+            }
+        }
+        stage('Prepare artifacts') {
+            steps {
+
+                    // Running Stage Prerun-Script
+                    JenkinsStageJobPreScript this
+                    // Prepare repositories
+                    AwsPrepareRepo(this, "aem-aws-stack-builder", params.VERSION_AEM_AWS_STACK_BUILDER, params.AWS_REPOSITORY_PATH, env.TMPDIR)
+                    AwsPrepareRepo(this, "aem-stack-manager-messenger", params.VERSION_AEM_STACK_MANAGER_MESSENGER, params.AWS_REPOSITORY_PATH, env.TMPDIR)
+                    AwsPrepareRepo(this, "aem-test-suite", params.VERSION_AEM_TEST_SUITE, params.AWS_REPOSITORY_PATH, env.TMPDIR)
+                    // Prepare AEM OpenCloud configuration
+                    AemOcPrepareConfig(this, params.AEM_OC_CONFIG_REPO_URL, env.TMPDIR)
+                }
+            }
+        }
+        stage('Resolve dependencies') {
+            steps {
+
+                    // Running Stage Prerun-Script
+                    JenkinsStageJobPreScript this
+                    // Resolve dependencies
+                    RunMake(this, env.TMPDIR, "aem-aws-stack-builder", "make deps")
+                    RunMake(this, env.TMPDIR, "aem-stack-manager-messenger", "make deps")
+                    RunMake(this, env.TMPDIR, "aem-test-suite", "make deps")
+            }
+            post {
+                always {
+                  // Running stage post-script
+                  JenkinsStageJobPostScript this
+                }
+            }
+        }
+        stage('Prepare configuration') {
+            steps {
+
+                    // Running Stage Prerun-Script
+                    JenkinsStageJobPreScript this
+                    // Create aem-aws-stack-builder configuration
+                    RunMake(this, env.TMPDIR, "aem-aws-stack-builder", "make config config_path=${env.OC_CONFIG_DIR}/aem-aws-stack-builder/${params.AEM_OC_CONFIG_PROFILE}/")
+            }
+            post {
+                always {
+                  // Running stage post-script
+                  JenkinsStageJobPostScript this
+                }
+            }
+        }
+        stage('Create AEM OpenCloud Stack') {
+            steps {
+
+                    // Running Stage Prerun-Script
+                    JenkinsStageJobPreScript this
+                    // Create AEM OpenCloud Full-Set Stack
+                    RunMake(this, env.TMPDIR, "aem-aws-stack-builder", "make create-full-set config_path=${env.OC_CONFIG_DIR}/aem-aws-stack-builder/${params.AEM_OC_CONFIG_PROFILE}/ stack_prefix=${params.STACK_PREFIX}")
+                    RunMake(this, env.TMPDIR, "aem-stack-manager-messenger", "make check-readiness-full-set stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.OC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AEM_OC_STACK_MANAGER_MESSENGER_CONFIG_PROFILE}/")
+            }
+            post {
+                always {
+                  // Running stage post-script
+                  JenkinsStageJobPostScript this
+                }
+            }
+        }
+        stage('Run acceptance test') {
+            steps {
+
+                    // Running Stage Prerun-Script
+                    JenkinsStageJobPreScript this
+                  // Run acceptance test
+                    RunMake(this, env.TMPDIR, "aem-test-suite", "make test-acceptance-full-set config_path=${env.OC_CONFIG_DIR}/aem-test-suite/${params.AEM_OC_AEM_TEST_SUITE_CONFIG_PROFILE} stack_prefix=${params.STACK_PREFIX}")
+            }
+            post {
+                always {
+                  // Running stage post-script
+                  JenkinsStageJobPostScript this
+                }
+            }
+        }
+        stage('Deploy deployment-descriptor') {
+            steps {
+
+                    // Running Stage Prerun-Script
+                    JenkinsStageJobPreScript this
+                    // Deploy artifacts with descriptor file
+                    RunMake(this, env.TMPDIR, "aem-stack-manager-messenger", "make deploy-artifacts-full-set stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.OC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AEM_OC_STACK_MANAGER_MESSENGER_CONFIG_PROFILE}/ descriptor_file=${params.PACKAGE_DESCRIPTOR_FILE}")
+            }
+            post {
+                always {
+                  // Running stage post-script
+                  JenkinsStageJobPostScript this
+                }
+            }
+        }
+        stage('Flush dispatcher Cache') {
+            steps {
+
+                    // Running Stage Prerun-Script
+                    JenkinsStageJobPreScript this
+                    // Flush Dispatcher Cache
+                    RunMake(this, env.TMPDIR, "aem-stack-manager-messenger", "make flush-dispatcher-cache stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.OC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AEM_OC_STACK_MANAGER_MESSENGER_CONFIG_PROFILE}/ component=author-dispatcher")
+                    RunMake(this, env.TMPDIR, "aem-stack-manager-messenger", "make flush-dispatcher-cache stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.OC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AEM_OC_STACK_MANAGER_MESSENGER_CONFIG_PROFILE}/ component=publish-dispatcher")
+            }
+            post {
+                always {
+                  // Running stage post-script
+                  JenkinsStageJobPostScript this
+                }
+            }
+        }
+        stage('Check Full-Set readiness') {
+            steps {
+
+                    // Running Stage Prerun-Script
+                    JenkinsStageJobPreScript this
+                    // Check Full-Set readiness
+                    RunMake(this, env.TMPDIR, "aem-stack-manager-messenger", "make check-readiness-full-set stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.OC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AEM_OC_STACK_MANAGER_MESSENGER_CONFIG_PROFILE}/")
+            }
+            post {
+                always {
+                  // Running stage post-script
+                  JenkinsStageJobPostScript this
+                }
+            }
+        }
+    }
+    post {
+        always {
+          // Running global post-script
+          JenkinsGlobalJobPostScript this
+        }
+    }
+}

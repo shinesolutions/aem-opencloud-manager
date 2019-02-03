@@ -1,0 +1,91 @@
+@Library('aem-opencloud') _
+
+pipeline {
+    agent any
+    environment {
+        TMPDIR = "/tmp/shinesolutions/jenkins"
+        OC_CONFIG_DIR = "${env.TMPDIR}/opencloud_config"
+    }
+    parameters {
+        string(name: 'REALM', defaultValue: 'nonprod', description: 'Evnironment realm for configuration path')
+
+        string(name: 'STACK_PREFIX', defaultValue: '', description: 'AEM OpenCloud Stack prefix.')
+        string(name: 'VERSION_AEM_TEST_SUITE', defaultValue: '0.9.10', description: 'Version of aem-test-suite repo to archive')
+    }
+    stages {
+        stage('Setup') {
+            steps {
+                // Setup Jenkins environment
+                SetupEnv this
+                // Running global prerun-script
+                JenkinsGlobalJobPreScript this
+            }
+        }
+        stage('Prepare artifacts') {
+            steps {
+
+                    // Running Stage Prerun-Script
+                    JenkinsStageJobPreScript this
+                    // Prepare repositories
+                    AwsPrepareRepo(this, "aem-test-suite", params.VERSION_AEM_TEST_SUITE, params.AWS_REPOSITORY_PATH, env.TMPDIR)
+            }
+            post {
+                always {
+                    // Running stage post-script
+                    JenkinsStageJobPostScript this
+                }
+            }
+        }
+        stage('Resolve dependencies') {
+            steps {
+
+                    // Running Stage Prerun-Script
+                    JenkinsStageJobPreScript this
+                    // Resolve dependencies
+                    RunMake(this, env.TMPDIR, "aem-test-suite", "make deps")
+            }
+            post {
+                always {
+                    // Running stage post-script
+                    JenkinsStageJobPostScript this
+                }
+            }
+        }
+        stage('Prepare configuration') {
+            steps {
+
+                    // Running Stage Prerun-Script
+                    JenkinsStageJobPreScript this
+                    // Create aem-test-suite configuration
+                    RunMake(this, env.TMPDIR, "aem-test-suite", "make config-aem config_path=${env.OC_CONFIG_DIR}/aem-test-suite/${params.AEM_OC_CONFIG_PROFILE}/")
+            }
+            post {
+                always {
+                    // Running stage post-script
+                    JenkinsStageJobPostScript this
+                }
+            }
+        }
+        stage('Trigger Test') {
+            steps {
+
+                    // Running Stage Prerun-Script
+                    JenkinsStageJobPreScript this
+                    // Trigger Test
+                    RunMake(this, env.TMPDIR, "aem-test-suite", "make test-security-publish-dispatcher stack_prefix=${params.STACK_PREFIX}")
+            }
+            post {
+                always {
+                    // Running stage post-script
+                    JenkinsStageJobPostScript this
+                }
+            }
+        }
+    }
+    post {
+        always {
+            // Running global post-script
+            JenkinsGlobalJobPostScript this
+        }
+    }
+}

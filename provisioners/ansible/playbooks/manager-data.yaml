@@ -1,0 +1,42 @@
+---
+- name: AEM OpenCloud Manager preparation
+  hosts: all
+  gather_facts: no
+  connection: local
+
+  tasks:
+    - name: "Create jenkins project structure on local filesystem"
+      file:
+        path: ../../../stage/jenkins/jobs/aem-opencloud-{{ opencloud.manager.branch }}
+        state: directory
+        mode: '0776'
+
+    - name: "Create jenkins project structure on local filesystem"
+      file:
+        path: ../../../stage/jenkins/jobs/aem-opencloud-{{ opencloud.manager.branch }}/{{ item.path }}
+        state: directory
+        mode: '0776'
+      with_filetree: ../../../jenkinsfile/aem-opencloud
+      when: item.state == 'file'
+
+    - name: Generate Jenkins project aem-opencloud config.xml
+      template:
+        src: '../templates/jenkins/project.xml'
+        dest: "../../../stage/jenkins/jobs/aem-opencloud-{{ opencloud.manager.branch }}/config.xml"
+        mode: '0644'
+
+    - name: Generate aem-opencloud project folders config.xml
+      template:
+        src: '../templates/jenkins/folder.xml'
+        dest: "../../../stage/jenkins/jobs/aem-opencloud-{{ opencloud.manager.branch }}/{{ item.path }}/config.xml"
+        mode: '0644'
+      with_filetree: ../../../jenkinsfile/aem-opencloud/
+      when: item.state == 'directory'
+
+    - name: Generate aem-opencloud jenkins job config.xml
+      template:
+        src: '../templates/jenkins/jobs.xml'
+        dest: '../../../stage/jenkins/jobs/aem-opencloud-{{ opencloud.manager.branch }}/{{ item.path }}/config.xml'
+        mode: '0644'
+      with_filetree: ../../../jenkinsfile/aem-opencloud/
+      when: item.state == 'file'

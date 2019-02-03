@@ -1,7 +1,12 @@
 ARG JENKINS_VER=2.150.1
+ARG PACKER_VERSION=1.3.3
+ARG PACKER_TMP_DIR=/tmp
+
 FROM jenkins/jenkins:${JENKINS_VER}
 
 ARG JENKINS_VER
+ARG PACKER_VERSION
+ARG PACKER_TMP_DIR
 
 USER root
 
@@ -20,3 +25,6 @@ COPY plugins.txt /usr/share/jenkins/plugins.txt
 RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/plugins.txt
 
 COPY config/*.xml /usr/share/jenkins/ref/
+
+RUN wget "https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_amd64.zip" -O ${PACKER_TMP_DIR}/packer.zip
+RUN cd ${PACKER_TMP_DIR}; unzip ${PACKER_TMP_DIR}/packer.zip; cp ${PACKER_TMP_DIR}/packer /usr/bin/packer

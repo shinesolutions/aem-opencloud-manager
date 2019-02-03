@@ -3,8 +3,13 @@ CONTAINER_NAME := jenkins
 
 ci: clean deps lint
 
+stage:
+	mkdir -p stage/
+
 clean:
-	@docker rm -f "${CONTAINER_NAME}" >/dev/null 2>&1 || true
+	rm -rf logs
+	rm -fr stage
+
 
 run: clean build
 	docker run -p 8080:8080 --name "${CONTAINER_NAME}" "${DOCKER_IMAGE}"
@@ -17,5 +22,11 @@ deps:
 
 lint:
 	ansible-lint ansible/playbooks/*/*.yaml
+
+aws-manager-data:
+	./scripts/run-playbook.sh manager-data "$(config_path)"
+
+aws-installation: stage
+	./scripts/run-playbook.sh installation "$(config_path)"
 
 .PHONY: ci clean deps lint create-ci-aws delete-ci-aws

@@ -17,12 +17,31 @@ This is a work-in-progress. You are more than welcome to follow the progress of 
 
 2. Run Jenkins with `make run`. Please create a user and login now.
 
-3. Create folder in Jenkins console named `aem-opencloud`.
+3. Open a browser and login to your Jenkins instance http://localhost:8080 and setup at least a user
 
-4. Configure all jobs in the folder to use the shared library. The name of the library should be `aem`, default version is `master`, and the retrival method should use Modern SCM, git, with link: https://github.com/shinesolutions/aem-opencloud-manager
+4. Setup own configuration file see examples/user-config/config.yaml
 
-5. Login to AWS, create a temp user and grant S3 access to it, get the credentials and put them into Jenkins Credentials, the id of the credential should be `aem`.
+5. Run `make manager-data config_path=examples/user-config/config.yaml` to create all files to configure Jenkins.
+(You need to adjust config_path to your own need.)
 
-6. Create a job named `mirror-artefacts` in the folder, use Jenkinsfile: `Jenkinsfile.mirror-artefacts`.
+6. Run `make installation config_path=examples/user-config/config.yaml` to create all Jenkins jobs automated.
+(You need to adjust config_path to your own need.)
 
-7. Create a job named `create-consolidated-aem` in folder `aem-opencloud`, use Jenkinsfile: `Jenkinsfile.create-consolidated-aem`.
+
+# Pre/Post Hooks
+
+Pre and Post hooks are getting executed once globally before and after the pipeline job and every stage.
+Hooks are getting called as Shell script and at the shell script needs to be copied manually to the right location.
+
+## Global Pre/Post Hook
+Global hooks are getting executed once at the beginning and at the end of the pipelin
+
+## Stage Pre/Post Hook
+Stage hooks are getting execute before and after every the stage.
+
+| Location        | Description |
+| ------------- |:-------------:|
+| /tmp/shinesolutions/jenkins/global-pre-common.sh     | Global Pre-script. Runs once at the beginning of the Pipeline. |
+| /tmp/shinesolutions/jenkins/global-post-common.sh    | Global Post-script. Runs once at the end of the Pipeline. |
+| /tmp/shinesolutions/jenkins/stage-pre-common.sh      | Stage Pre-Script. Runs every time at the beginning of a stage. |
+| /tmp/shinesolutions/jenkins/stage-post-common.sh     | Stage Post-Script. Runs every time at the end of a stage. |

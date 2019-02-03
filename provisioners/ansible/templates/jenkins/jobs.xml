@@ -1,0 +1,52 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<flow-definition plugin="workflow-job@2.31">
+  <actions/>
+  <description>AEM OpenCloud Jenkins job automatically created with AEM OpenCloud Manager.</description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+  <hudson.model.ParametersDefinitionProperty>
+    <parameterDefinitions>
+      <hudson.model.StringParameterDefinition>
+        <name>AEM_OC_CONFIG_PROFILE</name>
+        <description>Name of the configuration profile.</description>
+        <defaultValue></defaultValue>
+        <trim>false</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>AEM_OC_CONFIG_REPO_URL</name>
+        <description>URL to the AEM OpenCloud Configuration repository. Default value gets set with AEM OpenCloud Manager. Don't change this value unless it's really necessary.</description>
+        <defaultValue>{{ opencloud.config_archive_url }}</defaultValue>
+        <trim>false</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>AWS_REPOSITORY_PATH</name>
+        <description>S3 Path where the Repositories are stored (s3_bucket/s3_path).</description>
+        <defaultValue>{{ aws.s3_library_bucket }}/{{ aws.s3_library_path }}</defaultValue>
+        <trim>false</trim>
+      </hudson.model.StringParameterDefinition>
+    </parameterDefinitions>
+  </hudson.model.ParametersDefinitionProperty>
+</properties>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition" plugin="workflow-cps@2.61">
+    <scm class="hudson.plugins.git.GitSCM" plugin="git@3.9.1">
+      <configVersion>2</configVersion>
+      <userRemoteConfigs>
+        <hudson.plugins.git.UserRemoteConfig>
+          <url>{{ opencloud.manager.repo_url }}</url>
+        </hudson.plugins.git.UserRemoteConfig>
+      </userRemoteConfigs>
+      <branches>
+        <hudson.plugins.git.BranchSpec>
+          <name>{{ opencloud.manager.branch }}</name>
+        </hudson.plugins.git.BranchSpec>
+      </branches>
+      <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+      <submoduleCfg class="list"/>
+      <extensions/>
+    </scm>
+    <scriptPath>jenkinsfile/aem-opencloud/{{ item.path }}</scriptPath>
+    <lightweight>true</lightweight>
+  </definition>
+  <triggers/>
+  <disabled>false</disabled>
+</flow-definition>
