@@ -21,7 +21,7 @@ deps:
 	pip install -r requirements.txt
 
 lint:
-	ansible-lint ansible/playbooks/*/*.yaml
+	ansible-lint provisioners/ansible/playbooks/*.yaml
 
 aws-manager-data:
 	./scripts/run-playbook.sh manager-data "$(config_path)"
