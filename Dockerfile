@@ -17,7 +17,7 @@ RUN echo -n ${JENKINS_VER} > /usr/share/jenkins/ref/jenkins.install.UpgradeWizar
     echo -n ${JENKINS_VER} > /usr/share/jenkins/ref/jenkins.install.InstallUtil.lastExecVersion && \
     mkdir -p /usr/share/jenkins/ref/secrets/ && echo false > /usr/share/jenkins/ref/secrets/slave-to-master-security-kill-switch
 
-RUN apt update && apt -y install make ruby build-essential patch ruby-dev zlib1g-dev liblzma-dev
+RUN apt update && apt -y install make ruby build-essential patch ruby-dev zlib1g-dev liblzma-dev python-pip libusb-1.0-0-dev libusb-dev libudev-dev
 
 # Install plugins that are predefined in the base-plugins.txt file
 COPY plugins.txt /usr/share/jenkins/plugins.txt
@@ -28,3 +28,5 @@ COPY config/*.xml /usr/share/jenkins/ref/
 
 RUN wget "https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_amd64.zip" -O ${PACKER_TMP_DIR}/packer.zip
 RUN cd ${PACKER_TMP_DIR}; unzip ${PACKER_TMP_DIR}/packer.zip; cp ${PACKER_TMP_DIR}/packer /usr/bin/packer
+
+RUN /usr/bin/pip install aws-google-auth[u2f]
