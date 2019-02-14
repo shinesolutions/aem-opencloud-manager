@@ -23,10 +23,12 @@ deps:
 lint:
 	ansible-lint provisioners/ansible/playbooks/*.yaml
 
-aws-manager-data:
-	./scripts/run-playbook.sh manager-data "$(config_path)"
+aws: aws-gen-pipelines aws-provision-pipelines
 
-aws-installation: stage
-	./scripts/run-playbook.sh installation "$(config_path)"
+aws-gen-pipelines:
+	./scripts/run-playbook.sh aws-gen-pipelines "$(config_path)"
+
+aws-provision-pipelines: stage
+	./scripts/run-playbook.sh aws-provision-pipelines "$(config_path)"
 
 .PHONY: ci clean deps lint create-ci-aws delete-ci-aws
