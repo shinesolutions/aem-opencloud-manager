@@ -24,7 +24,7 @@ COPY plugins.txt /usr/share/jenkins/plugins.txt
 
 RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/plugins.txt
 
-COPY config/*.xml /usr/share/jenkins/ref/
+COPY conf/jenkins/*.xml /usr/share/jenkins/ref/
 
 RUN wget "https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_amd64.zip" -O ${PACKER_TMP_DIR}/packer.zip
 RUN cd ${PACKER_TMP_DIR}; unzip ${PACKER_TMP_DIR}/packer.zip; cp ${PACKER_TMP_DIR}/packer /usr/bin/packer

@@ -16,27 +16,27 @@
         path: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/{{ item.path }}
         state: directory
         mode: '0776'
-      with_filetree: ../../../jenkinsfile/aem-opencloud
+      with_filetree: ../../../provisioners/jenkins/jenkinsfiles/aem-opencloud/
       when: item.state == 'file'
 
     - name: Generate Jenkins project aem-opencloud config.xml
       template:
-        src: '../templates/jenkins/project.xml'
+        src: '../../../templates/ansible/jenkins/project.xml'
         dest: "../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/config.xml"
         mode: '0644'
 
     - name: Generate aem-opencloud project folders config.xml
       template:
-        src: '../templates/jenkins/folder.xml'
+        src: '../../../templates/ansible/jenkins/folder.xml'
         dest: "../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/{{ item.path }}/config.xml"
         mode: '0644'
-      with_filetree: ../../../jenkinsfile/aem-opencloud/
+      with_filetree: ../../../provisioners/jenkins/jenkinsfiles/aem-opencloud/
       when: item.state == 'directory'
 
     - name: Generate aem-opencloud jenkins job config.xml
       template:
-        src: '../templates/jenkins/jobs.xml'
+        src: '../../../templates/ansible/jenkins/jobs.xml'
         dest: '../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/{{ item.path }}/config.xml'
         mode: '0644'
-      with_filetree: ../../../jenkinsfile/aem-opencloud/
+      with_filetree: ../../../provisioners/jenkins/jenkinsfiles/aem-opencloud/
       when: item.state == 'file'
