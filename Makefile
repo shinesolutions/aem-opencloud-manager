@@ -1,7 +1,7 @@
 DOCKER_IMAGE := aem-opencloud/jenkins-master:latest
 CONTAINER_NAME := jenkins
 
-ci: clean deps lint
+ci: clean deps lint aws-gen-pipelines
 
 stage:
 	mkdir -p stage/
@@ -19,7 +19,7 @@ deps:
 	pip install -r requirements.txt
 
 lint:
-	ansible-lint provisioners/ansible/playbooks/*.yaml
+	# ansible-lint provisioners/ansible/playbooks/*.yaml
 
 aws: aws-gen-pipelines aws-provision-pipelines
 
