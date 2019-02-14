@@ -44,7 +44,7 @@
       <submoduleCfg class="list"/>
       <extensions/>
     </scm>
-    <scriptPath>jenkinsfile/aem-opencloud/{{ item.path }}</scriptPath>
+    <scriptPath>provisioners/jenkins/jenkinsfiles/aem-opencloud/{{ item.path }}</scriptPath>
     <lightweight>true</lightweight>
   </definition>
   <triggers/>
