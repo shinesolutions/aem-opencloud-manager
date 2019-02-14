@@ -7,7 +7,7 @@ aws:
 aem_opencloud:
   version: 3.8-pre.0
   config:
-    artifact_url: https://github.com/shinesolutions/aem-helloworld-config/archive/master.tar.gz
+    artifact_url: https://overwrite-me/overwrite-me.tar.gz
   jenkins_sharedlibs:
     repo_url: overwrite-me
     repo_branch: master
