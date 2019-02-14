@@ -5,7 +5,7 @@ aws:
     s3_path: library
 
 aem_opencloud:
-  version: 3.x
+  version: 3.8-pre.0
   config:
     artifact_url: https://github.com/shinesolutions/aem-helloworld-config/archive/master.tar.gz
   manager:
