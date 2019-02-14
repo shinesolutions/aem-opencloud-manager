@@ -66,7 +66,7 @@ pipeline {
                     // Running Stage Prerun-Script
                     JenkinsStageJobPreScript this
                     // Trigger Stack Manager Event
-                    RunMake(this, env.TMPDIR, "aem-stack-manager-messenger", "make deploy-artifact stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.OC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AEM_OC_CONFIG_PROFILE}/ component=${params.AEM_COMPONENT} aem_id=${params.AEM_ID} source=${params.PACKAGE_SOURCE} group=${params.PACKAGE_GROUP} name=${params.PACKAGE_NAME} version=${params.PACKAGE_VERSION} replicate=${params.PACKAGE_REPLICATE} activate=${params.PACKAGE_ACTIVATE} force=${params.PACKAGE_FORCE}")
+                    RunMake(this, env.TMPDIR, "aem-stack-manager-messenger", "make deploy-artifact stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.OC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_CONFIG_PROFILE}/ component=${params.AEM_COMPONENT} aem_id=${params.AEM_ID} source=${params.PACKAGE_SOURCE} group=${params.PACKAGE_GROUP} name=${params.PACKAGE_NAME} version=${params.PACKAGE_VERSION} replicate=${params.PACKAGE_REPLICATE} activate=${params.PACKAGE_ACTIVATE} force=${params.PACKAGE_FORCE}")
             }
             post {
                 always {

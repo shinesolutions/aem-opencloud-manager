@@ -57,7 +57,7 @@ pipeline {
                     // Running Stage Prerun-Script
                     JenkinsStageJobPreScript this
                     // Trigger Test
-                    RunMake(this, env.TMPDIR, "aem-test-suite", "make test-contenthealthcheck-alarm-state config_path=${env.OC_CONFIG_DIR}/aem-test-suite/${params.AEM_OC_CONFIG_PROFILE}/ stack_prefix=${params.STACK_PREFIX}")
+                    RunMake(this, env.TMPDIR, "aem-test-suite", "make test-contenthealthcheck-alarm-state config_path=${env.OC_CONFIG_DIR}/aem-test-suite/${params.AOC_CONFIG_PROFILE}/ stack_prefix=${params.STACK_PREFIX}")
             }
             post {
                 always {

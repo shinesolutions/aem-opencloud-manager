@@ -62,7 +62,7 @@ pipeline {
                     // Running Stage Prerun-Script
                     JenkinsStageJobPreScript this
                     // Trigger Stack Manager Event
-                    RunMake(this, env.TMPDIR, "aem-stack-manager-messenger", "make export-package stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.OC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AEM_OC_CONFIG_PROFILE}/ component=${params.AEM_COMPONENT} aem_id=${params.AEM_ID} package_group=${params.PACKAGE_GROUP} package_name=${params.PACKAGE_NAME} package_filter=${params.PACKAGE_FILTER}")
+                    RunMake(this, env.TMPDIR, "aem-stack-manager-messenger", "make export-package stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.OC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_CONFIG_PROFILE}/ component=${params.AEM_COMPONENT} aem_id=${params.AEM_ID} package_group=${params.PACKAGE_GROUP} package_name=${params.PACKAGE_NAME} package_filter=${params.PACKAGE_FILTER}")
             }
             post {
                 always {

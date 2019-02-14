@@ -10,7 +10,7 @@ pipeline {
 
         string(name: 'VERSION_PACKER_AEM', defaultValue: '3.4.2', description: 'Version of packer-aem repo to archive')
         string(name: 'VERSION_AEM_AWS_STACK_BUILDER', defaultValue: '3.3.1', description: 'Version of aem-aws-stack-builder repo to archive')
-        string(name: 'VERSION_AEM_OC_CONFIG', defaultValue: '1.0.0', description: 'Version of the AEM OpenCloud configuration repository to archive.')
+        string(name: 'VERSION_AOC_CONFIG', defaultValue: '1.0.0', description: 'Version of the AEM OpenCloud configuration repository to archive.')
         string(name: 'VERSION_AEM_STACK_MANAGER_MESSENGER', defaultValue: '2.0.0', description: 'Version of aem-stack-manager-messenger repo to archive')
         string(name: 'VERSION_AEM_TEST_SUITE', defaultValue: '0.9.10', description: 'Version of aem-test-suite repo to archive')
     }
@@ -51,7 +51,7 @@ pipeline {
                     // Prepare repositories
                     AwsPrepareRepo(this, "aem-aws-stack-builder", params.VERSION_AEM_AWS_STACK_BUILDER, params.AWS_REPOSITORY_PATH, env.TMPDIR)
                     // Prepare AEM OpenCloud configuration
-                    AemOcPrepareConfig(this, params.AEM_OC_CONFIG_REPO_URL, env.TMPDIR)
+                    AemOcPrepareConfig(this, params.AOC_CONFIG_REPO_URL, env.TMPDIR)
             }
             post {
                 always {
@@ -66,7 +66,7 @@ pipeline {
                     // Job Prerun-Script
                     JenkinsStageJobPreScript this
                     // packer-aem
-                    RunMake(this, env.TMPDIR, "aem-aws-stack-builder", "make library config_path=${env.OC_CONFIG_DIR}/aem-aws-stack-builder/${params.AEM_OC_CONFIG_PROFILE}/")
+                    RunMake(this, env.TMPDIR, "aem-aws-stack-builder", "make library config_path=${env.OC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE}/")
             }
             post {
                 always {

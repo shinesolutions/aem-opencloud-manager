@@ -55,7 +55,7 @@ pipeline {
                     // Running Stage Prerun-Script
                     JenkinsStageJobPreScript this
                     // Trigger Stack Manager Event
-                    RunMake(this, env.TMPDIR, "aem-stack-manager-messenger", "make live-snapshot stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.OC_CONFIG_DIR}/aem-test-suite/${params.AEM_OC_CONFIG_PROFILE}/ component=${params.AEM_COMPONENT}")
+                    RunMake(this, env.TMPDIR, "aem-stack-manager-messenger", "make live-snapshot stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.OC_CONFIG_DIR}/aem-test-suite/${params.AOC_CONFIG_PROFILE}/ component=${params.AEM_COMPONENT}")
             }
             post {
                 always {

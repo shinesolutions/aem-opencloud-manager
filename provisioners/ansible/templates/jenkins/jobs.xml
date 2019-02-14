@@ -7,13 +7,13 @@
   <hudson.model.ParametersDefinitionProperty>
     <parameterDefinitions>
       <hudson.model.StringParameterDefinition>
-        <name>AEM_OC_CONFIG_PROFILE</name>
+        <name>AOC_CONFIG_PROFILE</name>
         <description>Name of the configuration profile.</description>
         <defaultValue></defaultValue>
         <trim>false</trim>
       </hudson.model.StringParameterDefinition>
       <hudson.model.StringParameterDefinition>
-        <name>AEM_OC_CONFIG_REPO_URL</name>
+        <name>AOC_CONFIG_REPO_URL</name>
         <description>URL to the AEM OpenCloud Configuration repository. Default value gets set with AEM OpenCloud Manager. Don't change this value unless it's really necessary.</description>
         <defaultValue>{{ aem_opencloud.config.artifact_url }}</defaultValue>
         <trim>false</trim>
