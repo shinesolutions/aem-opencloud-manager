@@ -10,7 +10,7 @@
         config: "{{ lookup('file', '../../../stage/jenkins/jobs/{{ item.path }}') }}"
         name: "{{ item.path| replace('/config.xml', '') }}"
         password: "{{ jenkins.password }}"
-        url: "{{ jenkins.port }}://{{ jenkins.host }}:{{ jenkins.port }}"
+        url: "{{ jenkins.protocol }}://{{ jenkins.host }}:{{ jenkins.port }}"
         user: "{{ jenkins.username }}"
       with_filetree: ../../../stage/jenkins/jobs
       when: item.state == 'file'

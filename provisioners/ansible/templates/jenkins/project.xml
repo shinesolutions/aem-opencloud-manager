@@ -2,7 +2,7 @@
 <com.cloudbees.hudson.plugins.folder.Folder plugin="cloudbees-folder@6.7">
   <actions/>
   <description>AEM OpenCloud Pipelines automatically created with AEM OpenCloud Manager.</description>
-  <displayName>aem-opencloud-{{ aem_opencloud.manager.repo_branch }}</displayName>
+  <displayName>aem-opencloud-{{ aem_opencloud.version }}</displayName>
   <properties>
     <org.jenkinsci.plugins.workflow.libs.FolderLibraries plugin="workflow-cps-global-lib@2.12">
       <libraries>
