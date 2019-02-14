@@ -7,13 +7,13 @@
   tasks:
     - name: "Create jenkins project structure on local filesystem"
       file:
-        path: ../../../stage/jenkins/jobs/aem-opencloud-{{ opencloud.manager.branch }}
+        path: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.manager.repo_branch }}
         state: directory
         mode: '0776'
 
     - name: "Create jenkins project structure on local filesystem"
       file:
-        path: ../../../stage/jenkins/jobs/aem-opencloud-{{ opencloud.manager.branch }}/{{ item.path }}
+        path: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.manager.repo_branch }}/{{ item.path }}
         state: directory
         mode: '0776'
       with_filetree: ../../../jenkinsfile/aem-opencloud
@@ -22,13 +22,13 @@
     - name: Generate Jenkins project aem-opencloud config.xml
       template:
         src: '../templates/jenkins/project.xml'
-        dest: "../../../stage/jenkins/jobs/aem-opencloud-{{ opencloud.manager.branch }}/config.xml"
+        dest: "../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.manager.repo_branch }}/config.xml"
         mode: '0644'
 
     - name: Generate aem-opencloud project folders config.xml
       template:
         src: '../templates/jenkins/folder.xml'
-        dest: "../../../stage/jenkins/jobs/aem-opencloud-{{ opencloud.manager.branch }}/{{ item.path }}/config.xml"
+        dest: "../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.manager.repo_branch }}/{{ item.path }}/config.xml"
         mode: '0644'
       with_filetree: ../../../jenkinsfile/aem-opencloud/
       when: item.state == 'directory'
@@ -36,7 +36,7 @@
     - name: Generate aem-opencloud jenkins job config.xml
       template:
         src: '../templates/jenkins/jobs.xml'
-        dest: '../../../stage/jenkins/jobs/aem-opencloud-{{ opencloud.manager.branch }}/{{ item.path }}/config.xml'
+        dest: '../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.manager.repo_branch }}/{{ item.path }}/config.xml'
         mode: '0644'
       with_filetree: ../../../jenkinsfile/aem-opencloud/
       when: item.state == 'file'

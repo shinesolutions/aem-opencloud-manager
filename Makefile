@@ -1,4 +1,4 @@
-DOCKER_IMAGE := aem-opencloud/jenins-master:latest
+DOCKER_IMAGE := aem-opencloud/jenkins-master:latest
 CONTAINER_NAME := jenkins
 
 ci: clean deps lint
@@ -7,9 +7,7 @@ stage:
 	mkdir -p stage/
 
 clean:
-	rm -rf logs
-	rm -fr stage
-
+	rm -rf logs/ stage/
 
 run: clean build
 	docker run -p 8080:8080 --name "${CONTAINER_NAME}" "${DOCKER_IMAGE}"

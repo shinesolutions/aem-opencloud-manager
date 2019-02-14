@@ -15,13 +15,13 @@
       <hudson.model.StringParameterDefinition>
         <name>AEM_OC_CONFIG_REPO_URL</name>
         <description>URL to the AEM OpenCloud Configuration repository. Default value gets set with AEM OpenCloud Manager. Don't change this value unless it's really necessary.</description>
-        <defaultValue>{{ opencloud.config_archive_url }}</defaultValue>
+        <defaultValue>{{ aem_opencloud.config.artifact_url }}</defaultValue>
         <trim>false</trim>
       </hudson.model.StringParameterDefinition>
       <hudson.model.StringParameterDefinition>
         <name>AWS_REPOSITORY_PATH</name>
         <description>S3 Path where the Repositories are stored (s3_bucket/s3_path).</description>
-        <defaultValue>{{ aws.s3_library_bucket }}/{{ aws.s3_library_path }}</defaultValue>
+        <defaultValue>{{ aws.library.s3_bucket }}/{{ aws.library.s3_path }}</defaultValue>
         <trim>false</trim>
       </hudson.model.StringParameterDefinition>
     </parameterDefinitions>
@@ -32,12 +32,12 @@
       <configVersion>2</configVersion>
       <userRemoteConfigs>
         <hudson.plugins.git.UserRemoteConfig>
-          <url>{{ opencloud.manager.repo_url }}</url>
+          <url>{{ aem_opencloud.manager.repo_url }}</url>
         </hudson.plugins.git.UserRemoteConfig>
       </userRemoteConfigs>
       <branches>
         <hudson.plugins.git.BranchSpec>
-          <name>{{ opencloud.manager.branch }}</name>
+          <name>{{ aem_opencloud.manager.repo_branch }}</name>
         </hudson.plugins.git.BranchSpec>
       </branches>
       <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>

@@ -1,15 +1,19 @@
 aws:
-  s3_library_bucket: aem-opencloud
-  s3_library_path: jenkins/library
+  library:
+    s3_bucket: overwrite-me
+    s3_path: library
 
-opencloud:
-  config_archive_url: https://github.com/shinesolutions/aem-helloworld-config/archive/master.tar.gz
+aem_opencloud:
+  version: 3.x
+  config:
+    artifact_url: https://github.com/shinesolutions/aem-helloworld-config/archive/master.tar.gz
   manager:
-    repo_url: https://github.com/shinesolutions/aem-opencloud-manager
-    branch: master
+    repo_url: overwrite-me
+    repo_branch: master
 
 jenkins:
-  url: http://localhost
+  protocol: http
+  host: localhost
   port: 8080
-  username: jadmin
-  password: jadmin
+  username: overwrite-me
+  password: overwrite-me
