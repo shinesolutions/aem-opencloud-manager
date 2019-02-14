@@ -1,0 +1,20 @@
+---
+aws:
+  library:
+    s3_bucket: overwrite-me
+    s3_path: library
+
+aem_opencloud:
+  version: 3.x
+  config:
+    artifact_url: https://github.com/shinesolutions/aem-helloworld-config/archive/master.tar.gz
+  manager:
+    repo_url: overwrite-me
+    repo_branch: master
+
+jenkins:
+  protocol: http
+  host: localhost
+  port: 8080
+  username: overwrite-me
+  password: overwrite-me
