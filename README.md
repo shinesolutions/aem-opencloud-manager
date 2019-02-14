@@ -41,7 +41,7 @@ Stage hooks are getting execute before and after every the stage.
 
 | Location        | Description |
 | ------------- |:-------------:|
-| /tmp/shinesolutions/jenkins/global-pre-common.sh     | Global Pre-script. Runs once at the beginning of the Pipeline. |
-| /tmp/shinesolutions/jenkins/global-post-common.sh    | Global Post-script. Runs once at the end of the Pipeline. |
-| /tmp/shinesolutions/jenkins/stage-pre-common.sh      | Stage Pre-Script. Runs every time at the beginning of a stage. |
-| /tmp/shinesolutions/jenkins/stage-post-common.sh     | Stage Post-Script. Runs every time at the end of a stage. |
+| /tmp/shinesolutions/aem-opencloud-manager/global-pre-common.sh     | Global Pre-script. Runs once at the beginning of the Pipeline. |
+| /tmp/shinesolutions/aem-opencloud-manager/global-post-common.sh    | Global Post-script. Runs once at the end of the Pipeline. |
+| /tmp/shinesolutions/aem-opencloud-manager/stage-pre-common.sh      | Stage Pre-Script. Runs every time at the beginning of a stage. |
+| /tmp/shinesolutions/aem-opencloud-manager/stage-post-common.sh     | Stage Post-Script. Runs every time at the end of a stage. |

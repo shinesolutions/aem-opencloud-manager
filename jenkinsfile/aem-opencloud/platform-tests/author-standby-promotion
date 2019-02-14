@@ -3,7 +3,7 @@
 pipeline {
     agent any
     environment {
-        TMPDIR = "/tmp/shinesolutions/jenkins"
+        TMPDIR = "/tmp/shinesolutions/aem-opencloud-manager"
         OC_CONFIG_DIR = "${env.TMPDIR}/opencloud_config"
     }
     parameters {

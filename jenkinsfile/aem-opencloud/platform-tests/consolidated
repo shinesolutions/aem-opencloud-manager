@@ -8,7 +8,7 @@ pipeline {
         EXPORT_PACKAGE_AUTHOR_TIMESTAMP = "2019"
         EXPORT_PACKAGE_PUBLISH_TIMESTAMP = "2019"
         OC_CONFIG_DIR = "${env.TMPDIR}/opencloud_config"
-        TMPDIR = "/tmp/shinesolutions/jenkins"
+        TMPDIR = "/tmp/shinesolutions/aem-opencloud-manager"
     }
     parameters {
         string(name: 'AOC_CONFIG_PROFILE', defaultValue: '', description: 'Name of the config profile for AEM Test Suite')
