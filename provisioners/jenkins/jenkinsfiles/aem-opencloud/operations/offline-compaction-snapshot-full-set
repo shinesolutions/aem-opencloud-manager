@@ -1,5 +1,5 @@
             }
-            post @Library('aem-opencloud') _
+            post @Library('aem-opencloud-manager') _
 
 pipeline {
     agent any

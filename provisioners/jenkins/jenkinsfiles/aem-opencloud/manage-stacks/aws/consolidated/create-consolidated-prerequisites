@@ -1,4 +1,4 @@
-{@Library('aem-opencloud') _
+{@Library('aem-opencloud-manager') _
 
 pipeline {
     agent any
