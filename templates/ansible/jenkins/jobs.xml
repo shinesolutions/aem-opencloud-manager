@@ -32,12 +32,12 @@
       <configVersion>2</configVersion>
       <userRemoteConfigs>
         <hudson.plugins.git.UserRemoteConfig>
-          <url>{{ aem_opencloud.manager.repo_url }}</url>
+          <url>{{ aem_opencloud.jenkins_sharedlibs.repo_url }}</url>
         </hudson.plugins.git.UserRemoteConfig>
       </userRemoteConfigs>
       <branches>
         <hudson.plugins.git.BranchSpec>
-          <name>{{ aem_opencloud.manager.repo_branch }}</name>
+          <name>{{ aem_opencloud.jenkins_sharedlibs.repo_branch }}</name>
         </hudson.plugins.git.BranchSpec>
       </branches>
       <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>

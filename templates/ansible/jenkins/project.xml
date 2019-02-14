@@ -11,14 +11,14 @@
           <retriever class="org.jenkinsci.plugins.workflow.libs.SCMSourceRetriever">
             <scm class="jenkins.plugins.git.GitSCMSource" plugin="git@3.9.1">
               <id>e031e6f7-a53d-4465-b5e9-27a6bbe899a2</id>
-              <remote>{{ aem_opencloud.manager.repo_url }}</remote>
+              <remote>{{ aem_opencloud.jenkins_sharedlibs.repo_url }}</remote>
               <credentialsId></credentialsId>
               <traits>
                 <jenkins.plugins.git.traits.BranchDiscoveryTrait/>
               </traits>
             </scm>
           </retriever>
-          <defaultVersion>{{ aem_opencloud.manager.repo_branch }}</defaultVersion>
+          <defaultVersion>{{ aem_opencloud.jenkins_sharedlibs.repo_branch }}</defaultVersion>
           <implicit>false</implicit>
           <allowVersionOverride>true</allowVersionOverride>
           <includeInChangesets>true</includeInChangesets>
