@@ -25,7 +25,7 @@ pipeline {
                     // Running Stage Prerun-Script
                     JenkinsStageJobPreScript this
                     // Prepare repositories
-                    AwsPrepareRepo(this, "packer-aem", params.VERSION_PACKER_AEM, params.AWS_REPOSITORY_PATH, env.TMPDIR)
+                    AwsPrepareRepo(this, "packer-aem", params.VERSION_PACKER_AEM, params.AWS_LIBRARY_PATH, env.TMPDIR)
                     // Prepare AEM OpenCloud configuration
                     AemOcPrepareConfig(this, params.AOC_CONFIG_REPO_URL, env.TMPDIR)
             }

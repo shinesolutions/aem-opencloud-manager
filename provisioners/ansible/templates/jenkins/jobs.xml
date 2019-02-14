@@ -19,7 +19,7 @@
         <trim>false</trim>
       </hudson.model.StringParameterDefinition>
       <hudson.model.StringParameterDefinition>
-        <name>AWS_REPOSITORY_PATH</name>
+        <name>AWS_LIBRARY_PATH</name>
         <description>S3 Path where the Repositories are stored (s3_bucket/s3_path).</description>
         <defaultValue>{{ aws.library.s3_bucket }}/{{ aws.library.s3_path }}</defaultValue>
         <trim>false</trim>

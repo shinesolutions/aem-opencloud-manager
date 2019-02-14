@@ -34,7 +34,7 @@ pipeline {
                     // Running Stage Prerun-Script
                     JenkinsStageJobPreScript this
                     // Prepare repositories
-                    AwsPrepareRepo(this, "aem-stack-manager-messenger", params.VERSION_AEM_STACK_MANAGER_MESSENGER, params.AWS_REPOSITORY_PATH, env.TMPDIR)
+                    AwsPrepareRepo(this, "aem-stack-manager-messenger", params.VERSION_AEM_STACK_MANAGER_MESSENGER, params.AWS_LIBRARY_PATH, env.TMPDIR)
             }
             post {
                 always {
