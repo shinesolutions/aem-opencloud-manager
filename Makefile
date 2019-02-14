@@ -24,6 +24,7 @@ lint:
 aws: aws-gen-pipelines aws-provision-pipelines
 
 aws-gen-pipelines:
+	rm -rf stage/jenkins/jobs/aem-opencloud-*/
 	./scripts/run-playbook.sh aws-gen-pipelines "$(config_path)"
 
 aws-provision-pipelines: stage
