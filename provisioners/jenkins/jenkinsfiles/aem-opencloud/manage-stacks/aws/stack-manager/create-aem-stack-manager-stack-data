@@ -1,7 +1,9 @@
 @Library('aem-opencloud-manager') _
 
 pipeline {
-    agent any
+    agent {
+        docker { image 'shinesolutions/aem-platform-buildenv:latest' }
+    }
     parameters {
 
         string(name: 'STACK_PREFIX', defaultValue: '', description: 'AEM OpenCloud Stack prefix.')

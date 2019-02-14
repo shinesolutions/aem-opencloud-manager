@@ -1,7 +1,9 @@
 {@Library('aem-opencloud-manager') _
 
 pipeline {
-    agent any
+    agent {
+        docker { image 'shinesolutions/aem-platform-buildenv:latest' }
+    }
     environment {
         TMPDIR = "/tmp/shinesolutions/aem-opencloud-manager"
         OC_CONFIG_DIR = "${env.TMPDIR}/opencloud_config"

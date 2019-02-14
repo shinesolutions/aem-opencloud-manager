@@ -1,7 +1,9 @@
 @Library('aem-opencloud-manager') _
 
 pipeline {
-    agent any
+    agent {
+        docker { image 'shinesolutions/aem-platform-buildenv:latest' }
+    }
     environment {
         // PARAMETERS ARE NEEDED FOR IMPORT Package
         // THIS SHOULD BE REPLACED WITH A BETTER WAY OF GETTING THE YEAR TIMESTAMP
