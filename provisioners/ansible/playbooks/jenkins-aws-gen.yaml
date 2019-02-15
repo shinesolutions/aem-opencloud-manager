@@ -1,17 +1,17 @@
 ---
-- name: AEM OpenCloud Manager preparation
+- name: Generate AEM OpenCloud Manager resources for Jenkins (pipeline Jenkinsfile and shared libraries)
   hosts: all
   gather_facts: no
   connection: local
 
   tasks:
-    - name: "Create jenkins project structure on local filesystem"
+    - name: "Create stage directory for generated AEM OpenCloud Jenkins jobs"
       file:
         path: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}
         state: directory
         mode: '0776'
 
-    - name: "Create jenkins project structure on local filesystem"
+    - name: "Create category directories for generated AEM OpenCloud Jenkins jobs"
       file:
         path: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/{{ item.path }}
         state: directory
@@ -19,21 +19,21 @@
       with_filetree: ../../../provisioners/jenkins/jenkinsfiles/aem-opencloud/
       when: item.state == 'file'
 
-    - name: Generate Jenkins project aem-opencloud config.xml
+    - name: "Generate AEM OpenCloud Jenkins folder's config.xml"
       template:
         src: '../../../templates/ansible/jenkins/config/project.xml.j2'
         dest: "../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/config.xml"
         mode: '0644'
 
-    - name: Generate aem-opencloud project folders config.xml
+    - name: "Generate AEM OpenCloud Jenkins category folders' config.xml"
       template:
-        src: '../../../templates/ansible/jenkins/config/folder.xml.j2'
+        src: '../../../templates/ansible/jenkins/config/category.xml.j2'
         dest: "../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/{{ item.path }}/config.xml"
         mode: '0644'
       with_filetree: ../../../provisioners/jenkins/jenkinsfiles/aem-opencloud/
       when: item.state == 'directory'
 
-    - name: Generate aem-opencloud jenkins job config.xml
+    - name: "Generate AEM OpenCloud Jenkins jobs config.xml"
       template:
         src: '../../../templates/ansible/jenkins/config/jobs.xml.j2'
         dest: '../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/{{ item.path }}/config.xml'
