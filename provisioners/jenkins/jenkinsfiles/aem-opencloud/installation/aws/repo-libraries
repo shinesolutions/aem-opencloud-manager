@@ -53,7 +53,7 @@ pipeline {
                     // Prepare repositories
                     AwsPrepareRepo(this, "aem-aws-stack-builder", params.VERSION_AEM_AWS_STACK_BUILDER, params.AWS_LIBRARY_PATH, env.TMPDIR)
                     // Prepare AEM OpenCloud configuration
-                    AemOcPrepareConfig(this, params.AOC_CONFIG_REPO_URL, env.TMPDIR)
+                    AocPrepareConfig(this, params.AOC_CONFIG_REPO_URL, env.TMPDIR)
             }
             post {
                 always {
