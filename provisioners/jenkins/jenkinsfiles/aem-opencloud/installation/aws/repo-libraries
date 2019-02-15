@@ -62,7 +62,7 @@ pipeline {
                 }
             }
         }
-        stage('Sync AEM OpenCloudd libraries ') {
+        stage('Sync AEM OpenCloud libraries ') {
             steps {
 
                     // Job Prerun-Script
