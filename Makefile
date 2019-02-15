@@ -1,7 +1,7 @@
 DOCKER_IMAGE := aem-opencloud/jenkins-master:latest
 CONTAINER_NAME := jenkins
 
-ci: clean deps lint jenkins-aws-gen-pipelines
+ci: clean deps lint jenkins-aws-gen
 
 stage:
 	mkdir -p stage/
@@ -21,13 +21,13 @@ deps:
 lint:
 	# ansible-lint provisioners/ansible/playbooks/*.yaml
 
-jenkins-aws: jenkins-aws-gen-pipelines jenkins-aws-provision-pipelines
+jenkins-aws: jenkins-aws-gen jenkins-aws-provision
 
-jenkins-aws-gen-pipelines:
+jenkins-aws-gen:
 	rm -rf stage/jenkins/jobs/aem-opencloud-*/
-	./scripts/run-playbook.sh jenkins-aws-gen-pipelines "$(config_path)"
+	./scripts/run-playbook.sh jenkins-aws-gen "$(config_path)"
 
-jenkins-aws-provision-pipelines: stage
-	./scripts/run-playbook.sh jenkins-aws-provision-pipelines "$(config_path)"
+jenkins-aws-provision: stage
+	./scripts/run-playbook.sh jenkins-aws-provision "$(config_path)"
 
 .PHONY: ci clean deps lint create-ci-aws delete-ci-aws
