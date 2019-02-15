@@ -14,7 +14,6 @@ echo "Provisioning Jenkins pipelines..."
 ANSIBLE_CONFIG=conf/ansible/ansible.cfg \
   ANSIBLE_LOG_PATH=$log_path \
   ansible-playbook "provisioners/ansible/playbooks/${playbook_type}.yaml" \
-  -v \
   -i conf/ansible/inventory/hosts \
   --module-path provisioners/ansible/library/ \
   "${extra_vars[@]}"
