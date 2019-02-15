@@ -2,7 +2,7 @@
 
 pipeline {
     agent {
-        docker { image 'shinesolutions/aem-platform-buildenv:latest' }
+        docker { image 'shinesolutions/aem-platform-buildenv-publisher:latest' }
     }
     parameters {
 
