@@ -21,13 +21,13 @@
 
     - name: Generate Jenkins project aem-opencloud config.xml
       template:
-        src: '../../../templates/ansible/jenkins/project.xml'
+        src: '../../../templates/ansible/jenkins/config/project.xml.j2'
         dest: "../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/config.xml"
         mode: '0644'
 
     - name: Generate aem-opencloud project folders config.xml
       template:
-        src: '../../../templates/ansible/jenkins/folder.xml'
+        src: '../../../templates/ansible/jenkins/config/folder.xml.j2'
         dest: "../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/{{ item.path }}/config.xml"
         mode: '0644'
       with_filetree: ../../../provisioners/jenkins/jenkinsfiles/aem-opencloud/
@@ -35,7 +35,7 @@
 
     - name: Generate aem-opencloud jenkins job config.xml
       template:
-        src: '../../../templates/ansible/jenkins/jobs.xml'
+        src: '../../../templates/ansible/jenkins/config/jobs.xml.j2'
         dest: '../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/{{ item.path }}/config.xml'
         mode: '0644'
       with_filetree: ../../../provisioners/jenkins/jenkinsfiles/aem-opencloud/
