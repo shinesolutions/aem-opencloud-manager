@@ -12,5 +12,5 @@ def call(script, String user, String repo, String version, String s3Bucket, s3Pa
   mkdir -p ${tmpDir}
   """
   new common().httpDownload(script, libraryUrl, tmpDir, "${repo}-${version}.tar.gz")
-  new aws().s3_upload(script, sourceDir, "${repo}-${version}.tar.gz", s3Bucket s3Path)
+  new aws().s3_upload(script, sourceDir, "${repo}-${version}.tar.gz", s3Bucket, s3Path)
 }
