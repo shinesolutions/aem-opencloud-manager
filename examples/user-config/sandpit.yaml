@@ -6,6 +6,8 @@ aws:
 aem_opencloud:
   config:
     artifact_url: https://github.com/shinesolutions/aem-helloworld-config/archive/master.tar.gz
+  custom_manager_steps:
+    artifact_url: https://github.com/shinesolutions/aem-helloworld-custom-manager-steps/archive/master.tar.gz
   jenkins_sharedlibs:
     repo_url: https://github.com/shinesolutions/aem-opencloud-manager
     repo_branch: master

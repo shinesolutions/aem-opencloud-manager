@@ -8,6 +8,8 @@ aem_opencloud:
   version: 3.8-pre.0
   config:
     artifact_url: https://overwrite-me/overwrite-me.tar.gz
+  custom_manager_steps:
+    artifact_url: https://overwrite-me/overwrite-me.tar.gz
   jenkins_sharedlibs:
     repo_url: overwrite-me
     repo_branch: master

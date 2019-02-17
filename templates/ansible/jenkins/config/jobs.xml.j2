@@ -14,8 +14,14 @@
       </hudson.model.StringParameterDefinition>
       <hudson.model.StringParameterDefinition>
         <name>AOC_CONFIG_REPO_URL</name>
-        <description>URL to the AEM OpenCloud Configuration repository. Default value gets set with AEM OpenCloud Manager. Don't change this value unless it's really necessary.</description>
+        <description>URL to the AEM OpenCloud Configuration artifact.</description>
         <defaultValue>{{ aem_opencloud.config.artifact_url }}</defaultValue>
+        <trim>false</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>AOC_CUSTOM_MANAGER_STEPS_REPO_URL</name>
+        <description>URL to the AEM OpenCloud Manager custom manager steps artifact.</description>
+        <defaultValue>{{ aem_opencloud.custom_manager_steps.artifact_url }}</defaultValue>
         <trim>false</trim>
       </hudson.model.StringParameterDefinition>
       <hudson.model.StringParameterDefinition>
