@@ -27,7 +27,7 @@ pipeline {
         stage('Setup') {
             steps {
                 // Setup Jenkins environment
-                SetupEnv this
+                JenkinsInit this
                 // Running global prerun-script
                 JenkinsPipelinePreStep this
             }
