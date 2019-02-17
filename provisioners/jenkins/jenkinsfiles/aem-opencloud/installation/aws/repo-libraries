@@ -22,13 +22,13 @@ pipeline {
                 // Setup Jenkins environment
                 SetupEnv this
                 // Running global prerun-script
-                JenkinsGlobalJobPreScript this
+                JenkinsPipelinePreStep this
             }
         }
         stage('Sync AEM OpenCloud Repositories') {
             steps {
                     // Job Prerun-Script
-                    JenkinsStageJobPreScript this
+                    JenkinsStagePreStep this
                     // packer-aem
                     AocMirrorGithubLibrary(this, "shinesolutions", "packer-aem", params.VERSION_PACKER_AEM, params.AWS_LIBRARY_S3_BUCKET, params.AWS_LIBRARY_S3_PATH, env.TMPDIR)
                     // aem-aws-stack-builder
@@ -41,7 +41,7 @@ pipeline {
             post {
                 always {
                   // Running global post-script
-                  JenkinsStageJobPostScript this
+                  JenkinsStagePostStep this
                 }
             }
         }
@@ -49,7 +49,7 @@ pipeline {
             steps {
 
                     // Job Prerun-Script
-                    JenkinsStageJobPreScript this
+                    JenkinsStagePreStep this
                     // Prepare repositories
                     AocPrepareLibrary(this, "aem-aws-stack-builder", params.VERSION_AEM_AWS_STACK_BUILDER, params.AWS_LIBRARY_S3_BUCKET, params.AWS_LIBRARY_S3_PATH, env.TMPDIR)
                     // Prepare AEM OpenCloud configuration
@@ -58,7 +58,7 @@ pipeline {
             post {
                 always {
                   // Running stage post-script
-                  JenkinsStageJobPostScript this
+                  JenkinsStagePostStep this
                 }
             }
         }
@@ -66,14 +66,14 @@ pipeline {
             steps {
 
                     // Job Prerun-Script
-                    JenkinsStageJobPreScript this
+                    JenkinsStagePreStep this
                     // packer-aem
                     ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make library config_path=${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE}/")
             }
             post {
                 always {
                   // Running stage post-script
-                  JenkinsStageJobPostScript this
+                  JenkinsStagePostStep this
                 }
             }
         }
@@ -81,7 +81,7 @@ pipeline {
     post {
         always {
           // Running global post-script
-          JenkinsGlobalJobPostScript this
+          JenkinsPipelinePostStep this
         }
     }
 }

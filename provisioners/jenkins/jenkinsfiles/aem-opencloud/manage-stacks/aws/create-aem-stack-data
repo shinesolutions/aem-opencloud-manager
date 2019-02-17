@@ -19,21 +19,21 @@ pipeline {
                 // Setup Jenkins environment
                 SetupEnv this
                 // Running global prerun-script
-                JenkinsGlobalJobPreScript this
+                JenkinsPipelinePreStep this
             }
         }
         stage('Prepare artifacts') {
             steps {
 
                     // Running Stage Prerun-Script
-                    JenkinsStageJobPreScript this
+                    JenkinsStagePreStep this
                     // Prepare repositories
                     AocPrepareLibrary(this, "aem-aws-stack-builder", params.VERSION_AEM_AWS_STACK_BUILDER, params.AWS_LIBRARY_S3_BUCKET, AWS_LIBRARY_S3_PATH, env.TMPDIR)
             }
             post {
                 always {
                   // Running stage post-script
-                  JenkinsStageJobPostScript this
+                  JenkinsStagePostStep this
                 }
             }
         }
@@ -41,14 +41,14 @@ pipeline {
             steps {
 
                     // Running Stage Prerun-Script
-                    JenkinsStageJobPreScript this
+                    JenkinsStagePreStep this
                     // Resolve dependencies
                     ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make deps")
             }
             post {
                 always {
                   // Running stage post-script
-                  JenkinsStageJobPostScript this
+                  JenkinsStagePostStep this
                 }
             }
         }
@@ -56,14 +56,14 @@ pipeline {
             steps {
 
                     // Running Stage Prerun-Script
-                    JenkinsStageJobPreScript this
+                    JenkinsStagePreStep this
                     // Create aem-aws-stack-builder configuration
                     ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make config config_path=${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE}/")
             }
             post {
                 always {
                   // Running stage post-script
-                  JenkinsStageJobPostScript this
+                  JenkinsStagePostStep this
                 }
             }
         }
@@ -71,7 +71,7 @@ pipeline {
             steps {
 
                     // Running Stage Prerun-Script
-                    JenkinsStageJobPreScript this
+                    JenkinsStagePreStep this
                     // Generate AEM OpenCloud Stack Data
                     ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make create-aem-stack-data config_path=${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE}/ stack_prefix=${params.STACK_PREFIX}")
                     }
@@ -79,7 +79,7 @@ pipeline {
                 post {
                     always {
                       // Running stage post-script
-                      JenkinsStageJobPostScript this
+                      JenkinsStagePostStep this
                     }
                 }
             }
@@ -87,7 +87,7 @@ pipeline {
     post {
         always {
             // Running global post-script
-            JenkinsGlobalJobPostScript this
+            JenkinsPipelinePostStep this
         }
     }
 }

@@ -38,14 +38,14 @@ pipeline {
                 // Setup Jenkins environment
                 SetupEnv this
                 // Running global prerun-script
-                JenkinsGlobalJobPreScript this
+                JenkinsPipelinePreStep this
             }
         }
         stage('Prepare artifacts') {
             steps {
 
                     // Running Stage Prerun-Script
-                    JenkinsStageJobPreScript this
+                    JenkinsStagePreStep this
                     // Prepare repositories
                     AocPrepareLibrary(this, "aem-aws-stack-builder", params.VERSION_AEM_AWS_STACK_BUILDER, params.AWS_LIBRARY_S3_BUCKET, AWS_LIBRARY_S3_PATH, env.TMPDIR)
                     AocPrepareLibrary(this, "aem-test-suite", params.VERSION_AEM_TEST_SUITE, params.AWS_LIBRARY_S3_BUCKET, AWS_LIBRARY_S3_PATH, env.TMPDIR)
@@ -54,7 +54,7 @@ pipeline {
             post {
                 always {
                   // Running stage post-script
-                  JenkinsStageJobPostScript this
+                  JenkinsStagePostStep this
                 }
             }
         }
@@ -62,9 +62,9 @@ pipeline {
             steps {
 
                     // Running Stage Prerun-Script
-                    JenkinsStageJobPreScript this
+                    JenkinsStagePreStep this
                     // Running Stage Prerun-Script
-                    JenkinsStageJobPreScript this
+                    JenkinsStagePreStep this
                     // Resolve dependencies
                     ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make deps")
                     ExecCommand(this, env.TMPDIR, "aem-test-suite", "make deps")
@@ -73,7 +73,7 @@ pipeline {
             post {
                 always {
                   // Running stage post-script
-                  JenkinsStageJobPostScript this
+                  JenkinsStagePostStep this
                 }
             }
         }
@@ -81,9 +81,9 @@ pipeline {
             steps {
 
                     // Running Stage Prerun-Script
-                    JenkinsStageJobPreScript this
+                    JenkinsStagePreStep this
                     // Running Stage Prerun-Script
-                    JenkinsStageJobPreScript this
+                    JenkinsStagePreStep this
                     // Create aem-aws-stack-builder configuration
                     ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make config config_path=${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE}/")
                     // Create aem-test-suite configuration
@@ -92,7 +92,7 @@ pipeline {
             post {
                 always {
                   // Running stage post-script
-                  JenkinsStageJobPostScript this
+                  JenkinsStagePostStep this
                 }
             }
         }
@@ -100,9 +100,9 @@ pipeline {
             steps {
 
                     // Running Stage Prerun-Script
-                    JenkinsStageJobPreScript this
+                    JenkinsStagePreStep this
                     // Running Stage Prerun-Script
-                    JenkinsStageJobPreScript this
+                    JenkinsStagePreStep this
                     // Create AEM OpenCloud Consolidated Stack
                     ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make create-consolidated config_path=${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE}/ stack_prefix=${params.STACK_PREFIX}")
                     // Create AEM OpenCloud Stack Manager
@@ -113,7 +113,7 @@ pipeline {
             post {
                 always {
                   // Running stage post-script
-                  JenkinsStageJobPostScript this
+                  JenkinsStagePostStep this
                 }
             }
         }
@@ -121,9 +121,9 @@ pipeline {
             steps {
 
                     // Running Stage Prerun-Script
-                    JenkinsStageJobPreScript this
+                    JenkinsStagePreStep this
                     // Running Stage Prerun-Script
-                    JenkinsStageJobPreScript this
+                    JenkinsStagePreStep this
                     // Run acceptance test
                     ExecCommand(this, env.TMPDIR, "aem-test-suite", "make test-acceptance-author-primary stack_prefix=${params.STACK_PREFIX}")
                     ExecCommand(this, env.TMPDIR, "aem-test-suite", "make test-acceptance-publish stack_prefix=${params.STACK_PREFIX}")
@@ -132,7 +132,7 @@ pipeline {
             post {
                 always {
                   // Running stage post-script
-                  JenkinsStageJobPostScript this
+                  JenkinsStagePostStep this
                 }
             }
         }
@@ -140,9 +140,9 @@ pipeline {
             steps {
 
                     // Running Stage Prerun-Script
-                    JenkinsStageJobPreScript this
+                    JenkinsStagePreStep this
                     // Running Stage Prerun-Script
-                    JenkinsStageJobPreScript this
+                    JenkinsStagePreStep this
                     // Unschedule any scheduled snapshot jobs
                     ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make unschedule-live-snapshot-consolidated stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_STACK_MANAGER_MESSENGER_CONFIG_PROFILE}/")
                     ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make unschedule-offline-snapshot-consolidated stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_STACK_MANAGER_MESSENGER_CONFIG_PROFILE}/")
@@ -151,7 +151,7 @@ pipeline {
             post {
                 always {
                   // Running stage post-script
-                  JenkinsStageJobPostScript this
+                  JenkinsStagePostStep this
                 }
             }
         }
@@ -159,16 +159,16 @@ pipeline {
             steps {
 
                     // Running Stage Prerun-Script
-                    JenkinsStageJobPreScript this
+                    JenkinsStagePreStep this
                     // Running Stage Prerun-Script
-                    JenkinsStageJobPreScript this
+                    JenkinsStagePreStep this
                     // list all installed packages
                     ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make list-packages stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_STACK_MANAGER_MESSENGER_CONFIG_PROFILE}/ component=author-publish-dispatcher")
             }
             post {
                 always {
                   // Running stage post-script
-                  JenkinsStageJobPostScript this
+                  JenkinsStagePostStep this
                 }
             }
         }
@@ -176,9 +176,9 @@ pipeline {
             steps {
 
                     // Running Stage Prerun-Script
-                    JenkinsStageJobPreScript this
+                    JenkinsStagePreStep this
                     // Running Stage Prerun-Script
-                    JenkinsStageJobPreScript this
+                    JenkinsStagePreStep this
                     // enable crxde
                     ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make enable-crxde stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_STACK_MANAGER_MESSENGER_CONFIG_PROFILE}/ component=author-publish-dispatcher")
                     // disable crxde
@@ -187,7 +187,7 @@ pipeline {
             post {
                 always {
                   // Running stage post-script
-                  JenkinsStageJobPostScript this
+                  JenkinsStagePostStep this
                 }
             }
         }
@@ -195,16 +195,16 @@ pipeline {
             steps {
 
                     // Running Stage Prerun-Script
-                    JenkinsStageJobPreScript this
+                    JenkinsStagePreStep this
                     // Running Stage Prerun-Script
-                    JenkinsStageJobPreScript this
+                    JenkinsStagePreStep this
                     // Flush dispatcher cache
                     ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make flush-dispatcher-cache stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_STACK_MANAGER_MESSENGER_CONFIG_PROFILE}/ component=author-publish-dispatcher")
             }
             post {
                 always {
                   // Running stage post-script
-                  JenkinsStageJobPostScript this
+                  JenkinsStagePostStep this
                 }
             }
         }
@@ -212,9 +212,9 @@ pipeline {
             steps {
 
                     // Running Stage Prerun-Script
-                    JenkinsStageJobPreScript this
+                    JenkinsStagePreStep this
                     // Running Stage Prerun-Script
-                    JenkinsStageJobPreScript this
+                    JenkinsStagePreStep this
                     // Deploy deployment descriptor file
                     ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make deploy-artifacts-consolidated stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_STACK_MANAGER_MESSENGER_CONFIG_PROFILE}/ descriptor_file=${params.DEPLOY_PACKAGE_DESCRIPTOR_FILE}")
                     // Check consolidated readiness after deployment
@@ -223,7 +223,7 @@ pipeline {
             post {
                 always {
                   // Running stage post-script
-                  JenkinsStageJobPostScript this
+                  JenkinsStagePostStep this
                 }
             }
         }
@@ -231,9 +231,9 @@ pipeline {
             steps {
 
                     // Running Stage Prerun-Script
-                    JenkinsStageJobPreScript this
+                    JenkinsStagePreStep this
                     // Running Stage Prerun-Script
-                    JenkinsStageJobPreScript this
+                    JenkinsStagePreStep this
                     // Deploy single artifact on Author
                     ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make deploy-artifact stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_STACK_MANAGER_MESSENGER_CONFIG_PROFILE}/ component=author-publish-dispatcher aem_id=author source=${params.DEPLOY_PACKAGE_SOURCE} group=${params.DEPLOY_PACKAGE_GROUP} name=${params.DEPLOY_PACKAGE_NAME} version=${params.DEPLOY_PACKAGE_VERSION} replicate=true activate=false force=true")
                     // Check consolidated readiness after deployment
@@ -246,7 +246,7 @@ pipeline {
             post {
                 always {
                   // Running stage post-script
-                  JenkinsStageJobPostScript this
+                  JenkinsStagePostStep this
                 }
             }
         }
@@ -254,9 +254,9 @@ pipeline {
             steps {
 
                     // Running Stage Prerun-Script
-                    JenkinsStageJobPreScript this
+                    JenkinsStagePreStep this
                     // Running Stage Prerun-Script
-                    JenkinsStageJobPreScript this
+                    JenkinsStagePreStep this
                     // Export package from Author
                     ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make export-package stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_STACK_MANAGER_MESSENGER_CONFIG_PROFILE}/ component=author-publish-dispatcher aem_id=author package_group=${params.EXPORT_PACKAGE_GROUP} package_name=${params.EXPORT_PACKAGE_NAME} package_filter=${params.EXPORT_PACKAGE_FILTER}")
                     // Export package from Publish
@@ -265,7 +265,7 @@ pipeline {
             post {
                 always {
                   // Running stage post-script
-                  JenkinsStageJobPostScript this
+                  JenkinsStagePostStep this
                 }
             }
         }
@@ -273,9 +273,9 @@ pipeline {
             steps {
 
                     // Running Stage Prerun-Script
-                    JenkinsStageJobPreScript this
+                    JenkinsStagePreStep this
                     // Running Stage Prerun-Script
-                    JenkinsStageJobPreScript this
+                    JenkinsStagePreStep this
                     // Import exoprted package to Author
                     ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make import-package stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_STACK_MANAGER_MESSENGER_CONFIG_PROFILE}/ component=author-publish-dispatcher aem_id=author source_stack_prefix=${params.STACK_PREFIX} package_group=${params.EXPORT_PACKAGE_GROUP} package_name=${params.EXPORT_PACKAGE_NAME} package_datestamp=${env.EXPORT_PACKAGE_AUTHOR_TIMESTAMP}")
                     // Check consolidated readiness after deployment
@@ -288,7 +288,7 @@ pipeline {
             post {
                 always {
                   // Running stage post-script
-                  JenkinsStageJobPostScript this
+                  JenkinsStagePostStep this
                 }
             }
         }
@@ -296,9 +296,9 @@ pipeline {
             steps {
 
                     // Running Stage Prerun-Script
-                    JenkinsStageJobPreScript this
+                    JenkinsStagePreStep this
                     // Running Stage Prerun-Script
-                    JenkinsStageJobPreScript this
+                    JenkinsStagePreStep this
                     // run live snapshot
                     ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make live-snapshot stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_STACK_MANAGER_MESSENGER_CONFIG_PROFILE}/ component=author-publish-dispatcher")
                     // Check consolidated readiness after deployment
@@ -307,7 +307,7 @@ pipeline {
             post {
                 always {
                   // Running stage post-script
-                  JenkinsStageJobPostScript this
+                  JenkinsStagePostStep this
                 }
             }
         }
@@ -315,9 +315,9 @@ pipeline {
             steps {
 
                     // Running Stage Prerun-Script
-                    JenkinsStageJobPreScript this
+                    JenkinsStagePreStep this
                     // Running Stage Prerun-Script
-                    JenkinsStageJobPreScript this
+                    JenkinsStagePreStep this
                     // Trigger offline-snapshot
                     ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make offline-snapshot-consolidated stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_STACK_MANAGER_MESSENGER_CONFIG_PROFILE}/")
                     // Check consolidated readiness after deployment
@@ -326,7 +326,7 @@ pipeline {
             post {
                 always {
                   // Running stage post-script
-                  JenkinsStageJobPostScript this
+                  JenkinsStagePostStep this
                 }
             }
         }
@@ -334,9 +334,9 @@ pipeline {
             steps {
 
                     // Running Stage Prerun-Script
-                    JenkinsStageJobPreScript this
+                    JenkinsStagePreStep this
                     // Running Stage Prerun-Script
-                    JenkinsStageJobPreScript this
+                    JenkinsStagePreStep this
                     // Trigger offline-compaction-snapshot
                     ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make offline-compaction-snapshot-consolidated stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_STACK_MANAGER_MESSENGER_CONFIG_PROFILE}/")
                     // Check consolidated readiness after deployment
@@ -345,7 +345,7 @@ pipeline {
             post {
                 always {
                   // Running stage post-script
-                  JenkinsStageJobPostScript this
+                  JenkinsStagePostStep this
                 }
             }
         }
@@ -353,9 +353,9 @@ pipeline {
             steps {
 
                     // Running Stage Prerun-Script
-                    JenkinsStageJobPreScript this
+                    JenkinsStagePreStep this
                     // Running Stage Prerun-Script
-                    JenkinsStageJobPreScript this
+                    JenkinsStagePreStep this
                     // Schedule all snapshot job
                     ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make schedule-live-snapshot-consolidated stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_STACK_MANAGER_MESSENGER_CONFIG_PROFILE}/")
                     ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make schedule-offline-snapshot-consolidated stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_STACK_MANAGER_MESSENGER_CONFIG_PROFILE}/")
@@ -364,7 +364,7 @@ pipeline {
             post {
                 always {
                   // Running stage post-script
-                  JenkinsStageJobPostScript this
+                  JenkinsStagePostStep this
                 }
             }
         }
@@ -372,9 +372,9 @@ pipeline {
             steps {
 
                     // Running Stage Prerun-Script
-                    JenkinsStageJobPreScript this
+                    JenkinsStagePreStep this
                     // Running Stage Prerun-Script
-                    JenkinsStageJobPreScript this
+                    JenkinsStagePreStep this
                     // Delete AEM OpenCloud Consolidated Stack
                     ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make delete-consolidated config_path=${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE}/ stack_prefix=${params.STACK_PREFIX}")
                     // Delete AEM OpenCloud Stack Manager
@@ -384,7 +384,7 @@ pipeline {
                 post {
                     always {
                       // Running stage post-script
-                      JenkinsStageJobPostScript this
+                      JenkinsStagePostStep this
                 }
             }
         }
@@ -392,7 +392,7 @@ pipeline {
     post {
         always {
             // Running global post-script
-            JenkinsGlobalJobPostScript this
+            JenkinsPipelinePostStep this
         }
     }
 }

@@ -21,21 +21,21 @@ pipeline {
                 // Setup Jenkins environment
                 SetupEnv this
                 // Running global prerun-script
-                JenkinsGlobalJobPreScript this
+                JenkinsPipelinePreStep this
             }
         }
         stage('Prepare artifacts') {
             steps {
 
                     // Running Stage Prerun-Script
-                    JenkinsStageJobPreScript this
+                    JenkinsStagePreStep this
                     // Prepare repositories
                     AocPrepareLibrary(this, "aem-stack-manager-messenger", params.VERSION_AEM_STACK_MANAGER_MESSENGER, params.AWS_LIBRARY_S3_BUCKET, AWS_LIBRARY_S3_PATH, env.TMPDIR)
             }
             post {
                 always {
                     // Running stage post-script
-                    JenkinsStageJobPostScript this
+                    JenkinsStagePostStep this
                 }
             }
         }
@@ -43,14 +43,14 @@ pipeline {
             steps {
 
                     // Running Stage Prerun-Script
-                    JenkinsStageJobPreScript this
+                    JenkinsStagePreStep this
                     // Resolve dependencies
                     ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make deps")
             }
             post {
                 always {
                     // Running stage post-script
-                    JenkinsStageJobPostScript this
+                    JenkinsStagePostStep this
                 }
             }
         }
@@ -58,14 +58,14 @@ pipeline {
             steps {
 
                     // Running Stage Prerun-Script
-                    JenkinsStageJobPreScript this
+                    JenkinsStagePreStep this
                     // Trigger Stack Manager Event
                     ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make export-packages-consolidated stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_CONFIG_PROFILE}/ descriptor_file=${params.EXPORT_DESCRIPTOR_FILE}")
             }
             post {
                 always {
                     // Running stage post-script
-                    JenkinsStageJobPostScript this
+                    JenkinsStagePostStep this
                 }
             }
         }
@@ -73,7 +73,7 @@ pipeline {
     post {
         always {
             // Running global post-script
-            JenkinsGlobalJobPostScript this
+            JenkinsPipelinePostStep this
         }
     }
 }
