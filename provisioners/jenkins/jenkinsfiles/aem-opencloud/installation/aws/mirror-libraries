@@ -17,7 +17,7 @@ pipeline {
         string(name: 'VERSION_AEM_TEST_SUITE', defaultValue: '0.9.10', description: 'Version of aem-test-suite repo to archive')
     }
     stages {
-        stage('Setup') {
+        stage('Initialise Jenkins pipeline') {
             steps {
                 JenkinsInit(this, params.AOC_CUSTOM_MANAGER_STEPS_ARTIFACT_URL, env.TMPDIR)
                 JenkinsPipelinePreStep this
@@ -37,7 +37,7 @@ pipeline {
                 }
             }
         }
-        stage('Prepare artifacts') {
+        stage('Prepare AEM OpenCloud libraries and configuration') {
             steps {
                 JenkinsStagePreStep this
                 AocPrepareLibrary(this, "aem-aws-stack-builder", params.VERSION_AEM_AWS_STACK_BUILDER, params.AWS_LIBRARY_S3_BUCKET, params.AWS_LIBRARY_S3_PATH, env.TMPDIR)
