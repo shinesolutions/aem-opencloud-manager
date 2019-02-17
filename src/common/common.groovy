@@ -2,8 +2,14 @@
 // src/common/common.groovy
 package common
 
-def httpDownload(script, url, dest_dir, filename) {
+/**
+ * Downloads a resource (usually an artifact) from a URL, then saves it on
+ * destination directory with the given file name.
+ * TODO: This download currently uses wget, but prolly best to replace it with
+ * curl due to availability.
+ */
+def httpDownload(script, url, destDir, fileName) {
   script.sh """
-  wget ${url} -O ${dest_dir}/${filename}
+  wget ${url} -O ${destDir}/${fileName}
   """
 }

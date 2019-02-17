@@ -2,9 +2,9 @@
 import common.*
 
 /**
- * This script downloads AEM OpenCloud configuration artifact and unpacks it
- * on temp directory, to be referenced as config_path by other AEM OpenCloud
- * libraries (e.g. Packer AEM, AEM AWS Stack Builder).
+ * This script downloads AEM OpenCloud configuration artifact from a URL and
+ * unpacks it on temp directory, to be referenced as config_path by other
+ * AEM OpenCloud libraries (e.g. Packer AEM, AEM AWS Stack Builder).
  */
 def call(script, String downloadUrl, String tmpDir = '/tmp') {
   fileName = "aem-opencloud-config.tar.gz"
