@@ -6,7 +6,7 @@ pipeline {
     }
     environment {
         TMPDIR = "/tmp/shinesolutions/aem-opencloud-manager"
-        AOC_CONFIG_DIR = "${env.TMPDIR}/opencloud_config"
+        AOC_CONFIG_DIR = "${env.TMPDIR}/aem-opencloud-config"
     }
     parameters {
         string(name: 'AOC_AEM_TEST_SUITE_CONFIG_PROFILE', defaultValue: '', description: 'Name of the config profile for AEM Test Suite')

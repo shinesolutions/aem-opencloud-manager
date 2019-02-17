@@ -3,7 +3,7 @@ import common.*
 
 def call(script, String downloadUrl, String tmpDir = '/tmp') {
   filename = "aem-opencloud-config.tar.gz"
-  aoc_config_dir = "${tmpDir}/opencloud_config"
+  aoc_config_dir = "${tmpDir}/aem-opencloud-config"
   script.sh """
   mkdir -p ${tmpDir}/
   """

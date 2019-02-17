@@ -6,7 +6,7 @@ pipeline {
     }
     environment {
         TMPDIR = "/tmp/shinesolutions/aem-opencloud-manager"
-        AOC_CONFIG_DIR = "${env.TMPDIR}/opencloud_config"
+        AOC_CONFIG_DIR = "${env.TMPDIR}/aem-opencloud-config"
     }
     parameters {
         choice(name: 'AEM_COMPONENT', choices: ['author-primary', 'publish', 'author-publish-dispatcher'], description: 'AEM Component')

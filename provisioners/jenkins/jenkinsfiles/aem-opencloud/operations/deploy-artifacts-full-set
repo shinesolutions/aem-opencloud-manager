@@ -6,7 +6,7 @@ pipeline {
     }
     environment {
         TMPDIR = "/tmp/shinesolutions/aem-opencloud-manager"
-        AOC_CONFIG_DIR = "${env.TMPDIR}/opencloud_config"
+        AOC_CONFIG_DIR = "${env.TMPDIR}/aem-opencloud-config"
     }
     parameters {
         string(name: 'PACKAGE_DESCRIPTOR_FILE', defaultValue: 'deploy-artifacts-descriptor.json', description: 'Name of the descriptor file to deploy on the target AEM Stack')

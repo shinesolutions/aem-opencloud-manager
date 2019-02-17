@@ -6,7 +6,7 @@ pipeline {
     }
     environment {
         TMPDIR = "/tmp/shinesolutions/aem-opencloud-manager"
-        AOC_CONFIG_DIR = "${env.TMPDIR}/opencloud_config"
+        AOC_CONFIG_DIR = "${env.TMPDIR}/aem-opencloud-config"
     }
     parameters {
         string(name: 'EXPORT_DESCRIPTOR_FILE', defaultValue: 'export-backup-descriptor.json', description: 'Name of the descriptor file to use for exporting from the target AEM Stack')

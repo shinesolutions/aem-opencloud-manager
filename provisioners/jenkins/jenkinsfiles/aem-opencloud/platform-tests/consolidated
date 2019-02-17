@@ -9,7 +9,7 @@ pipeline {
         // THIS SHOULD BE REPLACED WITH A BETTER WAY OF GETTING THE YEAR TIMESTAMP
         EXPORT_PACKAGE_AUTHOR_TIMESTAMP = "2019"
         EXPORT_PACKAGE_PUBLISH_TIMESTAMP = "2019"
-        AOC_CONFIG_DIR = "${env.TMPDIR}/opencloud_config"
+        AOC_CONFIG_DIR = "${env.TMPDIR}/aem-opencloud-config"
         TMPDIR = "/tmp/shinesolutions/aem-opencloud-manager"
     }
     parameters {
