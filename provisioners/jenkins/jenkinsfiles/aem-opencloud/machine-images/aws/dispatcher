@@ -16,7 +16,7 @@ pipeline {
         stage('Setup') {
             steps {
                 // Setup Jenkins environment
-                JenkinsInit(this, params.AOC_CUSTOM_MANAGER_STEPS_REPO_URL, env.TMPDIR)
+                JenkinsInit(this, params.AOC_CUSTOM_MANAGER_STEPS_ARTIFACT_URL, env.TMPDIR)
                 // Running global prerun-script
                 JenkinsPipelinePreStep this
             }
@@ -29,7 +29,7 @@ pipeline {
                     // Prepare repositories
                     AocPrepareLibrary(this, "packer-aem", params.VERSION_PACKER_AEM, params.AWS_LIBRARY_S3_BUCKET, AWS_LIBRARY_S3_PATH, env.TMPDIR)
                     // Prepare AEM OpenCloud configuration
-                    AocPrepareConfig(this, params.AOC_CONFIG_REPO_URL, env.TMPDIR)
+                    AocPrepareConfig(this, params.AOC_CONFIG_ARTIFACT_URL, env.TMPDIR)
             }
             post {
                 always {

@@ -27,7 +27,7 @@ pipeline {
         stage('Setup') {
             steps {
                 // Setup Jenkins environment
-                JenkinsInit(this, params.AOC_CUSTOM_MANAGER_STEPS_REPO_URL, env.TMPDIR)
+                JenkinsInit(this, params.AOC_CUSTOM_MANAGER_STEPS_ARTIFACT_URL, env.TMPDIR)
                 // Running global prerun-script
                 JenkinsPipelinePreStep this
             }
