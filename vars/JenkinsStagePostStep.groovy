@@ -1,14 +1,17 @@
 #!/usr/bin/env groovy
 
+/**
+ * This script executes the stage-post-common.sh script contained within
+ * custom Jenkins provisioner package.
+ */
 def call(script) {
-  // Call Jenkins Job Stage post-script
   script.sh """
-  if [ -e /tmp/shinesolutions/aem-opencloud-manager/stage-post-common.sh ]
+  if [ -x /tmp/shinesolutions/custom-manager-provisioner/stage-post-common.sh ]
   then
-     echo "Executing Stage post-script"
-     /tmp/shinesolutions/aem-opencloud-manager/stage-post-common.sh
+     echo "Executing stage post-step script of custom Jenkins shared libraries..."
+     /tmp/shinesolutions/custom-manager-provisioner/stage-post-common.sh
   else
-    echo "Stage pre-script not found. Skipping..."
+    echo "Jenkins stage post-step script is either not provided or not executable"
   fi
   """
 }
