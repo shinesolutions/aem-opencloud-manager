@@ -6,7 +6,7 @@ pipeline {
     }
     environment {
         TMPDIR = "/tmp/shinesolutions/aem-opencloud-manager"
-        OC_CONFIG_DIR = "${env.TMPDIR}/opencloud_config"
+        AOC_CONFIG_DIR = "${env.TMPDIR}/opencloud_config"
     }
     parameters {
         string(name: 'REALM', defaultValue: 'nonprod', description: 'Evnironment realm for configuration path')

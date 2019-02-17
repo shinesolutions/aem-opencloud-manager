@@ -6,7 +6,7 @@ pipeline {
     }
     environment {
         TMPDIR = "/tmp/shinesolutions/aem-opencloud-manager"
-        OC_CONFIG_DIR = "${env.TMPDIR}/opencloud_config"
+        AOC_CONFIG_DIR = "${env.TMPDIR}/opencloud_config"
     }
     parameters {
         string(name: 'PREREQUISITES_STACK_PREFIX', defaultValue: '', description: 'AEM OpenCloud Consolidate prerequisites stack prefix.')
@@ -61,7 +61,7 @@ pipeline {
                     // Running Stage Prerun-Script
                     JenkinsStageJobPreScript this
                     // Create aem-aws-stack-builder configuration
-                    RunMake(this, env.TMPDIR, "aem-aws-stack-builder", "make config config_path=${env.OC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE}/")
+                    RunMake(this, env.TMPDIR, "aem-aws-stack-builder", "make config config_path=${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE}/")
             }
             post {
                 always {
@@ -76,7 +76,7 @@ pipeline {
                     // Running Stage Prerun-Script
                     JenkinsStageJobPreScript this
                     // Create AEM OpenCloud Consolidated Main Stack
-                    RunMake(this, env.TMPDIR, "aem-aws-stack-builder", "make create-consolidated-main config_path=${env.OC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE}/ stack_prefix=${params.STACK_PREFIX} prerequisites_stack_prefix=${params.PREREQUISITES_STACK_PREFIX}")
+                    RunMake(this, env.TMPDIR, "aem-aws-stack-builder", "make create-consolidated-main config_path=${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE}/ stack_prefix=${params.STACK_PREFIX} prerequisites_stack_prefix=${params.PREREQUISITES_STACK_PREFIX}")
             }
             post {
                 always {

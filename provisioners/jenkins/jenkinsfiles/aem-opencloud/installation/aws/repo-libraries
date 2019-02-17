@@ -6,7 +6,7 @@ pipeline {
     }
     environment {
         TMPDIR = "/tmp/shinesolutions/aem-opencloud-manager"
-        OC_CONFIG_DIR = "${env.TMPDIR}/opencloud_config"
+        AOC_CONFIG_DIR = "${env.TMPDIR}/opencloud_config"
     }
     parameters {
 
@@ -68,7 +68,7 @@ pipeline {
                     // Job Prerun-Script
                     JenkinsStageJobPreScript this
                     // packer-aem
-                    RunMake(this, env.TMPDIR, "aem-aws-stack-builder", "make library config_path=${env.OC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE}/")
+                    RunMake(this, env.TMPDIR, "aem-aws-stack-builder", "make library config_path=${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE}/")
             }
             post {
                 always {

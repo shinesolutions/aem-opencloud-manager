@@ -6,7 +6,7 @@ pipeline {
     }
     environment {
         TMPDIR = "/tmp/shinesolutions/aem-opencloud-manager"
-        OC_CONFIG_DIR = "${env.TMPDIR}/opencloud_config"
+        AOC_CONFIG_DIR = "${env.TMPDIR}/opencloud_config"
     }
     parameters {
         string(name: 'AOC_AEM_TEST_SUITE_CONFIG_PROFILE', defaultValue: '', description: 'Name of the config profile for AEM Test Suite')
@@ -65,7 +65,7 @@ pipeline {
                     // Running Stage Prerun-Script
                     JenkinsStageJobPreScript this
                     // Create aem-aws-stack-builder configuration
-                    RunMake(this, env.TMPDIR, "aem-aws-stack-builder", "make config config_path=${env.OC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE}/")
+                    RunMake(this, env.TMPDIR, "aem-aws-stack-builder", "make config config_path=${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE}/")
             }
             post {
                 always {
@@ -80,8 +80,8 @@ pipeline {
                     // Running Stage Prerun-Script
                     JenkinsStageJobPreScript this
                     // Create AEM OpenCloud Full-Set Stack
-                    RunMake(this, env.TMPDIR, "aem-aws-stack-builder", "make create-full-set config_path=${env.OC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE}/ stack_prefix=${params.STACK_PREFIX}")
-                    RunMake(this, env.TMPDIR, "aem-stack-manager-messenger", "make check-readiness-full-set stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.OC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_STACK_MANAGER_MESSENGER_CONFIG_PROFILE}/")
+                    RunMake(this, env.TMPDIR, "aem-aws-stack-builder", "make create-full-set config_path=${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE}/ stack_prefix=${params.STACK_PREFIX}")
+                    RunMake(this, env.TMPDIR, "aem-stack-manager-messenger", "make check-readiness-full-set stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_STACK_MANAGER_MESSENGER_CONFIG_PROFILE}/")
             }
             post {
                 always {
@@ -96,7 +96,7 @@ pipeline {
                     // Running Stage Prerun-Script
                     JenkinsStageJobPreScript this
                   // Run acceptance test
-                    RunMake(this, env.TMPDIR, "aem-test-suite", "make test-acceptance-full-set config_path=${env.OC_CONFIG_DIR}/aem-test-suite/${params.AOC_AEM_TEST_SUITE_CONFIG_PROFILE} stack_prefix=${params.STACK_PREFIX}")
+                    RunMake(this, env.TMPDIR, "aem-test-suite", "make test-acceptance-full-set config_path=${env.AOC_CONFIG_DIR}/aem-test-suite/${params.AOC_AEM_TEST_SUITE_CONFIG_PROFILE} stack_prefix=${params.STACK_PREFIX}")
             }
             post {
                 always {
@@ -111,7 +111,7 @@ pipeline {
                     // Running Stage Prerun-Script
                     JenkinsStageJobPreScript this
                     // Deploy artifacts with descriptor file
-                    RunMake(this, env.TMPDIR, "aem-stack-manager-messenger", "make deploy-artifacts-full-set stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.OC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_STACK_MANAGER_MESSENGER_CONFIG_PROFILE}/ descriptor_file=${params.PACKAGE_DESCRIPTOR_FILE}")
+                    RunMake(this, env.TMPDIR, "aem-stack-manager-messenger", "make deploy-artifacts-full-set stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_STACK_MANAGER_MESSENGER_CONFIG_PROFILE}/ descriptor_file=${params.PACKAGE_DESCRIPTOR_FILE}")
             }
             post {
                 always {
@@ -126,8 +126,8 @@ pipeline {
                     // Running Stage Prerun-Script
                     JenkinsStageJobPreScript this
                     // Flush Dispatcher Cache
-                    RunMake(this, env.TMPDIR, "aem-stack-manager-messenger", "make flush-dispatcher-cache stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.OC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_STACK_MANAGER_MESSENGER_CONFIG_PROFILE}/ component=author-dispatcher")
-                    RunMake(this, env.TMPDIR, "aem-stack-manager-messenger", "make flush-dispatcher-cache stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.OC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_STACK_MANAGER_MESSENGER_CONFIG_PROFILE}/ component=publish-dispatcher")
+                    RunMake(this, env.TMPDIR, "aem-stack-manager-messenger", "make flush-dispatcher-cache stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_STACK_MANAGER_MESSENGER_CONFIG_PROFILE}/ component=author-dispatcher")
+                    RunMake(this, env.TMPDIR, "aem-stack-manager-messenger", "make flush-dispatcher-cache stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_STACK_MANAGER_MESSENGER_CONFIG_PROFILE}/ component=publish-dispatcher")
             }
             post {
                 always {
@@ -142,7 +142,7 @@ pipeline {
                     // Running Stage Prerun-Script
                     JenkinsStageJobPreScript this
                     // Check Full-Set readiness
-                    RunMake(this, env.TMPDIR, "aem-stack-manager-messenger", "make check-readiness-full-set stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.OC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_STACK_MANAGER_MESSENGER_CONFIG_PROFILE}/")
+                    RunMake(this, env.TMPDIR, "aem-stack-manager-messenger", "make check-readiness-full-set stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_STACK_MANAGER_MESSENGER_CONFIG_PROFILE}/")
             }
             post {
                 always {

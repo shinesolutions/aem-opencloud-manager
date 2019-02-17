@@ -6,7 +6,7 @@ pipeline {
     }
     environment {
         TMPDIR = "/tmp/shinesolutions/aem-opencloud-manager"
-        OC_CONFIG_DIR = "${env.TMPDIR}/opencloud_config"
+        AOC_CONFIG_DIR = "${env.TMPDIR}/opencloud_config"
     }
     parameters {
         string(name: 'AEM_ARTIFACTS_BASE', defaultValue: '', description: 'URL where all AEM Artifacts are located.')
@@ -67,7 +67,7 @@ pipeline {
                     // Running Stage Prerun-Script
                     JenkinsStageJobPreScript this
                     // Trigger Stack Manager Event
-                    RunMake(this, env.TMPDIR, "aem-stack-manager-messenger", "make install-aem-profile stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.OC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_CONFIG_PROFILE}/ component=${params.AEM_COMPONENT} aem_profile=${params.AEM_PROFILE} aem_artifacts_base=${params.AEM_ARTIFACTS_BASE} aem_base=${params.AEM_BASE} aem_healthcheck_version=${params.AEM_HEALTHCHECK_VERSION} aem_id=${params.AEM_ID} aem_port=${params.AEM_PORT} aem_ssl_port=${params.AEM_SSL_PORT}")
+                    RunMake(this, env.TMPDIR, "aem-stack-manager-messenger", "make install-aem-profile stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_CONFIG_PROFILE}/ component=${params.AEM_COMPONENT} aem_profile=${params.AEM_PROFILE} aem_artifacts_base=${params.AEM_ARTIFACTS_BASE} aem_base=${params.AEM_BASE} aem_healthcheck_version=${params.AEM_HEALTHCHECK_VERSION} aem_id=${params.AEM_ID} aem_port=${params.AEM_PORT} aem_ssl_port=${params.AEM_SSL_PORT}")
             }
             post {
                 always {

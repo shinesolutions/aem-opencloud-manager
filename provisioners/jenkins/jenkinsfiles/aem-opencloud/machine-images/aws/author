@@ -6,7 +6,7 @@ pipeline {
     }
     environment {
         TMPDIR = "/tmp/shinesolutions/aem-opencloud-manager"
-        OC_CONFIG_DIR = "${env.TMPDIR}/opencloud_config"
+        AOC_CONFIG_DIR = "${env.TMPDIR}/opencloud_config"
     }
     parameters {
 
@@ -59,7 +59,7 @@ pipeline {
                     // Running Stage Prerun-Script
                     JenkinsStageJobPreScript this
                     // Create packer-aem configuration
-                    RunMake(this, env.TMPDIR, "packer-aem", "make config config_path=${env.OC_CONFIG_DIR}/packer-aem/${params.AOC_CONFIG_PROFILE}/")
+                    RunMake(this, env.TMPDIR, "packer-aem", "make config config_path=${env.AOC_CONFIG_DIR}/packer-aem/${params.AOC_CONFIG_PROFILE}/")
             }
             post {
                 always {
@@ -74,7 +74,7 @@ pipeline {
                     // Running Stage Prerun-Script
                     JenkinsStageJobPreScript this
                     // Create machine image
-                    RunMake(this, env.TMPDIR, "packer-aem", "make aws-author version=${env.BUILD_ID} config_path=${env.OC_CONFIG_DIR}/packer-aem/${params.AOC_CONFIG_PROFILE}/")
+                    RunMake(this, env.TMPDIR, "packer-aem", "make aws-author version=${env.BUILD_ID} config_path=${env.AOC_CONFIG_DIR}/packer-aem/${params.AOC_CONFIG_PROFILE}/")
             }
             post {
                 always {
