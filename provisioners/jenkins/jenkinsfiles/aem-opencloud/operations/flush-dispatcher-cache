@@ -45,7 +45,7 @@ pipeline {
                     // Running Stage Prerun-Script
                     JenkinsStageJobPreScript this
                     // Resolve dependencies
-                    RunMake(this, env.TMPDIR, "aem-stack-manager-messenger", "make deps")
+                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make deps")
             }
             post {
                 always {
@@ -60,7 +60,7 @@ pipeline {
                     // Running Stage Prerun-Script
                     JenkinsStageJobPreScript this
                     // Trigger Stack Manager Event
-                    RunMake(this, env.TMPDIR, "aem-stack-manager-messenger", "make flush-dispatcher-cache stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_CONFIG_PROFILE}/ component=${params.AEM_COMPONENT}")
+                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make flush-dispatcher-cache stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_CONFIG_PROFILE}/ component=${params.AEM_COMPONENT}")
             }
             post {
                 always {

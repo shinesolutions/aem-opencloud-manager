@@ -44,7 +44,7 @@ pipeline {
                     // Running Stage Prerun-Script
                     JenkinsStageJobPreScript this
                     // Resolve dependencies
-                    RunMake(this, env.TMPDIR, "aem-test-suite", "make deps")
+                    ExecCommand(this, env.TMPDIR, "aem-test-suite", "make deps")
             }
             post {
                 always {
@@ -59,7 +59,7 @@ pipeline {
                     // Running Stage Prerun-Script
                     JenkinsStageJobPreScript this
                     // Trigger Test
-                    RunMake(this, env.TMPDIR, "aem-test-suite", "make test-acceptance-full-set config_path={} stack_prefix=${params.STACK_PREFIX}")
+                    ExecCommand(this, env.TMPDIR, "aem-test-suite", "make test-acceptance-full-set config_path={} stack_prefix=${params.STACK_PREFIX}")
             }
             post {
                 always {

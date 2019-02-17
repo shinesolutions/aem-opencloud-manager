@@ -44,7 +44,7 @@ pipeline {
                     // Running Stage Prerun-Script
                     JenkinsStageJobPreScript this
                     // Resolve dependencies
-                    RunMake(this, env.TMPDIR, "packer-aem", "make deps")
+                    ExecCommand(this, env.TMPDIR, "packer-aem", "make deps")
             }
             post {
                 always {
@@ -59,7 +59,7 @@ pipeline {
                     // Running Stage Prerun-Script
                     JenkinsStageJobPreScript this
                     // Create packer-aem configuration
-                    RunMake(this, env.TMPDIR, "packer-aem", "make config config_path=${env.AOC_CONFIG_DIR}/packer-aem/${params.AOC_CONFIG_PROFILE}/")
+                    ExecCommand(this, env.TMPDIR, "packer-aem", "make config config_path=${env.AOC_CONFIG_DIR}/packer-aem/${params.AOC_CONFIG_PROFILE}/")
             }
             post {
                 always {
@@ -74,7 +74,7 @@ pipeline {
                     // Running Stage Prerun-Script
                     JenkinsStageJobPreScript this
                     // Create machine image
-                    RunMake(this, env.TMPDIR, "packer-publish", "make aws-author version=${env.BUILD_ID} config_path=${env.AOC_CONFIG_DIR}/packer-aem/${params.AOC_CONFIG_PROFILE}/")
+                    ExecCommand(this, env.TMPDIR, "packer-publish", "make aws-author version=${env.BUILD_ID} config_path=${env.AOC_CONFIG_DIR}/packer-aem/${params.AOC_CONFIG_PROFILE}/")
             }
             post {
                 always {
