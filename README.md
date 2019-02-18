@@ -33,3 +33,19 @@ Usage
 
 - Create [configuration file](https://github.com/shinesolutions/aem-opencloud-manager/blob/master/docs/configuration.md)
 - Generate and provision the pipelines onto a Jenkins instance, for example: `make jenkins-aws config_path=stage/user-config/sandpit/`
+- Visit your Jenkins instance and you should find a new folder named `aem-opencloud-<version>`
+
+Testing
+-------
+
+### Testing with remote dependencies
+
+You can run integration test for generating and provisioning Jenkins pipelines using the command `make test-integration cicd_type=jenkins cloud_type=aws`, which downloads the dependencies from the Internet.
+
+### Testing with local dependencies
+
+If you're working on the dependencies of AEM OpenCloud Manager and would like to test them as part of pipelines generation and provisioning, you need to:
+
+- Clone the dependency repos [AEM Hello World Config](https://github.com/shinesolutions/aem-helloworld-config) at the same directory level as AEM OpenCloud Manager
+- Make your code changes against those dependency repos
+- Run `make test-integration-local cicd_type=jenkins cloud_type=aws` for integration testing using local dependencies, which copies those local dependency repos to AEM OpenCloud Manager and use them as part of the test
