@@ -28,7 +28,7 @@ pipeline {
                     // Running Stage Prerun-Script
                     JenkinsStagePreStep this
                     // Prepare repositories
-                    AocPrepareLibrary(this, "aem-aws-stack-builder", params..AOC_VERSION_AEM_AWS_STACK_BUILDER, params.AWS_LIBRARY_S3_BUCKET, AWS_LIBRARY_S3_PATH, env.TMPDIR)
+                    AocPrepareLibrary(this, "aem-aws-stack-builder", params.AOC_VERSION_AEM_AWS_STACK_BUILDER, params.AWS_LIBRARY_S3_BUCKET, AWS_LIBRARY_S3_PATH, env.TMPDIR)
                 }
             }
         }
