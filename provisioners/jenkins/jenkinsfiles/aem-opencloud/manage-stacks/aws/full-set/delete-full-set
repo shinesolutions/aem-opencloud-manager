@@ -12,7 +12,7 @@ pipeline {
         string(name: 'REALM', defaultValue: 'nonprod', description: 'Evnironment realm for configuraiton path')
 
         string(name: 'STACK_PREFIX', defaultValue: '', description: 'AEM OpenCloud Stack prefix.')
-        string(name: 'VERSION_AEM_AWS_STACK_BUILDER', defaultValue: '3.3.1', description: 'Version of aem-aws-stack-builder repo to archive')
+        string(name: 'AOC_VERSION_AEM_AWS_STACK_BUILDER', defaultValue: '3.3.1', description: 'Version of aem-aws-stack-builder repo to archive')
     }
     stages {
         stage('Setup') {
@@ -29,7 +29,7 @@ pipeline {
                     // Running Stage Prerun-Script
                     JenkinsStagePreStep this
                     // Prepare repositories
-                    AocPrepareLibrary(this, "aem-aws-stack-builder", params.VERSION_AEM_AWS_STACK_BUILDER, params.AWS_LIBRARY_S3_BUCKET, AWS_LIBRARY_S3_PATH, env.TMPDIR)
+                    AocPrepareLibrary(this, "aem-aws-stack-builder", params.AOC_params.AOC_VERSION_AEM_AWS_STACK_BUILDER, params.AWS_LIBRARY_S3_BUCKET, AWS_LIBRARY_S3_PATH, env.TMPDIR)
             }
             post {
                 always {

@@ -4,7 +4,7 @@ CONTAINER_NAME := jenkins
 ci: clean deps lint jenkins-aws-gen
 
 stage:
-	mkdir -p stage/
+	mkdir -p stage/user-config/
 
 clean:
 	rm -rf logs/ stage/

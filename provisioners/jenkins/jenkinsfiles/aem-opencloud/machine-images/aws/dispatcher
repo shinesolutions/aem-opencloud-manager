@@ -10,7 +10,7 @@ pipeline {
     }
     parameters {
 
-        string(name: 'VERSION_PACKER_AEM', defaultValue: '3.4.2', description: 'Version of packer-aem repo to retrieve')
+        string(name: 'AOC_VERSION_PACKER_AEM', defaultValue: '3.4.2', description: 'Version of packer-aem repo to retrieve')
     }
     stages {
         stage('Setup') {
@@ -27,7 +27,7 @@ pipeline {
                     // Running Stage Prerun-Script
                     JenkinsStagePreStep this
                     // Prepare repositories
-                    AocPrepareLibrary(this, "packer-aem", params.VERSION_PACKER_AEM, params.AWS_LIBRARY_S3_BUCKET, AWS_LIBRARY_S3_PATH, env.TMPDIR)
+                    AocPrepareLibrary(this, "packer-aem", params.AOC_VERSION_PACKER_AEM, params.AWS_LIBRARY_S3_BUCKET, AWS_LIBRARY_S3_PATH, env.TMPDIR)
                     // Prepare AEM OpenCloud configuration
                     AocPrepareConfig(this, params.AOC_CONFIG_ARTIFACT_URL, env.TMPDIR)
             }

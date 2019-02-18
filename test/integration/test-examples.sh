@@ -12,4 +12,4 @@ fi
 cicd_type=$1
 cloud_type=$2
 
-make "${cicd_type}-${cloud_type}" config_path=stage/user-config/
+make "${cicd_type}-${cloud_type}" config_path=stage/user-config/sandpit/

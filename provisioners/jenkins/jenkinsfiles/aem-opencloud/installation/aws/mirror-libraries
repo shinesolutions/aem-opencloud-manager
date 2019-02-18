@@ -1,5 +1,8 @@
 @Library('aem-opencloud-manager') _
 
+def configString = libraryResource 'aem_opencloud/config.json'
+def config = readJSON text: configString
+
 pipeline {
     agent {
         docker { image 'shinesolutions/aem-platform-buildenv-publisher:latest' }
@@ -9,12 +12,11 @@ pipeline {
         AOC_CONFIG_DIR = "${env.TMPDIR}/aem-opencloud-config"
     }
     parameters {
-
-        string(name: 'VERSION_PACKER_AEM', defaultValue: '3.4.2', description: 'Version of packer-aem repo to archive')
-        string(name: 'VERSION_AEM_AWS_STACK_BUILDER', defaultValue: '3.3.1', description: 'Version of aem-aws-stack-builder repo to archive')
-        string(name: 'VERSION_AOC_CONFIG', defaultValue: '1.0.0', description: 'Version of the AEM OpenCloud configuration repository to archive.')
-        string(name: 'VERSION_AEM_STACK_MANAGER_MESSENGER', defaultValue: '2.0.0', description: 'Version of aem-stack-manager-messenger repo to archive')
-        string(name: 'VERSION_AEM_TEST_SUITE', defaultValue: '0.9.10', description: 'Version of aem-test-suite repo to archive')
+        string(name: 'AOC_VERSION_AOC_CONFIG', defaultValue: '1.0.0', description: 'Version of the AEM OpenCloud configuration repository to archive.')
+        string(name: 'AOC_VERSION_PACKER_AEM', defaultValue: config.library.packer_aem, description: 'Version of packer-aem library to mirror to S3')
+        string(name: 'AOC_VERSION_AEM_AWS_STACK_BUILDER', defaultValue: config.library.aem_aws_stack_builder, description: 'Version of aem-aws-stack-builder library to mirror to S3')
+        string(name: 'AOC_VERSION_AEM_STACK_MANAGER_MESSENGER', defaultValue: config.library.aem_stack_manager_messenger, description: 'Version of aem-stack-manager-messenger library to mirror to S3')
+        string(name: 'AOC_VERSION_AEM_TEST_SUITE', defaultValue: config.library.aem_test_suite, description: 'Version of aem-test-suite library to mirror to S3')
     }
     stages {
         stage('Initialise Jenkins pipeline') {
@@ -26,10 +28,10 @@ pipeline {
         stage('Mirror AEM OpenCloud Libraries') {
             steps {
                 JenkinsStagePreStep this
-                AocMirrorGithubLibrary(this, "shinesolutions", "packer-aem", params.VERSION_PACKER_AEM, params.AWS_LIBRARY_S3_BUCKET, params.AWS_LIBRARY_S3_PATH, env.TMPDIR)
-                AocMirrorGithubLibrary(this, "shinesolutions", "aem-aws-stack-builder", params.VERSION_AEM_AWS_STACK_BUILDER, params.AWS_LIBRARY_S3_BUCKET, params.AWS_LIBRARY_S3_PATH, env.TMPDIR)
-                AocMirrorGithubLibrary(this, "shinesolutions", "aem-stack-manager-messenger", params.VERSION_AEM_STACK_MANAGER_MESSENGER, params.AWS_LIBRARY_S3_BUCKET, params.AWS_LIBRARY_S3_PATH, env.TMPDIR)
-                AocMirrorGithubLibrary(this, "shinesolutions", "aem-test-suite", params.VERSION_AEM_TEST_SUITE, params.AWS_LIBRARY_S3_BUCKET, params.AWS_LIBRARY_S3_PATH, env.TMPDIR)
+                AocMirrorGithubLibrary(this, "shinesolutions", "packer-aem", params.AOC_VERSION_PACKER_AEM, params.AWS_LIBRARY_S3_BUCKET, params.AWS_LIBRARY_S3_PATH, env.TMPDIR)
+                AocMirrorGithubLibrary(this, "shinesolutions", "aem-aws-stack-builder", params.AOC_params.AOC_VERSION_AEM_AWS_STACK_BUILDER, params.AWS_LIBRARY_S3_BUCKET, params.AWS_LIBRARY_S3_PATH, env.TMPDIR)
+                AocMirrorGithubLibrary(this, "shinesolutions", "aem-stack-manager-messenger", params.AOC_VERSION_AEM_STACK_MANAGER_MESSENGER, params.AWS_LIBRARY_S3_BUCKET, params.AWS_LIBRARY_S3_PATH, env.TMPDIR)
+                AocMirrorGithubLibrary(this, "shinesolutions", "aem-test-suite", params.AOC_VERSION_AEM_TEST_SUITE, params.AWS_LIBRARY_S3_BUCKET, params.AWS_LIBRARY_S3_PATH, env.TMPDIR)
             }
             post {
                 always {
@@ -40,7 +42,7 @@ pipeline {
         stage('Prepare AEM OpenCloud libraries and configuration') {
             steps {
                 JenkinsStagePreStep this
-                AocPrepareLibrary(this, "aem-aws-stack-builder", params.VERSION_AEM_AWS_STACK_BUILDER, params.AWS_LIBRARY_S3_BUCKET, params.AWS_LIBRARY_S3_PATH, env.TMPDIR)
+                AocPrepareLibrary(this, "aem-aws-stack-builder", params.AOC_params.AOC_VERSION_AEM_AWS_STACK_BUILDER, params.AWS_LIBRARY_S3_BUCKET, params.AWS_LIBRARY_S3_PATH, env.TMPDIR)
                 AocPrepareConfig(this, params.AOC_CONFIG_ARTIFACT_URL, env.TMPDIR)
             }
             post {
