@@ -9,29 +9,29 @@ pipeline {
     }
     parameters {
 
-        string(name: 'STACK_PREFIX', defaultValue: '', description: 'AEM OpenCloud Stack prefix.')
+        string(name: 'STACK_PREFIX', defaultValue: '', description: 'AEM OpenCloud stack prefix.')
         string(name: 'AOC_VERSION_AEM_AWS_STACK_BUILDER', defaultValue: config.library.aem_aws_stack_builder, description: 'Version of aem-aws-stack-builder repo to archive')
     }
     stages {
         stage('Initialise Jenkins pipeline') {
             steps {
-                // Setup Jenkins environment
+
                 JenkinsInit(this, params.AOC_CUSTOM_MANAGER_STEPS_ARTIFACT_URL, env.TMPDIR)
-                // Running global prerun-script
+
                 JenkinsPipelinePreStep this
             }
         }
         stage('Prepare AEM OpenCloud libraries and configuration') {
             steps {
 
-                    // Running Stage Prerun-Script
+
                     JenkinsStagePreStep this
-                    // Prepare repositories
+
                     AocPrepareLibrary(this, "aem-aws-stack-builder", params.AOC_VERSION_AEM_AWS_STACK_BUILDER, params.AWS_LIBRARY_S3_BUCKET, AWS_LIBRARY_S3_PATH, env.TMPDIR)
             }
             post {
                 always {
-                  // Running stage post-script
+
                   JenkinsStagePostStep this
                 }
             }
@@ -39,14 +39,14 @@ pipeline {
         stage('Resolve dependencies') {
             steps {
 
-                    // Running Stage Prerun-Script
+
                     JenkinsStagePreStep this
-                    // Resolve dependencies
+
                     ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make deps")
             }
             post {
                 always {
-                  // Running stage post-script
+
                   JenkinsStagePostStep this
                 }
             }
@@ -54,14 +54,14 @@ pipeline {
         stage('Prepare library configuration') {
             steps {
 
-                    // Running Stage Prerun-Script
+
                     JenkinsStagePreStep this
-                    // Create aem-aws-stack-builder configuration
+
                     ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make config config_path=${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE}/")
             }
             post {
                 always {
-                  // Running stage post-script
+
                   JenkinsStagePostStep this
                 }
             }
@@ -69,7 +69,7 @@ pipeline {
         stage('Generate AEM OpenCloud Stack Manager Data') {
             steps {
 
-                    // Running Stage Prerun-Script
+
                     JenkinsStagePreStep this
                     // Generate AEM OpenCloud Stack Manager Data
                     ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make create-aem-stack-manager-stack-data config_path=${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE}/ stack_prefix=${params.STACK_PREFIX}")
@@ -77,7 +77,7 @@ pipeline {
                 }
                 post {
                     always {
-                      // Running stage post-script
+
                       JenkinsStagePostStep this
                     }
                 }
@@ -85,7 +85,7 @@ pipeline {
         }
     post {
         always {
-            // Running global post-script
+
             JenkinsPipelinePostStep this
         }
     }
