@@ -74,7 +74,6 @@ pipeline {
                     JenkinsStagePreStep this
                     // Create aem-aws-stack-builder configuration
                     ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make config config_path=${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE}/")
-                    ExecCommand(this, env.TMPDIR, "aem-test-suite", "make config-aem-aws config_path=${env.AOC_CONFIG_DIR}/aem-test-suite/${params.AOC_AEM_TEST_SUITE_CONFIG_PROFILE}/")
             }
             post {
                 always {
