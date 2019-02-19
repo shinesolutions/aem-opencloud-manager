@@ -1,5 +1,8 @@
 @Library('aem-opencloud-manager') _
 
+def configString = libraryResource 'aem_opencloud/config.json'
+def config = readJSON text: configString
+
 pipeline {
     agent {
         docker { image 'shinesolutions/aem-platform-buildenv-publisher:latest' }
@@ -12,7 +15,7 @@ pipeline {
         string(name: 'REALM', defaultValue: 'nonprod', description: 'Evnironment realm for configuration path')
 
         string(name: 'STACK_PREFIX', defaultValue: '', description: 'AEM OpenCloud Stack prefix.')
-        string(name: 'AOC_VERSION_AEM_TEST_SUITE', defaultValue: '0.9.10', description: 'Version of aem-test-suite repo to archive')
+        string(name: 'AOC_VERSION_AEM_TEST_SUITE', defaultValue: config.library.aem_test_suite, description: 'Version of aem-test-suite repo to archive')
     }
     stages {
         stage('Setup') {

@@ -10,7 +10,7 @@ pipeline {
     }
     parameters {
 
-        string(name: 'AOC_VERSION_PACKER_AEM', defaultValue: '3.4.2', description: 'Version of packer-aem repo to retrieve')
+        string(name: 'AOC_VERSION_PACKER_AEM', defaultValue: config.library.packer_aem, description: 'Version of packer-aem repo to retrieve')
     }
     stages {
         stage('Setup') {

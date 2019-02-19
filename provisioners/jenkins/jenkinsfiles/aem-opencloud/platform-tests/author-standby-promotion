@@ -1,5 +1,8 @@
 @Library('aem-opencloud-manager') _
 
+def configString = libraryResource 'aem_opencloud/config.json'
+def config = readJSON text: configString
+
 pipeline {
     agent {
         docker { image 'shinesolutions/aem-platform-buildenv-publisher:latest' }
@@ -16,9 +19,9 @@ pipeline {
 
         string(name: 'STACK_MANAGER_PREFIX', defaultValue: '', description: 'AEM OpenCloud Stack Manager prefix.')
         string(name: 'STACK_PREFIX', defaultValue: '', description: 'AEM OpenCloud Stack prefix.')
-        string(name: 'AOC_VERSION_AEM_AWS_STACK_BUILDER', defaultValue: '3.3.1', description: 'Version of aem-aws-stack-builder repo to archive')
-        string(name: 'AOC_VERSION_AEM_STACK_MANAGER_MESSENGER', defaultValue: '2.0.0', description: 'Version of aem-stack-manager-messenger repo')
-        string(name: 'AOC_VERSION_AEM_TEST_SUITE', defaultValue: '0.9.10', description: 'Version of aem-test-suite repo to archive')
+        string(name: 'AOC_VERSION_AEM_AWS_STACK_BUILDER', defaultValue: config.library.aem_aws_stack_builder, description: 'Version of aem-aws-stack-builder repo to archive')
+        string(name: 'AOC_VERSION_AEM_STACK_MANAGER_MESSENGER', defaultValue: config.library.aem_stack_manager_messenger, description: 'Version of aem-stack-manager-messenger repo')
+        string(name: 'AOC_VERSION_AEM_TEST_SUITE', defaultValue: config.library.aem_test_suite, description: 'Version of aem-test-suite repo to archive')
     }
     stages {
         stage('Setup') {
