@@ -12,76 +12,56 @@ pipeline {
         AOC_CONFIG_DIR = "${env.TMPDIR}/aem-opencloud-config"
     }
     parameters {
-
         string(name: 'AOC_VERSION_PACKER_AEM', defaultValue: config.library.packer_aem, description: 'Version of packer-aem repo to retrieve')
     }
     stages {
         stage('Initialise Jenkins pipeline') {
             steps {
-                // Setup Jenkins environment
                 JenkinsInit(this, params.AOC_CUSTOM_MANAGER_STEPS_ARTIFACT_URL, env.TMPDIR)
-                // Running global prerun-script
                 JenkinsPipelinePreStep this
             }
         }
         stage('Prepare AEM OpenCloud libraries and configuration') {
             steps {
-
-                    // Running Stage Prerun-Script
                     JenkinsStagePreStep this
-                    // Prepare repositories
                     AocPrepareLibrary(this, "packer-aem", params.AOC_VERSION_PACKER_AEM, params.AWS_LIBRARY_S3_BUCKET, AWS_LIBRARY_S3_PATH, env.TMPDIR)
-                    // Prepare AEM OpenCloud configuration
                     AocPrepareConfig(this, params.AOC_CONFIG_ARTIFACT_URL, env.TMPDIR)
             }
             post {
                 always {
-                  // Running stage post-script
                   JenkinsStagePostStep this
                 }
             }
         }
         stage('Resolve dependencies') {
             steps {
-
-                    // Running Stage Prerun-Script
                     JenkinsStagePreStep this
-                    // Resolve dependencies
                     ExecCommand(this, env.TMPDIR, "packer-aem", "make deps")
             }
             post {
                 always {
-                  // Running stage post-script
                   JenkinsStagePostStep this
                 }
             }
         }
         stage('Prepare library configuration') {
             steps {
-
-                    // Running Stage Prerun-Script
                     JenkinsStagePreStep this
-                    // Create packer-aem configuration
                     ExecCommand(this, env.TMPDIR, "packer-aem", "make config config_path=${env.AOC_CONFIG_DIR}/packer-aem/${params.AOC_CONFIG_PROFILE}/")
             }
             post {
                 always {
-                  // Running stage post-script
                   JenkinsStagePostStep this
                 }
             }
         }
         stage('Create machine image') {
             steps {
-
-                    // Running Stage Prerun-Script
                     JenkinsStagePreStep this
-                    // Create machine image
                     ExecCommand(this, env.TMPDIR, "packer-aem", "make aws-dispatcher version=${env.BUILD_ID} config_path=${env.AOC_CONFIG_DIR}/packer-aem/${params.AOC_CONFIG_PROFILE}/")
             }
             post {
                 always {
-                  // Running stage post-script
                   JenkinsStagePostStep this
                 }
             }
@@ -89,7 +69,6 @@ pipeline {
     }
     post {
         always {
-          // Running global post-script
           JenkinsPipelinePostStep this
         }
     }
