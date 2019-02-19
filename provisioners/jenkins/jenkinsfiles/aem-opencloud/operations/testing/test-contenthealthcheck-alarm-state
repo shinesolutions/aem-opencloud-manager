@@ -18,7 +18,7 @@ pipeline {
         string(name: 'AOC_VERSION_AEM_TEST_SUITE', defaultValue: config.library.aem_test_suite, description: 'Version of aem-test-suite repo to archive')
     }
     stages {
-        stage('Setup') {
+        stage('Initialise Jenkins pipeline') {
             steps {
                 // Setup Jenkins environment
                 JenkinsInit(this, params.AOC_CUSTOM_MANAGER_STEPS_ARTIFACT_URL, env.TMPDIR)
@@ -26,7 +26,7 @@ pipeline {
                 JenkinsPipelinePreStep this
             }
         }
-        stage('Prepare artifacts') {
+        stage('Prepare AEM OpenCloud libraries and configuration') {
             steps {
 
                     // Running Stage Prerun-Script

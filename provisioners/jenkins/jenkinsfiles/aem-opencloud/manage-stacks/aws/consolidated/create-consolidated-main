@@ -18,7 +18,7 @@ pipeline {
         string(name: 'AOC_VERSION_AEM_AWS_STACK_BUILDER', defaultValue: config.library.aem_aws_stack_builder, description: 'Version of aem-aws-stack-builder repo to archive')
     }
     stages {
-        stage('Setup') {
+        stage('Initialise Jenkins pipeline') {
             steps {
                 // Setup Jenkins environment
                 JenkinsInit(this, params.AOC_CUSTOM_MANAGER_STEPS_ARTIFACT_URL, env.TMPDIR)
@@ -26,7 +26,7 @@ pipeline {
                 JenkinsPipelinePreStep this
             }
         }
-        stage('Prepare artifacts') {
+        stage('Prepare AEM OpenCloud libraries and configuration') {
             steps {
 
                     // Running Stage Prerun-Script
@@ -58,7 +58,7 @@ pipeline {
                 }
             }
         }
-        stage('Prepare configuration') {
+        stage('Prepare library configuration') {
             steps {
 
                     // Running Stage Prerun-Script

@@ -19,7 +19,7 @@ pipeline {
         string(name: 'AOC_VERSION_AEM_STACK_MANAGER_MESSENGER', defaultValue: config.library.aem_stack_manager_messenger, description: 'Version of aem-stack-manager-messenger repo')
     }
     stages {
-        stage('Setup') {
+        stage('Initialise Jenkins pipeline') {
             steps {
                 // Setup Jenkins environment
                 JenkinsInit(this, params.AOC_CUSTOM_MANAGER_STEPS_ARTIFACT_URL, env.TMPDIR)
@@ -27,7 +27,7 @@ pipeline {
                 JenkinsPipelinePreStep this
             }
         }
-        stage('Prepare artifacts') {
+        stage('Prepare AEM OpenCloud libraries and configuration') {
             steps {
 
                     // Running Stage Prerun-Script
@@ -57,12 +57,12 @@ pipeline {
                 }
             }
         }
-        stage('Trigger Stack Manager Event') {
+        stage('Trigger AEM Stack Manager event') {
             steps {
 
                     // Running Stage Prerun-Script
                     JenkinsStagePreStep this
-                    // Trigger Stack Manager Event
+                    // Trigger AEM Stack Manager event
                     ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make enable-crxde stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_CONFIG_PROFILE}/ component=${params.AEM_COMPONENT}")
             }
             post {
