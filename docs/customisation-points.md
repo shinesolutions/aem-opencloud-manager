@@ -1,7 +1,7 @@
 Customisation Points
 --------------------
 
-Since every user has a unique standard operating environment and security requirements, AEM OpenCloud Manager provides two customisation points where user can provision any specific setup.
+Since every user has a unique standard operating environment and security requirements, AEM OpenCloud Manager provides three customisation points where user can provision any specific setup.
 
 ### Configuration
 
@@ -9,6 +9,16 @@ You can set up a number of [configuration properties](https://github.com/shineso
 Have a look at the [user config examples](https://github.com/shinesolutions/aem-helloworld-config/tree/master/aem-opencloud-manager/) for reference on what configuration values you need to set.
 
 This allows you to create a number of configuration profiles. For example, if you need to provision multiple Jenkins instances, e.g. one CI/CD environment in prod and several CI/CD environments in non-prod.
+
+### Build agent
+
+The Jenkins pipelines can be configured to run on your own Docker container, you need to:
+
+* Set the Docker image on `jenkins.agent.docker_image` configuration property
+
+As long as the Jenkins master host already has the configured Docker image, the pipeline will then start a container for each build, allowing you to control what should be provisioned on the build agent. For example, if you need to authenticate using a particular library, then this library needs to be provisioned on your Docker image.
+
+If you don't configure the Docker image, by default AEM OpenCloud Manager will use `[shinesolutions/aem-platform-buildenv:latest](https://hub.docker.com/r/shinesolutions/aem-platform-buildenv/)` public Docker image.
 
 ### Custom Manager Steps
 
