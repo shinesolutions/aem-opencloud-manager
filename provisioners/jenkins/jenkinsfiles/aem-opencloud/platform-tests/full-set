@@ -5,7 +5,7 @@ def config = readJSON text: configString
 
 pipeline {
     agent {
-        docker { image 'shinesolutions/aem-platform-buildenv-publisher:latest' }
+        docker { image config.agent.docker_image }
     }
     environment {
         // PARAMETERS ARE NEEDED FOR IMPORT Package

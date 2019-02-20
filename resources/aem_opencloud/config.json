@@ -1,4 +1,7 @@
 {
+  "agent": {
+    "docker_image": "shinesolutions/aem-platform-buildenv:latest"
+  },
   "library": {
     "packer_aem": "3.7.0",
     "aem_aws_stack_builder": "3.6.0",
