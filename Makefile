@@ -45,11 +45,11 @@ lint:
 
 jenkins-aws: jenkins-aws-gen jenkins-aws-provision
 
-jenkins-aws-gen:
+jenkins-aws-gen: stage
 	rm -rf stage/jenkins/jobs/aem-opencloud-*/
 	./scripts/run-playbook.sh jenkins-aws-gen "$(config_path)"
 
-jenkins-aws-provision: stage
+jenkins-aws-provision:
 	./scripts/run-playbook.sh jenkins-aws-provision "$(config_path)"
 
 ################################################################################
