@@ -27,6 +27,8 @@ Installation
 
   Alternatively, you can use [AEM Platform BuildEnv](https://github.com/shinesolutions/aem-platform-buildenv) Docker container to run AEM OpenCloud Manager build targets.
 - Resolve the [Python packages](https://github.com/shinesolutions/aem-opencloud-manager/blob/master/requirements.txt) dependencies by running `make deps`
+- Install the following plugins on your Jenkins instance:
+  * [Pipeline Utility Steps plugin](https://plugins.jenkins.io/pipeline-utility-steps)
 
 Usage
 -----
