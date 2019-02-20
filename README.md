@@ -37,6 +37,18 @@ Usage
 - Generate and provision the pipelines onto a Jenkins instance, for example: `make jenkins-aws config_path=stage/user-config/sandpit/`
 - Visit your Jenkins instance and you should find a new folder named `aem-opencloud-<version>`
 
+Build categories
+----------------
+
+| Category | Description |
+|----------|-------------|
+| installation | Installs AEM OpenCloud libraries () followed by the AEM AWS Stack Builder dependency libraries () |
+| machine-images | |
+| manage-environments | |
+| manage-stacks | |
+| operations | |
+| testing | |
+
 Testing
 -------
 
