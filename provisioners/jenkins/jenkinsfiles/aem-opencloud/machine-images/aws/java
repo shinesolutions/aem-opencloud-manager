@@ -47,7 +47,7 @@ pipeline {
         stage('Prepare library configuration') {
             steps {
                     JenkinsStagePreStep this
-                    ExecCommand(this, env.TMPDIR, "packer-aem", "make config config_path=${env.AOC_CONFIG_DIR}/packer-aem/${params.AOC_CONFIG_PROFILE}/")
+                    ExecCommand(this, env.TMPDIR, "packer-aem", "make config config_path=${env.AOC_CONFIG_DIR}/packer-aem/${params.AOC_CONFIG_PROFILE_PACKER_AEM}/")
             }
             post {
                 always {
@@ -58,7 +58,7 @@ pipeline {
         stage('Create machine image') {
             steps {
                     JenkinsStagePreStep this
-                    ExecCommand(this, env.TMPDIR, "packer-aem", "make aws-java version=${env.BUILD_ID} config_path=${env.AOC_CONFIG_DIR}/packer-aem/${params.AOC_CONFIG_PROFILE}/")
+                    ExecCommand(this, env.TMPDIR, "packer-aem", "make aws-java version=${env.BUILD_ID} config_path=${env.AOC_CONFIG_DIR}/packer-aem/${params.AOC_CONFIG_PROFILE_PACKER_AEM}/")
             }
             post {
                 always {

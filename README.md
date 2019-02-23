@@ -54,7 +54,7 @@ Testing
 
 ### Testing with remote dependencies
 
-You can run integration test for generating and provisioning Jenkins pipelines using the command `make test-integration cicd_type=jenkins cloud_type=aws`, which downloads the dependencies from the Internet.
+You can run integration test for generating and provisioning Jenkins pipelines using the command `make test-integration cicd_type=jenkins platform_type=aws`, which downloads the dependencies from the Internet.
 
 ### Testing with local dependencies
 
@@ -62,4 +62,4 @@ If you're working on the dependencies of AEM OpenCloud Manager and would like to
 
 - Clone the dependency repos [AEM Hello World Config](https://github.com/shinesolutions/aem-helloworld-config) at the same directory level as AEM OpenCloud Manager
 - Make your code changes against those dependency repos
-- Run `make test-integration-local cicd_type=jenkins cloud_type=aws` for integration testing using local dependencies, which copies those local dependency repos to AEM OpenCloud Manager and use them as part of the test
+- Run `make test-integration-local cicd_type=jenkins platform_type=aws` for integration testing using local dependencies, which copies those local dependency repos to AEM OpenCloud Manager and use them as part of the test

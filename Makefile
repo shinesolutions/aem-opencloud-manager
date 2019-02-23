@@ -57,10 +57,10 @@ jenkins-aws-provision:
 ################################################################################
 
 test-integration: deps deps-test
-	./test/integration/test-examples.sh "$(cicd_type)" "$(cloud_type)"
+	./test/integration/test-examples.sh "$(cicd_type)" "$(platform_type)"
 
 test-integration-local: deps deps-test-local
-	./test/integration/test-examples.sh "$(cicd_type)" "$(cloud_type)"
+	./test/integration/test-examples.sh "$(cicd_type)" "$(platform_type)"
 
 ################################################################################
 # Temporary utility targets
