@@ -12,7 +12,6 @@ pipeline {
         AOC_CONFIG_DIR = "${env.TMPDIR}/aem-opencloud-config"
     }
     parameters {
-        string(name: 'AOC_VERSION_AOC_CONFIG', defaultValue: '1.0.0', description: 'Version of the AEM OpenCloud configuration repository to archive.')
         string(name: 'AOC_VERSION_PACKER_AEM', defaultValue: config.library.packer_aem, description: 'Version of packer-aem library to mirror to S3')
         string(name: 'AOC_VERSION_AEM_AWS_STACK_BUILDER', defaultValue: config.library.aem_aws_stack_builder, description: 'Version of aem-aws-stack-builder library to mirror to S3')
         string(name: 'AOC_VERSION_AEM_STACK_MANAGER_MESSENGER', defaultValue: config.library.aem_stack_manager_messenger, description: 'Version of aem-stack-manager-messenger library to mirror to S3')
@@ -44,17 +43,6 @@ pipeline {
                 JenkinsStagePreStep this
                 AocPrepareLibrary(this, "aem-aws-stack-builder", params.AOC_VERSION_AEM_AWS_STACK_BUILDER, params.AWS_LIBRARY_S3_BUCKET, params.AWS_LIBRARY_S3_PATH, env.TMPDIR)
                 AocPrepareConfig(this, params.AOC_CONFIG_ARTIFACT_URL, env.TMPDIR)
-            }
-            post {
-                always {
-                  JenkinsStagePostStep this
-                }
-            }
-        }
-        stage('Mirror AEM OpenCloud AEM AWS Stack Builder Libraries') {
-            steps {
-                JenkinsStagePreStep this
-                ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make library config_path=${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE}/")
             }
             post {
                 always {

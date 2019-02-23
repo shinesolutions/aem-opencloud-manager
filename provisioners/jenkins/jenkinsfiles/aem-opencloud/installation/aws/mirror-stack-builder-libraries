@@ -1,0 +1,54 @@
+@Library('aem-opencloud-manager') _
+
+def configString = libraryResource 'aem_opencloud/config.json'
+def config = readJSON text: configString
+
+pipeline {
+    agent {
+        docker { image params.JENKINS_AGENT_DOCKER_IMAGE }
+    }
+    environment {
+        TMPDIR = "/tmp/shinesolutions/aem-opencloud-manager"
+        AOC_CONFIG_DIR = "${env.TMPDIR}/aem-opencloud-config"
+    }
+    parameters {
+        string(name: 'AOC_VERSION_AOC_CONFIG', defaultValue: '1.0.0', description: 'Version of the AEM OpenCloud configuration repository to archive.')
+        string(name: 'AOC_VERSION_AEM_AWS_STACK_BUILDER', defaultValue: config.library.aem_aws_stack_builder, description: 'Version of aem-aws-stack-builder library to mirror to S3')
+    }
+    stages {
+        stage('Initialise Jenkins pipeline') {
+            steps {
+                JenkinsInit(this, params.AOC_CUSTOM_MANAGER_STEPS_ARTIFACT_URL, env.TMPDIR)
+                JenkinsPipelinePreStep this
+            }
+        }
+        stage('Prepare AEM OpenCloud libraries and configuration') {
+            steps {
+                JenkinsStagePreStep this
+                AocPrepareLibrary(this, "aem-aws-stack-builder", params.AOC_VERSION_AEM_AWS_STACK_BUILDER, params.AWS_LIBRARY_S3_BUCKET, params.AWS_LIBRARY_S3_PATH, env.TMPDIR)
+                AocPrepareConfig(this, params.AOC_CONFIG_ARTIFACT_URL, env.TMPDIR)
+            }
+            post {
+                always {
+                  JenkinsStagePostStep this
+                }
+            }
+        }
+        stage('Mirror AEM OpenCloud AEM AWS Stack Builder Libraries') {
+            steps {
+                JenkinsStagePreStep this
+                ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make library config_path=${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE_AEM_AWS_STACK_BUILDER}/")
+            }
+            post {
+                always {
+                  JenkinsStagePostStep this
+                }
+            }
+        }
+    }
+    post {
+        always {
+          JenkinsPipelinePostStep this
+        }
+    }
+}
