@@ -120,10 +120,10 @@
     - name: "Generate AEM OpenCloud Jenkins job for installation configuration profile main libraries config.xml"
       template:
         src: '../../../templates/ansible/jenkins/config/jobs.xml.j2'
-        dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/installation/aws/mirror-aem-opencloud-libraries/config.xml
+        dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/installation/aws/{{ item.path }}/config.xml
         mode: '0644'
       with_items:
-        - { path: mirror-aem-opencloud-libraries }
+        - { path: mirror-aem-opencloud-libraries, category: installation, platform_type: aws }
 
     - name: "Generate AEM OpenCloud Jenkins jobs for installation configuration profile AEM AWS Stack Builder config.xml"
       template:
