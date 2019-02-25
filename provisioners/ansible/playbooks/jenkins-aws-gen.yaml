@@ -43,23 +43,23 @@
       when: item.state == 'directory'
       register: packer_aem_profiles
 
+    - name: Create a list of AEM AWS Stack Builder AEM Stack Manager configuration profiles
+      shell: echo {{ item.path }}
+      with_filetree: ../../../stage/aem-opencloud-config/aem-aws-stack-builder/
+      when: item.state == 'directory' and item.path is match ('aem-stack-manager-*')
+      register: aem_aws_stack_builder_aem_stack_manager_profiles
+
     - name: Create a list of AEM AWS Stack Builder AEM Consolidated configuration profiles
       shell: echo {{ item.path }}
       with_filetree: ../../../stage/aem-opencloud-config/aem-aws-stack-builder/
-      when: item.state == 'directory' and item.path is match('aem-consolidated-*')
+      when: item.state == 'directory' and item.path is match ('aem-consolidated-*')
       register: aem_aws_stack_builder_aem_consolidated_profiles
 
     - name: Create a list of AEM AWS Stack Builder AEM Full-Set configuration profiles
       shell: echo {{ item.path }}
       with_filetree: ../../../stage/aem-opencloud-config/aem-aws-stack-builder/
-      when: item.state == 'directory' and item.path is match('aem-full-set-*')
+      when: item.state == 'directory' and item.path is match ('aem-full-set-*')
       register: aem_aws_stack_builder_aem_full_set_profiles
-
-    - name: Create a list of AEM AWS Stack Builder AEM Stack Manager configuration profiles
-      shell: echo {{ item.path }}
-      with_filetree: ../../../stage/aem-opencloud-config/aem-aws-stack-builder/
-      when: item.state == 'directory' and item.path is match('aem-stack-manager-*')
-      register: aem_aws_stack_builder_aem_stack_manager_profiles
 
     - name: Create a list of AEM Stack Manager Messenger configuration profiles
       shell: echo {{ item.path }}
@@ -175,7 +175,7 @@
       with_nested:
         - "{{ packer_aem_profiles.results }}"
         - "{{ machine_images_aws_components.results }}"
-      when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[0].item.path is match('aws-*')
+      when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[0].item.path is match ('aws-*')
 
     - name: "Generate AEM OpenCloud Jenkins jobs for machine-images configuration profile config.xml"
       template:
@@ -185,7 +185,7 @@
       with_nested:
         - "{{ packer_aem_profiles.results }}"
         - "{{ machine_images_aws_components.results }}"
-      when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[0].item.path is match('aws-*')
+      when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[0].item.path is match ('aws-*')
 
     - name: "Generate AEM OpenCloud Jenkins jobs for machine-images' configuration profile components"
       file:
@@ -195,7 +195,7 @@
       with_nested:
         - "{{ packer_aem_profiles.results }}"
         - "{{ machine_images_aws_components.results }}"
-      when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[0].item.path is match('aws-*')
+      when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[0].item.path is match ('aws-*')
 
     - name: "Generate AEM OpenCloud Jenkins jobs config.xml for machine-images configuration profile components"
       template:
@@ -205,4 +205,116 @@
       with_nested:
         - "{{ packer_aem_profiles.results }}"
         - "{{ machine_images_aws_components.results }}"
-      when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[0].item.path is match('aws-*')
+      when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[0].item.path is match ('aws-*')
+
+    ########################################################################
+    # Generate manage-environments Jenkins jobs.
+    ########################################################################
+
+    - name: Create a list of AEM Stack Manager manage environments jobs for AWS
+      shell: echo {{ item.path }}
+      with_filetree: ../../../provisioners/jenkins/jenkinsfiles/aem-opencloud/manage-environments/aws/
+      when: item.state == 'file' and item.path is match('.*-stack-manager')
+      register: manage_environments_aem_stack_manager_jobs
+
+    - name: Create a list of AEM Consolidated manage environments jobs for AWS
+      shell: echo {{ item.path }}
+      with_filetree: ../../../provisioners/jenkins/jenkinsfiles/aem-opencloud/manage-environments/aws/
+      when: item.state == 'file' and item.path is match('.*-consolidated')
+      register: manage_environments_aem_consolidated_jobs
+
+    - name: Create a list of AEM Full-Set manage environments jobs for AWS
+      shell: echo {{ item.path }}
+      with_filetree: ../../../provisioners/jenkins/jenkinsfiles/aem-opencloud/manage-environments/aws/
+      when: item.state == 'file' and item.path is match('.*-full-set')
+      register: manage_environments_aem_full_set_jobs
+
+    - name: "Generate AEM OpenCloud Jenkins jobs for AEM Stack Manager manage environments configuration profile directories"
+      file:
+        path: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/manage-environments/aws/{{ item[0].item.path }}/{{ item[1].item.path }}/
+        state: directory
+        mode: '0776'
+      with_nested:
+        - "{{ aem_aws_stack_builder_aem_stack_manager_profiles.results }}"
+        - "{{ manage_environments_aem_stack_manager_jobs.results }}"
+      when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined
+
+    - name: "Generate AEM OpenCloud Jenkins jobs for AEM Consolidated manage environments configuration profile directories"
+      file:
+        path: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/manage-environments/aws/{{ item[0].item.path }}/{{ item[1].item.path }}/
+        state: directory
+        mode: '0776'
+      with_nested:
+        - "{{ aem_aws_stack_builder_aem_consolidated_profiles.results }}"
+        - "{{ manage_environments_aem_consolidated_jobs.results }}"
+      when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined
+
+    - name: "Generate AEM OpenCloud Jenkins jobs for AEM Full-Set manage environments configuration profile directories"
+      file:
+        path: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/manage-environments/aws/{{ item[0].item.path }}/{{ item[1].item.path }}/
+        state: directory
+        mode: '0776'
+      with_nested:
+        - "{{ aem_aws_stack_builder_aem_full_set_profiles.results }}"
+        - "{{ manage_environments_aem_full_set_jobs.results }}"
+      when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined
+
+    - name: "Generate AEM OpenCloud Jenkins jobs for AEM Stack Manager configuration profile config.xml for manage-environments configuration profile components"
+      template:
+        src: '../../../templates/ansible/jenkins/config/category-config-profile.xml.j2'
+        dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/manage-environments/aws/{{ item[0].item.path }}/config.xml
+        mode: '0644'
+      with_nested:
+        - "{{ aem_aws_stack_builder_aem_stack_manager_profiles.results }}"
+        - "{{ manage_environments_aem_stack_manager_jobs.results }}"
+      when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined
+
+    - name: "Generate AEM OpenCloud Jenkins jobs for AEM Consolidated configuration profile config.xml for manage-environments configuration profile components"
+      template:
+        src: '../../../templates/ansible/jenkins/config/category-config-profile.xml.j2'
+        dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/manage-environments/aws/{{ item[0].item.path }}/config.xml
+        mode: '0644'
+      with_nested:
+        - "{{ aem_aws_stack_builder_aem_consolidated_profiles.results }}"
+        - "{{ manage_environments_aem_consolidated_jobs.results }}"
+      when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined
+
+    - name: "Generate AEM OpenCloud Jenkins jobs for AEM Full-Set configuration profile config.xml for manage-environments configuration profile components"
+      template:
+        src: '../../../templates/ansible/jenkins/config/category-config-profile.xml.j2'
+        dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/manage-environments/aws/{{ item[0].item.path }}/config.xml
+        mode: '0644'
+      with_nested:
+        - "{{ aem_aws_stack_builder_aem_full_set_profiles.results }}"
+        - "{{ manage_environments_aem_full_set_jobs.results }}"
+      when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined
+
+    - name: "Generate AEM OpenCloud Jenkins jobs for AEM Stack Manager config.xml for manage-environments configuration profile components"
+      template:
+        src: ../../../templates/ansible/jenkins/config/jobs-manage-environments.xml.j2
+        dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/manage-environments/aws/{{ item[0].item.path }}/{{ item[1].item.path }}/config.xml
+        mode: '0644'
+      with_nested:
+        - "{{ aem_aws_stack_builder_aem_stack_manager_profiles.results }}"
+        - "{{ manage_environments_aem_stack_manager_jobs.results }}"
+      when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined
+
+    - name: "Generate AEM OpenCloud Jenkins jobs for AEM Consolidated config.xml for manage-environments configuration profile components"
+      template:
+        src: ../../../templates/ansible/jenkins/config/jobs-manage-environments.xml.j2
+        dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/manage-environments/aws/{{ item[0].item.path }}/{{ item[1].item.path }}/config.xml
+        mode: '0644'
+      with_nested:
+        - "{{ aem_aws_stack_builder_aem_consolidated_profiles.results }}"
+        - "{{ manage_environments_aem_consolidated_jobs.results }}"
+      when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined
+
+    - name: "Generate AEM OpenCloud Jenkins jobs for AEM Full-Set config.xml for manage-environments configuration profile components"
+      template:
+        src: ../../../templates/ansible/jenkins/config/jobs-manage-environments.xml.j2
+        dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/manage-environments/aws/{{ item[0].item.path }}/{{ item[1].item.path }}/config.xml
+        mode: '0644'
+      with_nested:
+        - "{{ aem_aws_stack_builder_aem_full_set_profiles.results }}"
+        - "{{ manage_environments_aem_full_set_jobs.results }}"
+      when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined
