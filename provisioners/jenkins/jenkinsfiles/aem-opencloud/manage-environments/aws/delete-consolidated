@@ -46,7 +46,7 @@ pipeline {
         stage('Prepare library configuration') {
             steps {
                     JenkinsStagePreStep this
-                    ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make config config_path=${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE}/")
+                    ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make config config_path=${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE_AEM_AWS_STACK_BUILDER}/")
             }
             post {
                 always {
@@ -58,7 +58,7 @@ pipeline {
             steps {
                     JenkinsStagePreStep this
                     // Delete AEM OpenCloud Consolidated Stack
-                    ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make delete-consolidated config_path=${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE}/ stack_prefix=${params.STACK_PREFIX}")
+                    ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make delete-consolidated config_path=${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE_AEM_AWS_STACK_BUILDER}/ stack_prefix=${params.STACK_PREFIX}")
             }
             post {
                 always {

@@ -46,7 +46,7 @@ pipeline {
         stage('Prepare library configuration') {
             steps {
                     JenkinsStagePreStep this
-                    ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make config config_path=${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE}/")
+                    ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make config config_path=${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE_AEM_AWS_STACK_BUILDER}/")
             }
             post {
                 always {
@@ -57,7 +57,7 @@ pipeline {
         stage('Create AEM OpenCloud Stack') {
             steps {
                     JenkinsStagePreStep this
-                    ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make create-stack-manager config_path=${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE}/ stack_prefix=${params.STACK_PREFIX}")
+                    ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make create-stack-manager config_path=${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE_AEM_AWS_STACK_BUILDER}/ stack_prefix=${params.STACK_PREFIX}")
             }
             post {
                 always {
