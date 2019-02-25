@@ -291,7 +291,7 @@
 
     - name: "Generate AEM OpenCloud Jenkins jobs for AEM Stack Manager config.xml for manage-environments configuration profile components"
       template:
-        src: ../../../templates/ansible/jenkins/config/jobs-manage-environments.xml.j2
+        src: ../../../templates/ansible/jenkins/config/jobs-manage-environments-aem-stack-manager.xml.j2
         dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/manage-environments/aws/{{ item[0].item.path }}/{{ item[1].item.path }}/config.xml
         mode: '0644'
       with_nested:
@@ -301,7 +301,7 @@
 
     - name: "Generate AEM OpenCloud Jenkins jobs for AEM Consolidated config.xml for manage-environments configuration profile components"
       template:
-        src: ../../../templates/ansible/jenkins/config/jobs-manage-environments.xml.j2
+        src: ../../../templates/ansible/jenkins/config/jobs-manage-environments-aem.xml.j2
         dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/manage-environments/aws/{{ item[0].item.path }}/{{ item[1].item.path }}/config.xml
         mode: '0644'
       with_nested:
@@ -311,7 +311,7 @@
 
     - name: "Generate AEM OpenCloud Jenkins jobs for AEM Full-Set config.xml for manage-environments configuration profile components"
       template:
-        src: ../../../templates/ansible/jenkins/config/jobs-manage-environments.xml.j2
+        src: ../../../templates/ansible/jenkins/config/jobs-manage-environments-aem.xml.j2
         dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/manage-environments/aws/{{ item[0].item.path }}/{{ item[1].item.path }}/config.xml
         mode: '0644'
       with_nested:

@@ -10,7 +10,6 @@ pipeline {
         AOC_CONFIG_DIR = "${env.TMPDIR}/aem-opencloud-config"
     }
     parameters {
-        string(name: 'STACK_PREFIX', defaultValue: '', description: 'AEM OpenCloud Stack Manager stack prefix.')
         string(name: 'AOC_VERSION_AEM_AWS_STACK_BUILDER', defaultValue: config.library.aem_aws_stack_builder, description: 'Version of aem-aws-stack-builder repo to archive')
     }
     stages {

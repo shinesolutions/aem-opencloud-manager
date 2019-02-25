@@ -7,9 +7,21 @@
   <hudson.model.ParametersDefinitionProperty>
     <parameterDefinitions>
       <hudson.model.StringParameterDefinition>
+        <name>STACK_PREFIX</name>
+        <description>AEM OpenCloud AEM stack prefix.</description>
+        <defaultValue></defaultValue>
+        <trim>false</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
         <name>JENKINS_AGENT_DOCKER_IMAGE</name>
         <description>The name of Docker image to be used as Jenkins build pipeline agent.</description>
         <defaultValue>{{ jenkins.agent.docker_image }}</defaultValue>
+        <trim>false</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>AOC_CONFIG_PROFILE_AEM_AWS_STACK_BUILDER</name>
+        <description>Name of the configuration profile.</description>
+        <defaultValue>{{ item[0].item.path }}</defaultValue>
         <trim>false</trim>
       </hudson.model.StringParameterDefinition>
       <hudson.model.StringParameterDefinition>
@@ -56,7 +68,7 @@
       <submoduleCfg class="list"/>
       <extensions/>
     </scm>
-    <scriptPath>provisioners/jenkins/jenkinsfiles/aem-opencloud/{{ item.category }}/{{ item.platform_type }}/{{ item.path }}</scriptPath>
+    <scriptPath>provisioners/jenkins/jenkinsfiles/aem-opencloud/manage-environments/aws/{{ item[1].item.path }}/</scriptPath>
     <lightweight>true</lightweight>
   </definition>
   <triggers/>

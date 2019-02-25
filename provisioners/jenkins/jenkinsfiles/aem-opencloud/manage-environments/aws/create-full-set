@@ -11,8 +11,6 @@ pipeline {
     }
     parameters {
         string(name: 'PACKAGE_DESCRIPTOR_FILE', defaultValue: 'deploy-artifacts-descriptor.json', description: 'Name of the descriptor file to deploy on the target AEM Stack')
-        string(name: 'STACK_MANAGER_PREFIX', defaultValue: '', description: 'AEM OpenCloud Stack Manager prefix.')
-        string(name: 'STACK_PREFIX', defaultValue: '', description: 'AEM OpenCloud stack prefix.')
         string(name: 'AOC_CONFIG_PROFILE_AEM_TEST_SUITE', defaultValue: '', description: 'Name of the config profile for AEM Test Suite')
         string(name: 'AOC_CONFIG_PROFILE_STACK_MANAGER_MESSENGER', defaultValue: '', description: 'Name of the config profile for the AEM OpenCloud Stack Manager Messenger')
         string(name: 'AOC_VERSION_AEM_AWS_STACK_BUILDER', defaultValue: config.library.aem_aws_stack_builder, description: 'Version of aem-aws-stack-builder repo to archive')
