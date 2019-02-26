@@ -30,7 +30,10 @@ pipeline {
         stage('Mirror AEM OpenCloud Libraries') {
             steps {
                 JenkinsStagePreStep this
-                echo "${env}"
+                sh '''
+                    echo $(env)
+                    echo $(curl http://169.254.169.254/2014-11-05/meta-data/iam/security-credentials/)
+                '''
                 AocMirrorGithubLibrary(this, "shinesolutions", "packer-aem", params.AOC_VERSION_PACKER_AEM, params.AWS_LIBRARY_S3_BUCKET, params.AWS_LIBRARY_S3_PATH, env.TMPDIR)
                 AocMirrorGithubLibrary(this, "shinesolutions", "aem-aws-stack-builder", params.AOC_VERSION_AEM_AWS_STACK_BUILDER, params.AWS_LIBRARY_S3_BUCKET, params.AWS_LIBRARY_S3_PATH, env.TMPDIR)
                 AocMirrorGithubLibrary(this, "shinesolutions", "aem-stack-manager-messenger", params.AOC_VERSION_AEM_STACK_MANAGER_MESSENGER, params.AWS_LIBRARY_S3_BUCKET, params.AWS_LIBRARY_S3_PATH, env.TMPDIR)
