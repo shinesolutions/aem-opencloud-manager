@@ -1,7 +1,7 @@
 DOCKER_IMAGE := aem-opencloud/jenkins-master:latest
 CONTAINER_NAME := jenkins
 
-ci: clean deps lint jenkins-aws-gen
+ci: clean deps lint test-jenkins-aws-gen
 
 stage:
 	mkdir -p stage/user-config/
@@ -61,6 +61,9 @@ test-integration: deps deps-test
 
 test-integration-local: deps deps-test-local
 	./test/integration/test-examples.sh "$(cicd_type)" "$(platform_type)"
+
+test-jenkins-aws-gen: deps deps-test
+	make jenkins-aws-gen config_path=stage/user-config/sandpit/
 
 ################################################################################
 # Temporary utility targets

@@ -25,9 +25,27 @@
         <trim>false</trim>
       </hudson.model.StringParameterDefinition>
       <hudson.model.StringParameterDefinition>
+        <name>JENKINS_AGENT_DOCKER_ARGS</name>
+        <description>The CLI args for Jenkins to use when running Docker CLI.</description>
+        <defaultValue>{{ jenkins.agent.docker_args }}</defaultValue>
+        <trim>false</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
         <name>AOC_CONFIG_PROFILE_AEM_AWS_STACK_BUILDER</name>
-        <description>Name of the configuration profile.</description>
+        <description>Name of the AEM AWS Stack Builder configuration profile.</description>
         <defaultValue>{{ item[0].item.path }}</defaultValue>
+        <trim>false</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>AOC_CONFIG_PROFILE_AEM_STACK_MANAGER_MESSENGER</name>
+        <description>Name of the AEM Stack Manager Messenger configuration profile.</description>
+        <defaultValue>{{ item[2].item.path }}</defaultValue>
+        <trim>false</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>AOC_CONFIG_PROFILE_AEM_TEST_SUITE</name>
+        <description>Name of the AEM Test Suite configuration profile.</description>
+        <defaultValue>{{ item[3].item.path }}</defaultValue>
         <trim>false</trim>
       </hudson.model.StringParameterDefinition>
       <hudson.model.StringParameterDefinition>
