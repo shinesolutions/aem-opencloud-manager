@@ -1,0 +1,82 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<flow-definition plugin="workflow-job@2.31">
+  <actions/>
+  <description>AEM OpenCloud Jenkins job provisioned with AEM OpenCloud Manager.</description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+  <hudson.model.ParametersDefinitionProperty>
+    <parameterDefinitions>
+      <hudson.model.StringParameterDefinition>
+        <name>STACK_PREFIX</name>
+        <description>AEM OpenCloud AEM stack prefix.</description>
+        <defaultValue></defaultValue>
+        <trim>false</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>STACK_MANAGER_PREFIX</name>
+        <description>AEM OpenCloud Stack Manager stack prefix.</description>
+        <defaultValue></defaultValue>
+        <trim>false</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>JENKINS_AGENT_DOCKER_IMAGE</name>
+        <description>The name of Docker image to be used as Jenkins build pipeline agent.</description>
+        <defaultValue>{{ jenkins.agent.docker_image }}</defaultValue>
+        <trim>false</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>AOC_CONFIG_PROFILE_AEM_AWS_STACK_BUILDER</name>
+        <description>Name of the configuration profile.</description>
+        <defaultValue>{{ item[0].item.path }}</defaultValue>
+        <trim>false</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>AOC_CONFIG_ARTIFACT_URL</name>
+        <description>URL to the AEM OpenCloud Configuration artifact.</description>
+        <defaultValue>{{ aem_opencloud.config.artifact_url }}</defaultValue>
+        <trim>false</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>AOC_CUSTOM_MANAGER_STEPS_ARTIFACT_URL</name>
+        <description>URL to the AEM OpenCloud Manager custom manager steps artifact.</description>
+        <defaultValue>{{ aem_opencloud.custom_manager_steps.artifact_url }}</defaultValue>
+        <trim>false</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>AWS_LIBRARY_S3_BUCKET</name>
+        <description>S3 bucket where the libraries are stored</description>
+        <defaultValue>{{ aws.library.s3_bucket }}</defaultValue>
+        <trim>false</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>AWS_LIBRARY_S3_PATH</name>
+        <description>S3 path (of the specified S3 bucket) where the libraries are stored</description>
+        <defaultValue>{{ aws.library.s3_path }}</defaultValue>
+        <trim>false</trim>
+      </hudson.model.StringParameterDefinition>
+    </parameterDefinitions>
+  </hudson.model.ParametersDefinitionProperty>
+</properties>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition" plugin="workflow-cps@2.61">
+    <scm class="hudson.plugins.git.GitSCM" plugin="git@3.9.1">
+      <configVersion>2</configVersion>
+      <userRemoteConfigs>
+        <hudson.plugins.git.UserRemoteConfig>
+          <url>{{ aem_opencloud.jenkins_sharedlibs.repo_url }}</url>
+        </hudson.plugins.git.UserRemoteConfig>
+      </userRemoteConfigs>
+      <branches>
+        <hudson.plugins.git.BranchSpec>
+          <name>{{ aem_opencloud.jenkins_sharedlibs.repo_branch }}</name>
+        </hudson.plugins.git.BranchSpec>
+      </branches>
+      <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+      <submoduleCfg class="list"/>
+      <extensions/>
+    </scm>
+    <scriptPath>provisioners/jenkins/jenkinsfiles/aem-opencloud/manage-environments/aws/{{ item[1].item.path }}/</scriptPath>
+    <lightweight>true</lightweight>
+  </definition>
+  <triggers/>
+  <disabled>false</disabled>
+</flow-definition>

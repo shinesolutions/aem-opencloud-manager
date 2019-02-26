@@ -10,11 +10,9 @@ pipeline {
         AOC_CONFIG_DIR = "${env.TMPDIR}/aem-opencloud-config"
     }
     parameters {
-        string(name: 'AOC_AEM_TEST_SUITE_CONFIG_PROFILE', defaultValue: '', description: 'Name of the config profile for AEM Test Suite')
-        string(name: 'AOC_STACK_MANAGER_MESSENGER_CONFIG_PROFILE', defaultValue: '', description: 'Name of the config profile for the AEM OpenCloud Stack Manager Messenger')
         string(name: 'PACKAGE_DESCRIPTOR_FILE', defaultValue: 'deploy-artifacts-descriptor.json', description: 'Name of the descriptor file to deploy on the target AEM Stack')
-        string(name: 'STACK_MANAGER_PREFIX', defaultValue: '', description: 'AEM OpenCloud Stack Manager prefix.')
-        string(name: 'STACK_PREFIX', defaultValue: '', description: 'AEM OpenCloud stack prefix.')
+        string(name: 'AOC_CONFIG_PROFILE_AEM_TEST_SUITE', defaultValue: '', description: 'Name of the config profile for AEM Test Suite')
+        string(name: 'AOC_CONFIG_PROFILE_STACK_MANAGER_MESSENGER', defaultValue: '', description: 'Name of the config profile for the AEM OpenCloud Stack Manager Messenger')
         string(name: 'AOC_VERSION_AEM_AWS_STACK_BUILDER', defaultValue: config.library.aem_aws_stack_builder, description: 'Version of aem-aws-stack-builder repo to archive')
         string(name: 'AOC_VERSION_AEM_STACK_MANAGER_MESSENGER', defaultValue: config.library.aem_stack_manager_messenger, description: 'Version of aem-stack-manager-messenger repo')
         string(name: 'AOC_VERSION_AEM_TEST_SUITE', defaultValue: config.library.aem_test_suite, description: 'Version of aem-test-suite repo to archive')
@@ -52,7 +50,7 @@ pipeline {
         stage('Prepare library configuration') {
             steps {
                     JenkinsStagePreStep this
-                    ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make config config_path=${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE}/")
+                    ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make config config_path=${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE_AEM_AWS_STACK_BUILDER}/")
             }
             post {
                 always {
@@ -63,8 +61,8 @@ pipeline {
         stage('Create AEM OpenCloud Stack') {
             steps {
                     JenkinsStagePreStep this
-                    ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make create-full-set config_path=${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE}/ stack_prefix=${params.STACK_PREFIX}")
-                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make check-readiness-full-set stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_STACK_MANAGER_MESSENGER_CONFIG_PROFILE}/")
+                    ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make create-full-set config_path=${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE_AEM_AWS_STACK_BUILDER}/ stack_prefix=${params.STACK_PREFIX}")
+                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make check-readiness-full-set stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_CONFIG_PROFILE_STACK_MANAGER_MESSENGER}/")
             }
             post {
                 always {
@@ -75,7 +73,7 @@ pipeline {
         stage('Run acceptance test') {
             steps {
                     JenkinsStagePreStep this
-                    ExecCommand(this, env.TMPDIR, "aem-test-suite", "make test-acceptance-full-set config_path=${env.AOC_CONFIG_DIR}/aem-test-suite/${params.AOC_AEM_TEST_SUITE_CONFIG_PROFILE} stack_prefix=${params.STACK_PREFIX}")
+                    ExecCommand(this, env.TMPDIR, "aem-test-suite", "make test-acceptance-full-set config_path=${env.AOC_CONFIG_DIR}/aem-test-suite/${params.AOC_CONFIG_PROFILE_AEM_TEST_SUITE} stack_prefix=${params.STACK_PREFIX}")
             }
             post {
                 always {
@@ -86,7 +84,7 @@ pipeline {
         stage('Deploy deployment-descriptor') {
             steps {
                     JenkinsStagePreStep this
-                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make deploy-artifacts-full-set stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_STACK_MANAGER_MESSENGER_CONFIG_PROFILE}/ descriptor_file=${params.PACKAGE_DESCRIPTOR_FILE}")
+                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make deploy-artifacts-full-set stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_CONFIG_PROFILE_STACK_MANAGER_MESSENGER}/ descriptor_file=${params.PACKAGE_DESCRIPTOR_FILE}")
             }
             post {
                 always {
@@ -97,8 +95,8 @@ pipeline {
         stage('Flush dispatcher cache') {
             steps {
                     JenkinsStagePreStep this
-                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make flush-dispatcher-cache stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_STACK_MANAGER_MESSENGER_CONFIG_PROFILE}/ component=author-dispatcher")
-                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make flush-dispatcher-cache stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_STACK_MANAGER_MESSENGER_CONFIG_PROFILE}/ component=publish-dispatcher")
+                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make flush-dispatcher-cache stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_CONFIG_PROFILE_STACK_MANAGER_MESSENGER}/ component=author-dispatcher")
+                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make flush-dispatcher-cache stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_CONFIG_PROFILE_STACK_MANAGER_MESSENGER}/ component=publish-dispatcher")
             }
             post {
                 always {
@@ -109,7 +107,7 @@ pipeline {
         stage('Check Full-Set readiness') {
             steps {
                     JenkinsStagePreStep this
-                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make check-readiness-full-set stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_STACK_MANAGER_MESSENGER_CONFIG_PROFILE}/")
+                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make check-readiness-full-set stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_CONFIG_PROFILE_STACK_MANAGER_MESSENGER}/")
             }
             post {
                 always {
