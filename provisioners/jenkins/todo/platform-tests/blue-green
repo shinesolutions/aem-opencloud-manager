@@ -18,7 +18,7 @@ pipeline {
         string(name: 'AOC_CONFIG_PROFILE', defaultValue: '', description: 'Name of the config profile for AEM Test Suite')
         string(name: 'AOC_CONFIG_PROFILE_AEM_TEST_SUITE', defaultValue: '', description: 'Name of the config profile for AEM Test Suite')
         string(name: 'AOC_STACK_MANAGER_CONFIG_PROFILE', defaultValue: '', description: 'Name of the config profile for AEM Stack Manager')
-        string(name: 'AOC_CONFIG_PROFILE_STACK_MANAGER_MESSENGER', defaultValue: '', description: 'Name of the config profile for the AEM OpenCloud Stack Manager Messenger')
+        string(name: 'AOC_CONFIG_PROFILE_AEM_STACK_MANAGER_MESSENGER', defaultValue: '', description: 'Name of the config profile for the AEM OpenCloud Stack Manager Messenger')
 
         string(name: 'STACK_MANAGER_PREFIX', defaultValue: 'BG-FS-SM-TEST', description: 'AEM OpenCloud Stack Manager prefix.')
         string(name: 'BLUE_STACK_PREFIX', defaultValue: 'BLUE-FS-TEST', description: 'AEM OpenCloud stack prefix.')
@@ -95,7 +95,7 @@ pipeline {
                     // Create AEM OpenCloud Stack Manager
                     ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make create-stack-manager config_path=${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_STACK_MANAGER_CONFIG_PROFILE}/ stack_prefix=${params.STACK_MANAGER_PREFIX}")
                     // Check readiness of created Full-Set
-                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make check-readiness-full-set stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.BLUE_STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_CONFIG_PROFILE_STACK_MANAGER_MESSENGER}/")
+                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make check-readiness-full-set stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.BLUE_STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_CONFIG_PROFILE_AEM_STACK_MANAGER_MESSENGER}/")
             }
             post {
                 always {
@@ -125,9 +125,9 @@ pipeline {
 
                     JenkinsStagePreStep this
                     // Trigger offline-compaction-snapshot for Full-Set
-                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make offline-compaction-snapshot-full-set stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.BLUE_STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_CONFIG_PROFILE_STACK_MANAGER_MESSENGER}/")
+                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make offline-compaction-snapshot-full-set stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.BLUE_STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_CONFIG_PROFILE_AEM_STACK_MANAGER_MESSENGER}/")
                     // Check full-set readiness after offline-compaction-snapshots were taken
-                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make check-readiness-full-set stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.BLUE_STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_CONFIG_PROFILE_STACK_MANAGER_MESSENGER}/")
+                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make check-readiness-full-set stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.BLUE_STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_CONFIG_PROFILE_AEM_STACK_MANAGER_MESSENGER}/")
             }
             post {
                 always {
@@ -162,7 +162,7 @@ pipeline {
 
                     ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make create-full-set config_path=${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE}/ stack_prefix=${params.GREEN_STACK_PREFIX}")
                     // Check readiness of created Full-Set
-                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make check-readiness-full-set stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.GREEN_STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_CONFIG_PROFILE_STACK_MANAGER_MESSENGER}/")
+                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make check-readiness-full-set stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.GREEN_STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_CONFIG_PROFILE_AEM_STACK_MANAGER_MESSENGER}/")
             }
             post {
                 always {
