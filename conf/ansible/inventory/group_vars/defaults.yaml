@@ -27,3 +27,4 @@ jenkins:
   password: overwrite-me
   agent:
     docker_image: 'shinesolutions/aem-platform-buildenv:latest'
+    docker_args: ''
