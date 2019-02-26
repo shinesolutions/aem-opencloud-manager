@@ -18,10 +18,6 @@ def s3_download(script, bucket, path, object, destDir) {
  */
 def s3_upload(script, sourceDir, fileName, bucket, path) {
   script.sh """
-  echo $(env | grep proxy)
-  echo $(curl http://169.254.169.254/2014-11-05/meta-data/iam/security-credentials/)
-  echo "XXXXXXXXXXXXXXXXXXXXXX"
-  cd /
   aws s3 cp ${sourceDir}/${fileName} s3://${bucket}/${path}/${fileName}
   """
 }
