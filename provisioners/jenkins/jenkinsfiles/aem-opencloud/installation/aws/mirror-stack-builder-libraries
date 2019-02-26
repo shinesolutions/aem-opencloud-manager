@@ -24,6 +24,17 @@ pipeline {
                 JenkinsPipelinePreStep this
             }
         }
+        stage('Resolve dependencies') {
+            steps {
+                    JenkinsStagePreStep this
+                    ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make deps")
+            }
+            post {
+                always {
+                  JenkinsStagePostStep this
+                }
+            }
+        }
         stage('Prepare AEM OpenCloud libraries and configuration') {
             steps {
                 JenkinsStagePreStep this
