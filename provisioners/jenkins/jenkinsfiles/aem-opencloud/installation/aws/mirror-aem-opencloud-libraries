@@ -31,7 +31,7 @@ pipeline {
             steps {
                 JenkinsStagePreStep this
                 sh '''
-                    export no_proxy=localhost,169.254.169.254,hip.ext.national.com.au`
+                    export no_proxy=localhost,169.254.169.254,hip.ext.national.com.au
                     echo $(env)
                     echo $(curl http://169.254.169.254/2014-11-05/meta-data/iam/security-credentials/)
                 '''
