@@ -24,10 +24,11 @@ pipeline {
                 JenkinsPipelinePreStep this
             }
         }
-        stage('Resolve dependencies') {
+        stage('Prepare AEM OpenCloud libraries and configuration') {
             steps {
-                    JenkinsStagePreStep this
-                    ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make deps")
+                JenkinsStagePreStep this
+                AocPrepareLibrary(this, "aem-aws-stack-builder", params.AOC_VERSION_AEM_AWS_STACK_BUILDER, params.AWS_LIBRARY_S3_BUCKET, params.AWS_LIBRARY_S3_PATH, env.TMPDIR)
+                AocPrepareConfig(this, params.AOC_CONFIG_ARTIFACT_URL, env.TMPDIR)
             }
             post {
                 always {
@@ -35,11 +36,10 @@ pipeline {
                 }
             }
         }
-        stage('Prepare AEM OpenCloud libraries and configuration') {
+        stage('Resolve dependencies') {
             steps {
-                JenkinsStagePreStep this
-                AocPrepareLibrary(this, "aem-aws-stack-builder", params.AOC_VERSION_AEM_AWS_STACK_BUILDER, params.AWS_LIBRARY_S3_BUCKET, params.AWS_LIBRARY_S3_PATH, env.TMPDIR)
-                AocPrepareConfig(this, params.AOC_CONFIG_ARTIFACT_URL, env.TMPDIR)
+                    JenkinsStagePreStep this
+                    ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make deps")
             }
             post {
                 always {
