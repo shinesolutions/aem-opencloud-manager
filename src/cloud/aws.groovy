@@ -6,12 +6,15 @@ package cloud
  * Downloads an S3 object from specified bucket and path to a destination
  * directory. The object name is preserved and used as the downloaded file name.
  */
-def s3_download(script, bucket, path, object, destDir) {
+def s3_download(script, bucket, path, object, destDir, destObject=null) {
   if ( path != "" ) {
     path = "/" + path
   }
+  if ( !destObject ) {
+    destObject = object
+  }
   script.sh """
-  aws s3 cp s3://${bucket}${path}/${object} ${destDir}/${object}
+  aws s3 cp s3://${bucket}${path}/${object} ${destDir}/${destObject}
   """
 }
 

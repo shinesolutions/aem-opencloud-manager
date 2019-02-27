@@ -21,7 +21,7 @@ def call(script, String aocConfigDownloadUrl, String tmpDir = '/tmp') {
       def bucket = parsedUri.host
       def path = parsedUri.path.split('/').init().drop(1).join('/')
       def object = parsedUri.path.split('/').last()
-      new aws().s3_download(script, bucket, path, object, tmpDir)
+      new aws().s3_download(script, bucket, path, object, tmpDir, fileName)
   }
   script.sh """
   mkdir -p ${aocConfigDir}/
