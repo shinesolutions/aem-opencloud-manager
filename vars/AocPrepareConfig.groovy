@@ -19,7 +19,7 @@ def call(script, String aocConfigDownloadUrl, String tmpDir = '/tmp') {
       new common().httpDownload(script, aocConfigDownloadUrl, tmpDir, fileName)
     case "s3":
       def bucket = parsedUri.host
-      def path = parsedUri.path.split('/').init().join('/')
+      def path = parsedUri.path.split('/').init().join('/').substring(1)
       def object = parsedUri.path.split('/').last()
       new aws().s3_download(script, bucket, path, object, tmpDir)
   }
