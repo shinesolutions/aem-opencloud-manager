@@ -1,5 +1,6 @@
 #!/usr/bin/env groovy
 import common.*
+import cloud.aws
 
 /**
  * This script downloads AEM OpenCloud configuration artifact from a URL and
@@ -12,7 +13,15 @@ def call(script, String aocConfigDownloadUrl, String tmpDir = '/tmp') {
   script.sh """
   mkdir -p ${tmpDir}/
   """
-  new common().httpDownload(script, aocConfigDownloadUrl, tmpDir, fileName)
+  def parsedUri = new URI(aocConfigDownloadUrl)
+  if parsedUri.scheme == 'http' {
+    new common().httpDownload(script, aocConfigDownloadUrl, tmpDir, fileName)
+  } else {
+    def bucket = parsedUri.host
+    def path = parsedUri.path.split('/').init().join('/')
+    def object = parsedUri.path.split('/').last()
+    new aws().s3_download(script, bucket, path, object, tmpDir)
+  }
   script.sh """
   mkdir -p ${aocConfigDir}/
   tar --strip-components=1 -xzf ${tmpDir}/${fileName} -C ${aocConfigDir}/

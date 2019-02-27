@@ -36,6 +36,17 @@ pipeline {
                 }
             }
         }
+        stage('Resolve dependencies') {
+            steps {
+                    JenkinsStagePreStep this
+                    ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make deps")
+            }
+            post {
+                always {
+                  JenkinsStagePostStep this
+                }
+            }
+        }
         stage('Mirror AEM OpenCloud AEM AWS Stack Builder Libraries') {
             steps {
                 JenkinsStagePreStep this
