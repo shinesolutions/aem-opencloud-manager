@@ -1,0 +1,59 @@
+---
+
+########################################################################
+# Generate installation Jenkins jobs.
+########################################################################
+
+- name: "Generate AEM OpenCloud Jenkins job for installation configuration profile main libraries directory"
+  file:
+    path: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/installation/aws/mirror-aem-opencloud-libraries/
+    state: directory
+    mode: '0776'
+
+- name: "Generate AEM OpenCloud Jenkins jobs for installation configuration profile AEM AWS Stack Builder Consolidated directories"
+  file:
+    path: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/installation/aws/mirror-stack-builder-libraries-{{ item.item.path }}/
+    state: directory
+    mode: '0776'
+  with_items: "{{ aem_aws_stack_builder_aem_consolidated_profiles.results }}"
+  when: item.skipped is not defined and item.item.skipped is not defined
+
+- name: "Generate AEM OpenCloud Jenkins jobs for installation configuration profile AEM AWS Stack Builder Full-Set directories"
+  file:
+    path: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/installation/aws/mirror-stack-builder-libraries-{{ item.item.path }}/
+    state: directory
+    mode: '0776'
+  with_items: "{{ aem_aws_stack_builder_aem_full_set_profiles.results }}"
+  when: item.skipped is not defined and item.item.skipped is not defined
+
+- name: "Generate AEM OpenCloud Jenkins job for installation configuration profile main libraries config.xml"
+  template:
+    src: '../../../templates/ansible/jenkins/config/jobs.xml.j2'
+    dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/installation/aws/{{ item.path }}/config.xml
+    mode: '0644'
+  with_items:
+    - { path: mirror-aem-opencloud-libraries, category: installation, platform_type: aws }
+
+- name: "Generate AEM OpenCloud Jenkins jobs for installation configuration profile AEM AWS Stack Builder Consolidated config.xml"
+  template:
+    src: '../../../templates/ansible/jenkins/config/jobs-installation.xml.j2'
+    dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/installation/aws/mirror-stack-builder-libraries-{{ item.item.path }}/config.xml
+    mode: '0644'
+  with_items: "{{ aem_aws_stack_builder_aem_consolidated_profiles.results }}"
+  when: item.skipped is not defined and item.item.skipped is not defined
+
+- name: "Generate AEM OpenCloud Jenkins jobs for installation configuration profile AEM AWS Stack Builder Full-Set config.xml"
+  template:
+    src: '../../../templates/ansible/jenkins/config/jobs-installation.xml.j2'
+    dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/installation/aws/mirror-stack-builder-libraries-{{ item.item.path }}/config.xml
+    mode: '0644'
+  with_items: "{{ aem_aws_stack_builder_aem_full_set_profiles.results }}"
+  when: item.skipped is not defined and item.item.skipped is not defined
+
+- name: "Generate AEM OpenCloud Jenkins jobs for installation configuration profile AEM AWS Stack Builder config.xml"
+  template:
+    src: '../../../templates/ansible/jenkins/config/jobs-installation.xml.j2'
+    dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/installation/aws/mirror-stack-builder-libraries-{{ item.item.path }}/config.xml
+    mode: '0644'
+  with_items: "{{ aem_aws_stack_builder_aem_full_set_profiles.results }}"
+  when: item.skipped is not defined and item.item.skipped is not defined
