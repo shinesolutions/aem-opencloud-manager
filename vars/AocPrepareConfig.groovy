@@ -14,13 +14,14 @@ def call(script, String aocConfigDownloadUrl, String tmpDir = '/tmp') {
   mkdir -p ${tmpDir}/
   """
   def parsedUri = new URI(aocConfigDownloadUrl)
-  if parsedUri.scheme == 'http' {
-    new common().httpDownload(script, aocConfigDownloadUrl, tmpDir, fileName)
-  } else {
-    def bucket = parsedUri.host
-    def path = parsedUri.path.split('/').init().join('/')
-    def object = parsedUri.path.split('/').last()
-    new aws().s3_download(script, bucket, path, object, tmpDir)
+  switch (parsedUri.scheme) {
+    case "http":
+      new common().httpDownload(script, aocConfigDownloadUrl, tmpDir, fileName)
+    case "s3":
+      def bucket = parsedUri.host
+      def path = parsedUri.path.split('/').init().drop(1).join('/')
+      def object = parsedUri.path.split('/').last()
+      new aws().s3_download(script, bucket, path, object, tmpDir, fileName)
   }
   script.sh """
   mkdir -p ${aocConfigDir}/
