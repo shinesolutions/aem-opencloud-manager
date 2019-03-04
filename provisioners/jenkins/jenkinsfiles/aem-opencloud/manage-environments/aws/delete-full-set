@@ -56,10 +56,10 @@ pipeline {
                 }
             }
         }
-        stage('Delete AEM OpenCloud Stack') {
+        stage('Delete AEM OpenCloud Full-Set environment') {
             steps {
                     JenkinsStagePreStep this
-                    // Delete AEM OpenCloud Full-Set Stack
+
                     ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make delete-full-set config_path=${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE_AEM_AWS_STACK_BUILDER}/ stack_prefix=${params.STACK_PREFIX}")
             }
             post {

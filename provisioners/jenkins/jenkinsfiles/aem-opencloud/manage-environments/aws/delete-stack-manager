@@ -56,7 +56,7 @@ pipeline {
                 }
             }
         }
-        stage('Delete AEM OpenCloud Stack') {
+        stage('Delete AEM OpenCloud Stack Manager environment') {
             steps {
                     JenkinsStagePreStep this
 

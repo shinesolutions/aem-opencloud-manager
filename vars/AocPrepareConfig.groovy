@@ -8,21 +8,32 @@ import cloud.aws
  * AEM OpenCloud libraries (e.g. Packer AEM, AEM AWS Stack Builder).
  */
 def call(script, String aocConfigDownloadUrl, String tmpDir = '/tmp') {
+
   fileName = "aem-opencloud-config.tar.gz"
   aocConfigDir = "${tmpDir}/aem-opencloud-config/"
   script.sh """
-  mkdir -p ${tmpDir}/
+  mkdir -p ${tmpDir}
   """
+
   def parsedUri = new URI(aocConfigDownloadUrl)
   switch (parsedUri.scheme) {
     case "http":
       new common().httpDownload(script, aocConfigDownloadUrl, tmpDir, fileName)
+      break
+    case "https":
+      new common().httpDownload(script, aocConfigDownloadUrl, tmpDir, fileName)
+      break
     case "s3":
       def bucket = parsedUri.host
       def path = parsedUri.path.split('/').init().drop(1).join('/')
       def object = parsedUri.path.split('/').last()
       new aws().s3_download(script, bucket, path, object, tmpDir, fileName)
+      break
+    default:
+      println "Unsupported AEM OpenCloud configuration download URL: " + aocConfigDownloadUrl
+      break
   }
+
   script.sh """
   mkdir -p ${aocConfigDir}/
   tar --strip-components=1 -xzf ${tmpDir}/${fileName} -C ${aocConfigDir}/
