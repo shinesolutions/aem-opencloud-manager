@@ -63,7 +63,7 @@ pipeline {
                 }
             }
         }
-        stage('Create AEM OpenCloud Stack') {
+        stage('Create AEM OpenCloud Consolidated environment') {
             steps {
                     JenkinsStagePreStep this
                     ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make create-consolidated config_path=${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE_AEM_AWS_STACK_BUILDER}/ stack_prefix=${params.STACK_PREFIX}")
@@ -75,7 +75,7 @@ pipeline {
                 }
             }
         }
-        stage('Run acceptance test') {
+        stage('Run acceptance tests') {
             steps {
                     JenkinsStagePreStep this
                     ExecCommand(this, env.TMPDIR, "aem-test-suite", "make test-acceptance-author-primary stack_prefix=${params.STACK_PREFIX}")
@@ -88,7 +88,7 @@ pipeline {
                 }
             }
         }
-        stage('Deploy deployment-descriptor') {
+        stage('Deploy applications') {
             steps {
                     JenkinsStagePreStep this
                     ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make deploy-artifacts-consolidated stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_CONFIG_PROFILE_AEM_STACK_MANAGER_MESSENGER}/ descriptor_file=${params.PACKAGE_DESCRIPTOR_FILE}")
@@ -99,7 +99,7 @@ pipeline {
                 }
             }
         }
-        stage('Flush dispatcher cache') {
+        stage('Flush AEM Dispatcher cache') {
             steps {
                     JenkinsStagePreStep this
                     ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make flush-dispatcher-cache stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_CONFIG_PROFILE_AEM_STACK_MANAGER_MESSENGER}/ component=author-publish-dispatcher")
@@ -110,7 +110,7 @@ pipeline {
                 }
             }
         }
-        stage('Check consolidated readiness') {
+        stage('Check environment readiness') {
             steps {
                     JenkinsStagePreStep this
                     ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make check-readiness-consolidated stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_CONFIG_PROFILE_AEM_STACK_MANAGER_MESSENGER}/")
