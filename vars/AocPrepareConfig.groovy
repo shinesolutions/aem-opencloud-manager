@@ -11,11 +11,13 @@ def call(script, String aocConfigDownloadUrl, String tmpDir = '/tmp') {
   fileName = "aem-opencloud-config.tar.gz"
   aocConfigDir = "${tmpDir}/aem-opencloud-config/"
   script.sh """
-  mkdir -p ${tmpDir}/
+  mkdir -p ${tmpDir}
   """
   def parsedUri = new URI(aocConfigDownloadUrl)
   switch (parsedUri.scheme) {
     case "http":
+      new common().httpDownload(script, aocConfigDownloadUrl, tmpDir, fileName)
+    case "https":
       new common().httpDownload(script, aocConfigDownloadUrl, tmpDir, fileName)
     case "s3":
       def bucket = parsedUri.host
