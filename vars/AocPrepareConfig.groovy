@@ -8,14 +8,6 @@ import cloud.aws
  * AEM OpenCloud libraries (e.g. Packer AEM, AEM AWS Stack Builder).
  */
 def call(script, String aocConfigDownloadUrl, String tmpDir = '/tmp') {
-  println "---"
-  println aocConfigDownloadUrl
-  println "---"
-
-  if(aocConfigDownloadUrl?.trim()) {
-    println "Skipping AEM OpenCloud configuration download due to unspecified URL..."
-    return
-  }
 
   fileName = "aem-opencloud-config.tar.gz"
   aocConfigDir = "${tmpDir}/aem-opencloud-config/"
