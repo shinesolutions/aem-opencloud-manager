@@ -76,14 +76,11 @@ pipeline {
             }
         }
         stage('Run acceptance tests') {
-            when ('skipped-for-now-until-aws-sdk-upgrade' != 'skipped-for-now-until-aws-sdk-upgrade') {
-                echo 'Skipping run acceptance tests stage while waiting for aws-sdk to be upgraded to version 3'
-            }
             steps {
                 JenkinsStagePreStep this
-                ExecCommand(this, env.TMPDIR, "aem-test-suite", "make test-acceptance-author-primary stack_prefix=${params.STACK_PREFIX}")
-                ExecCommand(this, env.TMPDIR, "aem-test-suite", "make test-acceptance-publish stack_prefix=${params.STACK_PREFIX}")
-                ExecCommand(this, env.TMPDIR, "aem-test-suite", "make test-acceptance-publish-dispatcher stack_prefix=${params.STACK_PREFIX}")
+                // ExecCommand(this, env.TMPDIR, "aem-test-suite", "make test-acceptance-author-primary stack_prefix=${params.STACK_PREFIX}")
+                // ExecCommand(this, env.TMPDIR, "aem-test-suite", "make test-acceptance-publish stack_prefix=${params.STACK_PREFIX}")
+                // ExecCommand(this, env.TMPDIR, "aem-test-suite", "make test-acceptance-publish-dispatcher stack_prefix=${params.STACK_PREFIX}")
             }
             post {
                 always {
