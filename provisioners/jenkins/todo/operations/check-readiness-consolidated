@@ -16,7 +16,7 @@ pipeline {
     }
     parameters {
 
-        string(name: 'STACK_MANAGER_PREFIX', defaultValue: '', description: 'AEM OpenCloud Stack Manager prefix.')
+        string(name: 'STACK_MANAGER_STACK_PREFIX', defaultValue: '', description: 'AEM OpenCloud Stack Manager prefix.')
         string(name: 'STACK_PREFIX', defaultValue: '', description: 'AEM OpenCloud stack prefix.')
         string(name: 'AOC_VERSION_AEM_STACK_MANAGER_MESSENGER', defaultValue: config.library.aem_stack_manager_messenger, description: 'Version of aem-stack-manager-messenger repo')
     }
@@ -65,7 +65,7 @@ pipeline {
 
                     JenkinsStagePreStep this
                     // Trigger AEM Stack Manager event
-                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make check-readiness-consolidated stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_CONFIG_PROFILE}/")
+                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make check-readiness-consolidated stack_prefix=${params.STACK_MANAGER_STACK_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_CONFIG_PROFILE}/")
             }
             post {
                 always {

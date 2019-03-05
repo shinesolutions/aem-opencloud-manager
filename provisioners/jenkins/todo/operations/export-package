@@ -21,7 +21,7 @@ pipeline {
         string(name: 'PACKAGE_GROUP', defaultValue: '', description: 'Package group name')
         string(name: 'PACKAGE_NAME', defaultValue: '', description: 'Package name')
 
-        string(name: 'STACK_MANAGER_PREFIX', defaultValue: '', description: 'AEM OpenCloud Stack Manager prefix.')
+        string(name: 'STACK_MANAGER_STACK_PREFIX', defaultValue: '', description: 'AEM OpenCloud Stack Manager prefix.')
         string(name: 'STACK_PREFIX', defaultValue: '', description: 'AEM OpenCloud stack prefix.')
         string(name: 'AOC_VERSION_AEM_STACK_MANAGER_MESSENGER', defaultValue: config.library.aem_stack_manager_messenger, description: 'Version of aem-stack-manager-messenger repo')
     }
@@ -70,7 +70,7 @@ pipeline {
 
                     JenkinsStagePreStep this
                     // Trigger AEM Stack Manager event
-                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make export-package stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_CONFIG_PROFILE}/ component=${params.AEM_COMPONENT} aem_id=${params.AEM_ID} package_group=${params.PACKAGE_GROUP} package_name=${params.PACKAGE_NAME} package_filter=${params.PACKAGE_FILTER}")
+                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make export-package stack_prefix=${params.STACK_MANAGER_STACK_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_CONFIG_PROFILE}/ component=${params.AEM_COMPONENT} aem_id=${params.AEM_ID} package_group=${params.PACKAGE_GROUP} package_name=${params.PACKAGE_NAME} package_filter=${params.PACKAGE_FILTER}")
             }
             post {
                 always {

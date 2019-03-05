@@ -20,7 +20,7 @@ pipeline {
         string(name: 'AOC_CONFIG_PROFILE_AEM_STACK_MANAGER_MESSENGER', defaultValue: '', description: 'Name of the config profile for the AEM OpenCloud Stack Manager Messenger')
         string(name: 'PACKAGE_DESCRIPTOR_FILE', defaultValue: 'deploy-artifacts-descriptor.json', description: 'Name of the descriptor file to deploy on the target AEM Stack')
 
-        string(name: 'STACK_MANAGER_PREFIX', defaultValue: '', description: 'AEM OpenCloud Stack Manager prefix.')
+        string(name: 'STACK_MANAGER_STACK_PREFIX', defaultValue: '', description: 'AEM OpenCloud Stack Manager prefix.')
         string(name: 'STACK_PREFIX', defaultValue: '', description: 'AEM OpenCloud stack prefix.')
         string(name: 'AOC_VERSION_AEM_AWS_STACK_BUILDER', defaultValue: config.library.aem_aws_stack_builder, description: 'Version of aem-aws-stack-builder repo to archive')
         string(name: 'AOC_VERSION_AEM_STACK_MANAGER_MESSENGER', defaultValue: config.library.aem_stack_manager_messenger, description: 'Version of aem-stack-manager-messenger repo')
@@ -77,9 +77,9 @@ pipeline {
 
                     ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make create-full-set config_path=${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE}/ stack_prefix=${params.STACK_PREFIX}")
                     // Create AEM OpenCloud Stack Manager
-                    ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make create-stack-manager config_path=${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_STACK_MANAGER_CONFIG_PROFILE}/ stack_prefix=${params.STACK_MANAGER_PREFIX}")
+                    ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make create-stack-manager config_path=${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_STACK_MANAGER_CONFIG_PROFILE}/ stack_prefix=${params.STACK_MANAGER_STACK_PREFIX}")
                     // Check readiness of created Full-Set
-                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make check-readiness-full-set stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_CONFIG_PROFILE_AEM_STACK_MANAGER_MESSENGER}/")
+                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make check-readiness-full-set stack_prefix=${params.STACK_MANAGER_STACK_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_CONFIG_PROFILE_AEM_STACK_MANAGER_MESSENGER}/")
                 }
             }
         }
@@ -117,7 +117,7 @@ pipeline {
 
                     JenkinsStagePreStep this
                     // Promote Author-Standby to Author-Primary
-                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make promote-author stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_CONFIG_PROFILE_AEM_STACK_MANAGER_MESSENGER}/")
+                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make promote-author stack_prefix=${params.STACK_MANAGER_STACK_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_CONFIG_PROFILE_AEM_STACK_MANAGER_MESSENGER}/")
             }
             post {
                 always {
@@ -132,7 +132,7 @@ pipeline {
 
                     JenkinsStagePreStep this
                     // Run Offline Compaction Snapshot
-                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make offline-compaction-snapshot-full-set stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_CONFIG_PROFILE_AEM_STACK_MANAGER_MESSENGER}/")
+                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make offline-compaction-snapshot-full-set stack_prefix=${params.STACK_MANAGER_STACK_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_CONFIG_PROFILE_AEM_STACK_MANAGER_MESSENGER}/")
                 }
             }
         }
@@ -142,7 +142,7 @@ pipeline {
 
                     JenkinsStagePreStep this
                     // Check Full-Set Readiness
-                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make check-readiness-full-set stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_CONFIG_PROFILE_AEM_STACK_MANAGER_MESSENGER}/")
+                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make check-readiness-full-set stack_prefix=${params.STACK_MANAGER_STACK_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_CONFIG_PROFILE_AEM_STACK_MANAGER_MESSENGER}/")
                 }
             }
         }
@@ -154,7 +154,7 @@ pipeline {
                     
                     ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make delete-full-set config_path=${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE}/ stack_prefix=${params.STACK_PREFIX}")
                     // Delete AEM OpenCloud Stack Manager
-                    ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make delete-stack-manager config_path=${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_STACK_MANAGER_CONFIG_PROFILE}/ stack_prefix=${params.STACK_MANAGER_PREFIX}")
+                    ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make delete-stack-manager config_path=${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_STACK_MANAGER_CONFIG_PROFILE}/ stack_prefix=${params.STACK_MANAGER_STACK_PREFIX}")
                     }
                 }
                 post {
