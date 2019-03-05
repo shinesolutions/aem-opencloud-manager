@@ -22,11 +22,25 @@
     # Even though Ansible unarchive module supports zip, we can't use zip in
     # order to preserve consistency with other AEM OpenCloud artifacts which
     # are .tar.gz archives.
-    - name: Download AEM OpenCloud Configuration artifact
+    - name: Download AEM OpenCloud Configuration artifact (http)
       get_url:
         url: "{{ aem_opencloud.config.artifact_url }}"
         dest: ../../../stage/aem-opencloud-config.tar.gz
+      when: aem_opencloud.config.artifact_url.startswith('http')
+
+    - name: Download AEM OpenCloud Configuration artifact (s3)
+      aws_s3:
+        bucket: "{{ aem_opencloud.config.artifact_url.split('/')[2] }}"
+        object: "{{ '/'.join(aem_opencloud.config.artifact_url.split('/')[3:]) }}"
+        dest: ../../../stage/aem-opencloud-config.tar.gz
+        mode: get
+      when: aem_opencloud.config.artifact_url.startswith('s3')
+
+    - name: Chmod aem-opencloud-config.tar.gz
+      file:
+        path: ../../../stage/aem-opencloud-config.tar.gz
         mode: 0660
+
     - name: Unarchive gzip artifact due to Ansible limitation
       shell: tar --strip-components=1 -xvzf ../../../stage/aem-opencloud-config.tar.gz --directory ../../../stage/aem-opencloud-config/ warn=False
 
