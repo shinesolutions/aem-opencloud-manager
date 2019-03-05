@@ -9,7 +9,7 @@ import cloud.aws
  */
 def call(script, String aocConfigDownloadUrl, String tmpDir = '/tmp') {
 
-  if (aocConfigDownloadUrl) {
+  if (!aocConfigDownloadUrl) {
     println "Skipping AEM OpenCloud configuration download due to unspecified URL..."
     return
   }
