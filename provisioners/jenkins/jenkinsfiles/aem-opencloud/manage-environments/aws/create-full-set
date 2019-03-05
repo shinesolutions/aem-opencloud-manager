@@ -18,13 +18,13 @@ pipeline {
         string(name: 'AOC_VERSION_AEM_TEST_SUITE', defaultValue: config.library.aem_test_suite, description: 'Version of aem-test-suite repo to archive')
     }
     stages {
-        stage('Initialise Jenkins pipeline') {
+        stage('Initialise pipeline') {
             steps {
                 JenkinsInit(this, params.AOC_CUSTOM_MANAGER_STEPS_ARTIFACT_URL, env.TMPDIR)
                 JenkinsPipelinePreStep this
             }
         }
-        stage('Prepare AEM OpenCloud libraries and configuration') {
+        stage('Prepare libraries') {
             steps {
                     JenkinsStagePreStep this
                     AocPrepareLibrary(this, "aem-aws-stack-builder", params.AOC_VERSION_AEM_AWS_STACK_BUILDER, params.AWS_LIBRARY_S3_BUCKET, AWS_LIBRARY_S3_PATH, env.TMPDIR)
@@ -47,7 +47,7 @@ pipeline {
                 }
             }
         }
-        stage('Prepare library configuration') {
+        stage('Prepare configuration') {
             steps {
                     JenkinsStagePreStep this
                     ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make config config_path=${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE_AEM_AWS_STACK_BUILDER}/")

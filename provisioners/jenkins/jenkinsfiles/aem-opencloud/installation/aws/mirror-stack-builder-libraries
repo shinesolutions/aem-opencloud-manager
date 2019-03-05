@@ -18,13 +18,13 @@ pipeline {
         string(name: 'AOC_VERSION_AEM_AWS_STACK_BUILDER', defaultValue: config.library.aem_aws_stack_builder, description: 'Version of aem-aws-stack-builder library to mirror to S3')
     }
     stages {
-        stage('Initialise Jenkins pipeline') {
+        stage('Initialise pipeline') {
             steps {
                 JenkinsInit(this, params.AOC_CUSTOM_MANAGER_STEPS_ARTIFACT_URL, env.TMPDIR)
                 JenkinsPipelinePreStep this
             }
         }
-        stage('Prepare AEM OpenCloud libraries and configuration') {
+        stage('Prepare libraries') {
             steps {
                 JenkinsStagePreStep this
                 AocPrepareLibrary(this, "aem-aws-stack-builder", params.AOC_VERSION_AEM_AWS_STACK_BUILDER, params.AWS_LIBRARY_S3_BUCKET, params.AWS_LIBRARY_S3_PATH, env.TMPDIR)
