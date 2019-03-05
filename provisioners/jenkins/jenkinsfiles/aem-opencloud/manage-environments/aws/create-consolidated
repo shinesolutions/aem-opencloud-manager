@@ -13,7 +13,6 @@ pipeline {
         AOC_CONFIG_DIR = "${env.TMPDIR}/aem-opencloud-config"
     }
     parameters {
-        string(name: 'PACKAGE_DESCRIPTOR_FILE', defaultValue: 'deploy-artifacts-descriptor.json', description: 'Name of the descriptor file to deploy on the target AEM Stack')
         string(name: 'AOC_VERSION_AEM_AWS_STACK_BUILDER', defaultValue: config.library.aem_aws_stack_builder, description: 'Version of aem-aws-stack-builder repo to archive')
         string(name: 'AOC_VERSION_AEM_STACK_MANAGER_MESSENGER', defaultValue: config.library.aem_stack_manager_messenger, description: 'Version of aem-stack-manager-messenger repo')
         string(name: 'AOC_VERSION_AEM_TEST_SUITE', defaultValue: config.library.aem_test_suite, description: 'Version of aem-test-suite repo to archive')
@@ -66,6 +65,7 @@ pipeline {
         stage('Create AEM OpenCloud Consolidated environment') {
             steps {
                     JenkinsStagePreStep this
+                    AocPrepareParamArtifact(this, params.CUSTOM_STACK_PROVISIONER_ARTIFACT_URL, env.TMPDIR + '/aem-aws-stack-builder/stage/custom/', 'custom-stack-provisioner.tar.gz')
                     ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make create-consolidated config_path=${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE_AEM_AWS_STACK_BUILDER}/ stack_prefix=${params.STACK_PREFIX}")
                     ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make check-readiness-consolidated stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_CONFIG_PROFILE_AEM_STACK_MANAGER_MESSENGER}/")
             }
@@ -91,7 +91,8 @@ pipeline {
         stage('Deploy applications') {
             steps {
                     JenkinsStagePreStep this
-                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make deploy-artifacts-consolidated stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_CONFIG_PROFILE_AEM_STACK_MANAGER_MESSENGER}/ descriptor_file=${params.PACKAGE_DESCRIPTOR_FILE}")
+                    AocPrepareParamArtifact(this, params.DEPLOYMENT_DESCRIPTOR_URL, env.TMPDIR + '/aem-stack-manager-messenger/stage/', 'deployment-descriptor.json')
+                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make deploy-artifacts-consolidated stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_CONFIG_PROFILE_AEM_STACK_MANAGER_MESSENGER}/ descriptor_file=stage/deployment-descriptor.json")
             }
             post {
                 always {
