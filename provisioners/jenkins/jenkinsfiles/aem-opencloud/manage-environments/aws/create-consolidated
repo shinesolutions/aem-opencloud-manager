@@ -76,7 +76,7 @@ pipeline {
             }
         }
         stage('Run acceptance tests') {
-            when('skipped-for-now' != 'until-aws-sdk-upgrade') {
+            when('skipped-for-now-until-aws-sdk-upgrade' != 'skipped-for-now-until-aws-sdk-upgrade') {
                 steps {
                     JenkinsStagePreStep this
                     ExecCommand(this, env.TMPDIR, "aem-test-suite", "make test-acceptance-author-primary stack_prefix=${params.STACK_PREFIX}")

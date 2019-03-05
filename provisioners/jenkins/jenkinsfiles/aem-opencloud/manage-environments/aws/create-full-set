@@ -72,7 +72,7 @@ pipeline {
             }
         }
         stage('Run acceptance test') {
-            when('skipped-for-now' != 'until-aws-sdk-upgrade') {
+            when('skipped-for-now-until-aws-sdk-upgrade' != 'skipped-for-now-until-aws-sdk-upgrade') {
                 steps {
                         JenkinsStagePreStep this
                         ExecCommand(this, env.TMPDIR, "aem-test-suite", "make test-acceptance-full-set config_path=${env.AOC_CONFIG_DIR}/aem-test-suite/${params.AOC_CONFIG_PROFILE_AEM_TEST_SUITE} stack_prefix=${params.STACK_PREFIX}")
