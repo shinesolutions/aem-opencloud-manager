@@ -56,7 +56,7 @@ pipeline {
                 }
             }
         }
-        stage('Create AEM OpenCloud Stack Manager environment') {
+        stage('Create AEM Stack Manager environment') {
             steps {
                     JenkinsStagePreStep this
                     ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make create-stack-manager config_path=${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE_AEM_AWS_STACK_BUILDER}/ stack_prefix=${params.STACK_PREFIX}")

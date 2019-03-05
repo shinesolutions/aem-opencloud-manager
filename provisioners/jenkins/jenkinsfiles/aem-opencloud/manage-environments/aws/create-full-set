@@ -58,7 +58,7 @@ pipeline {
                 }
             }
         }
-        stage('Create AEM OpenCloud Full-Set environment') {
+        stage('Create AEM Full-Set environment') {
             steps {
                     JenkinsStagePreStep this
                     AocPrepareParamArtifact(this, params.CUSTOM_STACK_PROVISIONER_ARTIFACT_URL, env.TMPDIR + '/aem-aws-stack-builder/stage/custom/', 'custom-stack-provisioner.tar.gz')
