@@ -31,6 +31,10 @@ pipeline {
                     AocPrepareLibrary(this, "aem-stack-manager-messenger", params.AOC_VERSION_AEM_STACK_MANAGER_MESSENGER, params.AWS_LIBRARY_S3_BUCKET, AWS_LIBRARY_S3_PATH, env.TMPDIR)
                     AocPrepareLibrary(this, "aem-test-suite", params.AOC_VERSION_AEM_TEST_SUITE, params.AWS_LIBRARY_S3_BUCKET, AWS_LIBRARY_S3_PATH, env.TMPDIR)
                     AocPrepareConfig(this, params.AOC_CONFIG_ARTIFACT_URL, env.TMPDIR)
+            }
+            post {
+                always {
+                  JenkinsStagePostStep this
                 }
             }
         }
