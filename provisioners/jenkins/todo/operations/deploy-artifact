@@ -25,12 +25,12 @@ pipeline {
         string(name: 'PACKAGE_SOURCE', defaultValue: 'http://central.maven.org/maven2/com/shinesolutions/aem-helloworld-content/0.0.1/aem-helloworld-content-0.0.1.zip', description: 'Package source URL')
         string(name: 'PACKAGE_VERSION', defaultValue: '0.0.1', description: 'Package version')
 
-        string(name: 'STACK_MANAGER_PREFIX', defaultValue: '', description: 'AEM OpenCloud Stack Manager prefix.')
+        string(name: 'STACK_MANAGER_STACK_PREFIX', defaultValue: '', description: 'AEM OpenCloud Stack Manager prefix.')
         string(name: 'STACK_PREFIX', defaultValue: '', description: 'AEM OpenCloud stack prefix.')
         string(name: 'AOC_VERSION_AEM_STACK_MANAGER_MESSENGER', defaultValue: config.library.aem_stack_manager_messenger, description: 'Version of aem-stack-manager-messenger repo')
     }
     stages {
-        stage('Initialise Jenkins pipeline') {
+        stage('Initialise pipeline') {
             steps {
 
                 JenkinsInit(this, params.AOC_CUSTOM_MANAGER_STEPS_ARTIFACT_URL, env.TMPDIR)
@@ -38,7 +38,7 @@ pipeline {
                 JenkinsPipelinePreStep this
             }
         }
-        stage('Prepare AEM OpenCloud libraries and configuration') {
+        stage('Prepare libraries') {
             steps {
 
 
@@ -74,7 +74,7 @@ pipeline {
 
                     JenkinsStagePreStep this
                     // Trigger AEM Stack Manager event
-                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make deploy-artifact stack_prefix=${params.STACK_MANAGER_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_CONFIG_PROFILE}/ component=${params.AEM_COMPONENT} aem_id=${params.AEM_ID} source=${params.PACKAGE_SOURCE} group=${params.PACKAGE_GROUP} name=${params.PACKAGE_NAME} version=${params.PACKAGE_VERSION} replicate=${params.PACKAGE_REPLICATE} activate=${params.PACKAGE_ACTIVATE} force=${params.PACKAGE_FORCE}")
+                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make deploy-artifact stack_prefix=${params.STACK_MANAGER_STACK_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_CONFIG_PROFILE}/ component=${params.AEM_COMPONENT} aem_id=${params.AEM_ID} source=${params.PACKAGE_SOURCE} group=${params.PACKAGE_GROUP} name=${params.PACKAGE_NAME} version=${params.PACKAGE_VERSION} replicate=${params.PACKAGE_REPLICATE} activate=${params.PACKAGE_ACTIVATE} force=${params.PACKAGE_FORCE}")
             }
             post {
                 always {

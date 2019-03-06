@@ -21,7 +21,7 @@ pipeline {
         string(name: 'AOC_VERSION_AEM_TEST_SUITE', defaultValue: config.library.aem_test_suite, description: 'Version of aem-test-suite library to mirror to S3')
     }
     stages {
-        stage('Initialise Jenkins pipeline') {
+        stage('Initialise pipeline') {
             steps {
                 JenkinsInit(this, params.AOC_CUSTOM_MANAGER_STEPS_ARTIFACT_URL, env.TMPDIR)
                 JenkinsPipelinePreStep this
