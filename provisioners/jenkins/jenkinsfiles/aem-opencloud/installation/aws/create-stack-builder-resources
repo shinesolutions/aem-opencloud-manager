@@ -1,0 +1,69 @@
+@Library('aem-opencloud-manager') _
+
+def configString = libraryResource 'aem_opencloud/config.json'
+def config = readJSON text: configString
+
+pipeline {
+    agent {
+        docker {
+            image params.JENKINS_AGENT_DOCKER_IMAGE
+            args params.JENKINS_AGENT_DOCKER_ARGS
+        }
+    }
+    environment {
+        TMPDIR = "/tmp/shinesolutions/aem-opencloud-manager"
+        AOC_CONFIG_DIR = "${env.TMPDIR}/aem-opencloud-config"
+    }
+    parameters {
+        string(name: 'AOC_VERSION_AEM_AWS_STACK_BUILDER', defaultValue: config.library.aem_aws_stack_builder, description: 'Version of aem-aws-stack-builder repo to retrieve')
+    }
+    stages {
+        stage('Initialise pipeline') {
+            steps {
+                JenkinsInit(this, params.AOC_CUSTOM_MANAGER_STEPS_ARTIFACT_URL, env.TMPDIR)
+                JenkinsPipelinePreStep this
+            }
+        }
+        stage('Prepare libraries') {
+            steps {
+                    JenkinsStagePreStep this
+                    AocPrepareLibrary(this, "aem-aws-stack-builder", params.AOC_VERSION_AEM_AWS_STACK_BUILDER, params.AWS_LIBRARY_S3_BUCKET, AWS_LIBRARY_S3_PATH, env.TMPDIR)
+                    AocPrepareConfig(this, params.AOC_CONFIG_ARTIFACT_URL, env.TMPDIR)
+            }
+            post {
+                always {
+                  JenkinsStagePostStep this
+                }
+            }
+        }
+        stage('Resolve dependencies') {
+            steps {
+                    JenkinsStagePreStep this
+                    ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make deps")
+            }
+            post {
+                always {
+                  JenkinsStagePostStep this
+                }
+            }
+        }
+        stage('Deploy create resources stack for pre-requisites') {
+            steps {
+                    JenkinsStagePreStep this
+                    AocPrepareParamArtifact(this, params.CUSTOM_IMAGE_PROVISIONER_ARTIFACT_URL, env.TMPDIR + '/aem-aws-stack-builder/stage/custom/', 'aem-custom-image-provisioner.tar.gz')
+                    sh "find ${env.AOC_CONFIG_DIR}/"
+                    ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make create-aws-resources config_path=${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE_AEM_AWS_STACK_BUILDER}/ stack_prefix=${params.STACK_PREFIX}")
+            }
+            post {
+                always {
+                  JenkinsStagePostStep this
+                }
+            }
+        }
+    }
+    post {
+        always {
+          JenkinsPipelinePostStep this
+        }
+    }
+}

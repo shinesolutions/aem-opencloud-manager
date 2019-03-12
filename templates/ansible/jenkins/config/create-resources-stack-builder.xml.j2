@@ -7,6 +7,18 @@
   <hudson.model.ParametersDefinitionProperty>
     <parameterDefinitions>
       <hudson.model.StringParameterDefinition>
+        <name>STACK_PREFIX</name>
+        <description>AEM OpenCloud Packer-AEM Create-Resources stack prefix.</description>
+        <defaultValue></defaultValue>
+        <trim>false</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>AOC_CONFIG_PROFILE_AEM_AWS_STACK_BUILDER</name>
+        <description>Name of the configuration profile.</description>
+        <defaultValue></defaultValue>
+        <trim>false</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
         <name>JENKINS_AGENT_DOCKER_IMAGE</name>
         <description>The name of Docker image to be used as Jenkins build pipeline agent.</description>
         <defaultValue>{{ jenkins.agent.docker_image }}</defaultValue>
@@ -16,6 +28,12 @@
         <name>JENKINS_AGENT_DOCKER_ARGS</name>
         <description>The CLI args for Jenkins to use when running Docker CLI.</description>
         <defaultValue>{{ jenkins.agent.docker_args }}</defaultValue>
+        <trim>false</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>AOC_CONFIG_ARTIFACT_URL</name>
+        <description>URL to the AEM OpenCloud Configuration artifact.</description>
+        <defaultValue>{{ aem_opencloud.config.artifact_url }}</defaultValue>
         <trim>false</trim>
       </hudson.model.StringParameterDefinition>
       <hudson.model.StringParameterDefinition>
@@ -56,7 +74,7 @@
       <submoduleCfg class="list"/>
       <extensions/>
     </scm>
-    <scriptPath>provisioners/jenkins/jenkinsfiles/aem-opencloud/{{ item.category }}/{{ item.platform_type }}/{{ item.path }}</scriptPath>
+    <scriptPath>provisioners/jenkins/jenkinsfiles/aem-opencloud/installation/aws/create-stack-builder-resources/</scriptPath>
     <lightweight>true</lightweight>
   </definition>
   <triggers/>
