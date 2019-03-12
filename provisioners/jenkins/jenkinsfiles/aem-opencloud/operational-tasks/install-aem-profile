@@ -1,0 +1,89 @@
+@Library('aem-opencloud-manager') _
+
+def configString = libraryResource 'aem_opencloud/config.json'
+def config = readJSON text: configString
+
+pipeline {
+    agent {
+        docker {
+            image params.JENKINS_AGENT_DOCKER_IMAGE
+            args params.JENKINS_AGENT_DOCKER_ARGS
+        }
+    }
+    environment {
+        TMPDIR = "/tmp/shinesolutions/aem-opencloud-manager"
+        AOC_CONFIG_DIR = "${env.TMPDIR}/aem-opencloud-config"
+    }
+    parameters {
+        string(name: 'AEM_ARTIFACTS_BASE', defaultValue: '', description: 'URL where all AEM Artifacts are located.')
+        string(name: 'AEM_BASE', defaultValue: '/opt', description: 'AEM Base installation directory.')
+        choice(name: 'AEM_COMPONENT', choices: ['author-primary', 'publish', 'author-publish-dispatcher'], description: 'AEM Component')
+        string(name: 'AEM_HEALTHCHECK_VERSION', defaultValue: '1.3.3', description: 'Version of the AEM healthcheck.')
+        choice(name: 'AEM_ID', choices: ['author', 'publish'], description: 'AEM ID')
+        string(name: 'AEM_PORT', defaultValue: '4502', description: 'HTTP port for specific AEM ID')
+        choice(name: 'AEM_PROFILE', choices: ['aem62', 'aem62_sp1_cfp2', 'aem62_sp1_cfp3', 'aem62_sp1_cfp5', 'aem62_sp1_cfp9', 'aem62_sp1_cfp13', 'aem62_sp1_cfp15', 'aem63', 'aem63_sp1', 'aem63_sp1_cfp2', 'aem63_sp2', 'aem63_sp2_cfp1', 'aem63_sp2_cfp2', 'aem64', 'aem64_sp1', 'aem64_sp2', 'aem65'], description: 'AEM installation profile')
+        string(name: 'AEM_SSL_PORT', defaultValue: '5432', description: 'HTTPS port for specific AEM ID')
+        string(name: 'AOC_VERSION_AEM_STACK_MANAGER_MESSENGER', defaultValue: config.library.aem_stack_manager_messenger, description: 'Version of aem-stack-manager-messenger repo')
+    }
+    stages {
+        stage('Initialise pipeline') {
+            steps {
+
+                JenkinsInit(this, params.AOC_CUSTOM_MANAGER_STEPS_ARTIFACT_URL, env.TMPDIR)
+
+                JenkinsPipelinePreStep this
+            }
+        }
+        stage('Prepare libraries') {
+            steps {
+
+
+                    JenkinsStagePreStep this
+
+                    AocPrepareLibrary(this, "aem-stack-manager-messenger", params.AOC_VERSION_AEM_STACK_MANAGER_MESSENGER, params.AWS_LIBRARY_S3_BUCKET, AWS_LIBRARY_S3_PATH, env.TMPDIR)
+            }
+            post {
+                always {
+
+                    JenkinsStagePostStep this
+                }
+            }
+        }
+        stage('Resolve dependencies') {
+            steps {
+
+
+                    JenkinsStagePreStep this
+
+                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make deps")
+            }
+            post {
+                always {
+
+                    JenkinsStagePostStep this
+                }
+            }
+        }
+        stage('Trigger AEM Stack Manager event') {
+            steps {
+
+
+                    JenkinsStagePreStep this
+
+                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make install-aem-profile stack_prefix=${params.STACK_MANAGER_STACK_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_CONFIG_PROFILE}/ component=${params.AEM_COMPONENT} aem_profile=${params.AEM_PROFILE} aem_artifacts_base=${params.AEM_ARTIFACTS_BASE} aem_base=${params.AEM_BASE} aem_healthcheck_version=${params.AEM_HEALTHCHECK_VERSION} aem_id=${params.AEM_ID} aem_port=${params.AEM_PORT} aem_ssl_port=${params.AEM_SSL_PORT}")
+            }
+            post {
+                always {
+
+                    JenkinsStagePostStep this
+                }
+            }
+        }
+    }
+    post {
+        always {
+
+            JenkinsPipelinePostStep this
+        }
+    }
+}

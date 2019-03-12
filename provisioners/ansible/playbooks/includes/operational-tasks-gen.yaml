@@ -1,0 +1,113 @@
+---
+
+########################################################################
+# Generate operational-tasks Jenkins jobs.
+########################################################################
+
+- name: Create a list of operational tasks
+  shell: echo {{ item.path }}
+  with_filetree: ../../../provisioners/jenkins/jenkinsfiles/aem-opencloud/operational-tasks/
+  when: item.state == 'file'
+  register: operational_tasks_jobs
+
+- name: "Generate AEM OpenCloud Jenkins jobs for operational-tasks directories"
+  file:
+    path: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item.item.path }}/
+    state: directory
+    mode: '0776'
+  with_items: "{{ operational_tasks_jobs.results }}"
+
+- name: "Generate AEM OpenCloud Jenkins jobs for operational-tasks config.xml for basic jobs"
+  template:
+    src: '../../../templates/ansible/jenkins/config/jobs-operational-tasks.xml.j2'
+    dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item }}/config.xml
+    mode: '0644'
+  loop:
+    - check-readiness-consolidated
+    - check-readiness-full-set
+    - offline-compaction-snapshot-consolidated
+    - offline-compaction-snapshot-full-set
+    - offline-snapshot-consolidated
+    - offline-snapshot-full-set
+    - promote-author
+    - schedule-live-snapshot-consolidated
+    - schedule-offline-compaction-snapshot-consolidated
+    - schedule-offline-compaction-snapshot-full-set
+    - schedule-offline-snapshot-consolidated
+    - schedule-offline-snapshot-full-set
+    - unschedule-live-snapshot-consolidated
+    - unschedule-offline-compaction-snapshot-consolidated
+    - unschedule-offline-compaction-snapshot-full-set
+    - unschedule-offline-snapshot-consolidated
+    - unschedule-offline-snapshot-full-set
+
+- name: "Generate AEM OpenCloud Jenkins jobs for operational-tasks config.xml for jobs with AEM Author/Publish component parameter"
+  template:
+    src: '../../../templates/ansible/jenkins/config/jobs-operational-tasks-authorpublish-component.xml.j2'
+    dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item }}/config.xml
+    mode: '0644'
+  loop:
+    - disable-crxde
+    - enable-crxde
+    - list-packages
+    - live-snapshot
+    - schedule-live-snapshot-full-set
+    - unschedule-live-snapshot-full-set
+
+- name: "Generate AEM OpenCloud Jenkins jobs for operational-tasks config.xml for jobs with AEM Dispatcher component parameter"
+  template:
+    src: '../../../templates/ansible/jenkins/config/jobs-operational-tasks-dispatcher-component.xml.j2'
+    dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item }}/config.xml
+    mode: '0644'
+  loop:
+    - flush-dispatcher-cache
+
+- name: "Generate AEM OpenCloud Jenkins jobs for operational-tasks config.xml for jobs with AEM Profile parameter"
+  template:
+    src: '../../../templates/ansible/jenkins/config/jobs-operational-tasks-aem-profile.xml.j2'
+    dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item }}/config.xml
+    mode: '0644'
+  loop:
+    - install-aem-profile
+
+- name: "Generate AEM OpenCloud Jenkins jobs for operational-tasks config.xml for jobs with deploy package parameters"
+  template:
+    src: '../../../templates/ansible/jenkins/config/jobs-operational-tasks-deploy-package.xml.j2'
+    dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item }}/config.xml
+    mode: '0644'
+  loop:
+    - deploy-artifact
+
+- name: "Generate AEM OpenCloud Jenkins jobs for operational-tasks config.xml for jobs with export package parameters"
+  template:
+    src: '../../../templates/ansible/jenkins/config/jobs-operational-tasks-export-package.xml.j2'
+    dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item }}/config.xml
+    mode: '0644'
+  loop:
+    - export-package
+
+- name: "Generate AEM OpenCloud Jenkins jobs for operational-tasks config.xml for jobs with import package parameters"
+  template:
+    src: '../../../templates/ansible/jenkins/config/jobs-operational-tasks-import-package.xml.j2'
+    dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item }}/config.xml
+    mode: '0644'
+  loop:
+    - import-package
+
+- name: "Generate AEM OpenCloud Jenkins jobs for operational-tasks config.xml for jobs with deployment descriptor parameter"
+  template:
+    src: '../../../templates/ansible/jenkins/config/jobs-operational-tasks-deployment-descriptor.xml.j2'
+    dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item }}/config.xml
+    mode: '0644'
+  loop:
+    - deploy-artifacts-consolidated
+    - deploy-artifacts-full-set
+
+- name: "Generate AEM OpenCloud Jenkins jobs for operational-tasks config.xml for jobs with export descriptor parameter"
+  template:
+    src: '../../../templates/ansible/jenkins/config/jobs-operational-tasks-export-descriptor.xml.j2'
+    dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item }}/config.xml
+    mode: '0644'
+  loop:
+    - export-packages-consolidated
+    - export-packages-full-set
