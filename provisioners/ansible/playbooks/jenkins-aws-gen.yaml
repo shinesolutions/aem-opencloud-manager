@@ -75,6 +75,18 @@
       when: item.state == 'directory' and item.path is match ('aem-full-set-*')
       register: aem_aws_stack_builder_aem_full_set_profiles
 
+    - name: Create a list of AEM AWS Stack Builder AEM Upgrade configuration profiles
+      shell: echo {{ item.path }}
+      with_filetree: ../../../stage/aem-opencloud-config/aem-aws-stack-builder/
+      when: item.state == 'directory' and item.path is match ('aem-upgrade-*')
+      register: aem_aws_stack_builder_aem_upgrade_profiles
+
+    - name: Create a list of AEM AWS Stack Builder AEM Reconfiguration configuration profiles
+      shell: echo {{ item.path }}
+      with_filetree: ../../../stage/aem-opencloud-config/aem-aws-stack-builder/
+      when: item.state == 'directory' and item.path is match ('aem-reconfiguration-*')
+      register: aem_aws_stack_builder_aem_reconfiguration_profiles
+
     - name: Create a list of AEM Stack Manager Messenger configuration profiles
       shell: echo {{ item.path }}
       with_filetree: ../../../stage/aem-opencloud-config/aem-stack-manager-messenger/
@@ -86,6 +98,18 @@
       with_filetree: ../../../stage/aem-opencloud-config/aem-test-suite/
       when: item.state == 'directory'
       register: aem_test_suite_profiles
+
+    - name: Create a list of AEM AWS Stack Builder AEM Testing Blue-Gren configuration profiles
+      shell: echo {{ item.path }}
+      with_filetree: ../../../stage/aem-opencloud-config/aem-aws-stack-builder/
+      when: item.state == 'directory' and item.path is match ('aem-testing-blue-green-*')
+      register: aem_testing_blue_green_profiles
+
+    - name: Create a list of AEM AWS Stack Builder AEM Testing recovery configuration profiles
+      shell: echo {{ item.path }}
+      with_filetree: ../../../stage/aem-opencloud-config/aem-aws-stack-builder/
+      when: item.state == 'directory' and item.path is match ('aem-testing-recovery-*')
+      register: aem_testing_recovery_profiles
 
     ########################################################################
     # Generate Jenkins jobs directory structure.
@@ -162,3 +186,16 @@
         aem_test_suite_profiles: aem_test_suite_profiles
 
     - import_tasks: includes/operational-tasks-gen.yaml
+    
+    - import_tasks: includes/migration-gen.yaml
+      vars:
+        aem_aws_stack_builder_aem_upgrade_profiles: aem_aws_stack_builder_aem_upgrade_profiles
+        aem_aws_stack_builder_aem_reconfiguration_profiles: aem_aws_stack_builder_aem_reconfiguration_profiles
+        aem_stack_manager_messenger_profiles: aem_stack_manager_messenger_profiles
+
+    - import_tasks: includes/testing-gen.yaml
+      vars:
+        aem_aws_stack_builder_aem_testing_blue_green_profiles: aem_aws_stack_builder_aem_testing_blue_green_profiles
+        aem_stack_manager_messenger_profiles: aem_stack_manager_messenger_profiles
+        aem_test_suite_profiles: aem_test_suite_profiles
+        aem_testing_recovery_profiles: aem_testing_recovery_profiles

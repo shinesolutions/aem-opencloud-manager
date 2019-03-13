@@ -1,0 +1,89 @@
+---
+
+########################################################################
+# Generate testing Jenkins jobs.
+########################################################################
+
+- name: Create a list of Blue-Green testing jobs for AWS
+  shell: echo {{ item.path }}
+  with_filetree: ../../../provisioners/jenkins/jenkinsfiles/aem-opencloud/testing/aws/
+  when: item.state == 'file' and item.path is match('.*blue-green')
+  register: testing_blue_green_jobs
+
+- name: Create a list of recovery testing jobs for AWS
+  shell: echo {{ item.path }}
+  with_filetree: ../../../provisioners/jenkins/jenkinsfiles/aem-opencloud/testing/aws/
+  when: item.state == 'file' and item.path is match('.*recovery')
+  register: testing_recovery_jobs
+
+- name: "Generate AEM OpenCloud Jenkins jobs for Blue-Green testing configuration profile directories"
+  file:
+    path: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/testing/aws/{{ item[0].item.path }}-{{ item[2].item.path }}-{{ item[3].item.path }}/{{ item[1].item.path }}/
+    state: directory
+    mode: '0776'
+  with_nested:
+    - "{{ aem_testing_blue_green_profiles.results }}"
+    - "{{ testing_blue_green_jobs.results }}"
+    - "{{ aem_stack_manager_messenger_profiles.results }}"
+    - "{{ aem_test_suite_profiles.results }}"
+  when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[2].skipped is not defined and item[2].item.skipped is not defined and item[3].skipped is not defined and item[3].item.skipped is not defined
+
+- name: "Generate AEM OpenCloud Jenkins jobs for recovery testing configuration profile directories"
+  file:
+    path: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/testing/aws/{{ item[0].item.path }}-{{ item[2].item.path }}-{{ item[3].item.path }}/{{ item[1].item.path }}/
+    state: directory
+    mode: '0776'
+  with_nested:
+    - "{{ aem_testing_recovery_profiles.results }}"
+    - "{{ testing_recovery_jobs.results }}"
+    - "{{ aem_stack_manager_messenger_profiles.results }}"
+    - "{{ aem_test_suite_profiles.results }}"
+  when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[2].skipped is not defined and item[2].item.skipped is not defined and item[3].skipped is not defined and item[3].item.skipped is not defined
+
+- name: "Generate AEM OpenCloud Jenkins jobs for Blue-Green testing configuration config.xml"
+  template:
+    src: '../../../templates/ansible/jenkins/config/category-config-profile.xml.j2'
+    dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/testing/aws/{{ item[0].item.path }}-{{ item[2].item.path }}-{{ item[3].item.path }}/config.xml
+    mode: '0644'
+  with_nested:
+    - "{{ aem_testing_blue_green_profiles.results }}"
+    - "{{ testing_blue_green_jobs.results }}"
+    - "{{ aem_stack_manager_messenger_profiles.results }}"
+    - "{{ aem_test_suite_profiles.results }}"
+  when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[2].skipped is not defined and item[2].item.skipped is not defined and item[3].skipped is not defined and item[3].item.skipped is not defined
+
+- name: "Generate AEM OpenCloud Jenkins jobs for recovery testing configuration config.xml"
+  template:
+    src: '../../../templates/ansible/jenkins/config/category-config-profile.xml.j2'
+    dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/testing/aws/{{ item[0].item.path }}-{{ item[2].item.path }}-{{ item[3].item.path }}/config.xml
+    mode: '0644'
+  with_nested:
+    - "{{ aem_testing_blue_green_profiles.results }}"
+    - "{{ testing_recovery_jobs.results }}"
+    - "{{ aem_stack_manager_messenger_profiles.results }}"
+    - "{{ aem_test_suite_profiles.results }}"
+  when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[2].skipped is not defined and item[2].item.skipped is not defined and item[3].skipped is not defined and item[3].item.skipped is not defined
+
+- name: "Generate AEM OpenCloud Jenkins jobs for Blue-Green testing config.xml"
+  template:
+    src: ../../../templates/ansible/jenkins/config/jobs-testing-blue-green.xml.j2
+    dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/testing/aws/{{ item[0].item.path }}-{{ item[2].item.path }}-{{ item[3].item.path }}/{{ item[1].item.path }}/config.xml
+    mode: '0644'
+  with_nested:
+    - "{{ aem_testing_blue_green_profiles.results }}"
+    - "{{ testing_blue_green_jobs.results }}"
+    - "{{ aem_stack_manager_messenger_profiles.results }}"
+    - "{{ aem_test_suite_profiles.results }}"
+  when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[2].skipped is not defined and item[2].item.skipped is not defined and item[3].skipped is not defined and item[3].item.skipped is not defined
+
+- name: "Generate AEM OpenCloud Jenkins jobs for recovery testing config.xml"
+  template:
+    src: ../../../templates/ansible/jenkins/config/jobs-testing.xml.j2
+    dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/testing/aws/{{ item[0].item.path }}-{{ item[2].item.path }}-{{ item[3].item.path }}/{{ item[1].item.path }}/config.xml
+    mode: '0644'
+  with_nested:
+    - "{{ aem_testing_blue_green_profiles.results }}"
+    - "{{ testing_recovery_jobs.results }}"
+    - "{{ aem_stack_manager_messenger_profiles.results }}"
+    - "{{ aem_test_suite_profiles.results }}"
+  when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[2].skipped is not defined and item[2].item.skipped is not defined and item[3].skipped is not defined and item[3].item.skipped is not defined
