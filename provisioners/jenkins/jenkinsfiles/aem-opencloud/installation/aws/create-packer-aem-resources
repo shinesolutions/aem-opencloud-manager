@@ -51,7 +51,7 @@ pipeline {
             steps {
                     JenkinsStagePreStep this
                     AocPrepareParamArtifact(this, params.CUSTOM_IMAGE_PROVISIONER_ARTIFACT_URL, env.TMPDIR + '/packer-aem/stage/custom/', 'aem-custom-image-provisioner.tar.gz')
-                    ExecCommand(this, env.TMPDIR, "packer-aem", "make create-aws-resources config_path=${env.AOC_CONFIG_DIR}/packer-aem/ stack_prefix=${params.STACK_PREFIX}")
+                    ExecCommand(this, env.TMPDIR, "packer-aem", "make create-aws-resources config_path=${env.AOC_CONFIG_DIR}/packer-aem/${params.AOC_CONFIG_PROFILE_AEM_AWS_STACK_BUILDER}/ stack_prefix=${params.STACK_PREFIX}")
             }
             post {
                 always {

@@ -15,7 +15,7 @@
       <hudson.model.StringParameterDefinition>
         <name>AOC_CONFIG_PROFILE_AEM_AWS_STACK_BUILDER</name>
         <description>Name of the configuration profile.</description>
-        <defaultValue></defaultValue>
+        <defaultValue>{{ item.item.path }}</defaultValue>
         <trim>false</trim>
       </hudson.model.StringParameterDefinition>
       <hudson.model.StringParameterDefinition>
@@ -74,7 +74,7 @@
       <submoduleCfg class="list"/>
       <extensions/>
     </scm>
-    <scriptPath>provisioners/jenkins/jenkinsfiles/aem-opencloud/installation/aws/create-stack-builder-resources/</scriptPath>
+    <scriptPath>provisioners/jenkins/jenkinsfiles/aem-opencloud/installation/aws/create-{{ resource_name }}-resources/</scriptPath>
     <lightweight>true</lightweight>
   </definition>
   <triggers/>
