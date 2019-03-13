@@ -162,3 +162,46 @@
         aem_test_suite_profiles: aem_test_suite_profiles
 
     - import_tasks: includes/operational-tasks-gen.yaml
+      vars:
+        aem_stack_manager_messenger_profiles: aem_stack_manager_messenger_profiles
+        operational_tasks_with_basic_params:
+          - check-readiness-consolidated
+          - check-readiness-full-set
+          - offline-compaction-snapshot-consolidated
+          - offline-compaction-snapshot-full-set
+          - offline-snapshot-consolidated
+          - offline-snapshot-full-set
+          - promote-author
+          - schedule-live-snapshot-consolidated
+          - schedule-offline-compaction-snapshot-consolidated
+          - schedule-offline-compaction-snapshot-full-set
+          - schedule-offline-snapshot-consolidated
+          - schedule-offline-snapshot-full-set
+          - unschedule-live-snapshot-consolidated
+          - unschedule-offline-compaction-snapshot-consolidated
+          - unschedule-offline-compaction-snapshot-full-set
+          - unschedule-offline-snapshot-consolidated
+          - unschedule-offline-snapshot-full-set
+        operational_tasks_with_authorpublish_component_params:
+          - disable-crxde
+          - enable-crxde
+          - list-packages
+          - live-snapshot
+          - schedule-live-snapshot-full-set
+          - unschedule-live-snapshot-full-set
+        operational_tasks_with_dispatcher_component_params:
+          - flush-dispatcher-cache
+        operational_tasks_with_aem_profile_params:
+          - install-aem-profile
+        operational_tasks_with_deploy_package_params:
+          - deploy-artifact
+        operational_tasks_with_export_package_params:
+          - export-package
+        operational_tasks_with_import_package_params:
+          - import-package
+        operational_tasks_with_deployment_descriptor_params:
+          - deploy-artifacts-consolidated
+          - deploy-artifacts-full-set
+        operational_tasks_with_export_descriptor_params:
+          - export-packages-consolidated
+          - export-packages-full-set

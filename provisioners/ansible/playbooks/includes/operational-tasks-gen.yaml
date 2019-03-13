@@ -12,102 +12,110 @@
 
 - name: "Generate AEM OpenCloud Jenkins jobs for operational-tasks directories"
   file:
-    path: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item.item.path }}/
+    path: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item[0].item.path }}/{{ item[1].item.path }}/
     state: directory
     mode: '0776'
-  with_items: "{{ operational_tasks_jobs.results }}"
+  with_nested:
+    - "{{ aem_stack_manager_messenger_profiles.results }}"
+    - "{{ operational_tasks_jobs.results }}"
+  when: item[0].skipped is not defined and item[0].item.skipped is not defined
+
+- name: "Generate AEM OpenCloud Jenkins jobs for operational-tasks configuration profile config.xml"
+  template:
+    src: '../../../templates/ansible/jenkins/config/category-config-profile.xml.j2'
+    dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item[0].item.path }}/config.xml
+    mode: '0644'
+  with_nested:
+    - "{{ aem_stack_manager_messenger_profiles.results }}"
+    - "{{ operational_tasks_jobs.results }}"
+  when: item[0].skipped is not defined and item[0].item.skipped is not defined
 
 - name: "Generate AEM OpenCloud Jenkins jobs for operational-tasks config.xml for basic jobs"
   template:
     src: '../../../templates/ansible/jenkins/config/jobs-operational-tasks.xml.j2'
-    dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item }}/config.xml
+    dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item[0].item.path }}/{{ item[1] }}/config.xml
     mode: '0644'
-  loop:
-    - check-readiness-consolidated
-    - check-readiness-full-set
-    - offline-compaction-snapshot-consolidated
-    - offline-compaction-snapshot-full-set
-    - offline-snapshot-consolidated
-    - offline-snapshot-full-set
-    - promote-author
-    - schedule-live-snapshot-consolidated
-    - schedule-offline-compaction-snapshot-consolidated
-    - schedule-offline-compaction-snapshot-full-set
-    - schedule-offline-snapshot-consolidated
-    - schedule-offline-snapshot-full-set
-    - unschedule-live-snapshot-consolidated
-    - unschedule-offline-compaction-snapshot-consolidated
-    - unschedule-offline-compaction-snapshot-full-set
-    - unschedule-offline-snapshot-consolidated
-    - unschedule-offline-snapshot-full-set
+  with_nested:
+    - "{{ aem_stack_manager_messenger_profiles.results }}"
+    - "{{ operational_tasks_with_basic_params }}"
+  when: item[0].skipped is not defined and item[0].item.skipped is not defined
 
 - name: "Generate AEM OpenCloud Jenkins jobs for operational-tasks config.xml for jobs with AEM Author/Publish component parameter"
   template:
     src: '../../../templates/ansible/jenkins/config/jobs-operational-tasks-authorpublish-component.xml.j2'
-    dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item }}/config.xml
+    dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item[0].item.path }}/{{ item[1] }}/config.xml
     mode: '0644'
-  loop:
-    - disable-crxde
-    - enable-crxde
-    - list-packages
-    - live-snapshot
-    - schedule-live-snapshot-full-set
-    - unschedule-live-snapshot-full-set
+  with_nested:
+    - "{{ aem_stack_manager_messenger_profiles.results }}"
+    - "{{ operational_tasks_with_authorpublish_component_params }}"
+  when: item[0].skipped is not defined and item[0].item.skipped is not defined
 
 - name: "Generate AEM OpenCloud Jenkins jobs for operational-tasks config.xml for jobs with AEM Dispatcher component parameter"
   template:
     src: '../../../templates/ansible/jenkins/config/jobs-operational-tasks-dispatcher-component.xml.j2'
-    dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item }}/config.xml
+    dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item[0].item.path }}/{{ item[1] }}/config.xml
     mode: '0644'
-  loop:
-    - flush-dispatcher-cache
+  with_nested:
+    - "{{ aem_stack_manager_messenger_profiles.results }}"
+    - "{{ operational_tasks_with_dispatcher_component_params }}"
+  when: item[0].skipped is not defined and item[0].item.skipped is not defined
 
 - name: "Generate AEM OpenCloud Jenkins jobs for operational-tasks config.xml for jobs with AEM Profile parameter"
   template:
     src: '../../../templates/ansible/jenkins/config/jobs-operational-tasks-aem-profile.xml.j2'
-    dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item }}/config.xml
+    dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item[0].item.path }}/{{ item[1] }}/config.xml
     mode: '0644'
-  loop:
-    - install-aem-profile
+  with_nested:
+    - "{{ aem_stack_manager_messenger_profiles.results }}"
+    - "{{ operational_tasks_with_aem_profile_params }}"
+  when: item[0].skipped is not defined and item[0].item.skipped is not defined
 
 - name: "Generate AEM OpenCloud Jenkins jobs for operational-tasks config.xml for jobs with deploy package parameters"
   template:
     src: '../../../templates/ansible/jenkins/config/jobs-operational-tasks-deploy-package.xml.j2'
-    dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item }}/config.xml
+    dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item[0].item.path }}/{{ item[1] }}/config.xml
     mode: '0644'
-  loop:
-    - deploy-artifact
+  with_nested:
+    - "{{ aem_stack_manager_messenger_profiles.results }}"
+    - "{{ operational_tasks_with_deploy_package_params }}"
+  when: item[0].skipped is not defined and item[0].item.skipped is not defined
 
 - name: "Generate AEM OpenCloud Jenkins jobs for operational-tasks config.xml for jobs with export package parameters"
   template:
     src: '../../../templates/ansible/jenkins/config/jobs-operational-tasks-export-package.xml.j2'
-    dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item }}/config.xml
+    dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item[0].item.path }}/{{ item[1] }}/config.xml
     mode: '0644'
-  loop:
-    - export-package
+  with_nested:
+    - "{{ aem_stack_manager_messenger_profiles.results }}"
+    - "{{ operational_tasks_with_export_package_params }}"
+  when: item[0].skipped is not defined and item[0].item.skipped is not defined
 
 - name: "Generate AEM OpenCloud Jenkins jobs for operational-tasks config.xml for jobs with import package parameters"
   template:
     src: '../../../templates/ansible/jenkins/config/jobs-operational-tasks-import-package.xml.j2'
-    dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item }}/config.xml
+    dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item[0].item.path }}/{{ item[1] }}/config.xml
     mode: '0644'
-  loop:
-    - import-package
+  with_nested:
+    - "{{ aem_stack_manager_messenger_profiles.results }}"
+    - "{{ operational_tasks_with_import_package_params }}"
+  when: item[0].skipped is not defined and item[0].item.skipped is not defined
 
 - name: "Generate AEM OpenCloud Jenkins jobs for operational-tasks config.xml for jobs with deployment descriptor parameter"
   template:
     src: '../../../templates/ansible/jenkins/config/jobs-operational-tasks-deployment-descriptor.xml.j2'
-    dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item }}/config.xml
+    dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item[0].item.path }}/{{ item[1] }}/config.xml
     mode: '0644'
-  loop:
-    - deploy-artifacts-consolidated
-    - deploy-artifacts-full-set
+  with_nested:
+    - "{{ aem_stack_manager_messenger_profiles.results }}"
+    - "{{ operational_tasks_with_deployment_descriptor_params }}"
+  when: item[0].skipped is not defined and item[0].item.skipped is not defined
 
 - name: "Generate AEM OpenCloud Jenkins jobs for operational-tasks config.xml for jobs with export descriptor parameter"
   template:
     src: '../../../templates/ansible/jenkins/config/jobs-operational-tasks-export-descriptor.xml.j2'
-    dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item }}/config.xml
+    dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item[0].item.path }}/{{ item[1] }}/config.xml
     mode: '0644'
-  loop:
-    - export-packages-consolidated
-    - export-packages-full-set
+  with_nested:
+    - "{{ aem_stack_manager_messenger_profiles.results }}"
+    - "{{ operational_tasks_with_export_descriptor_params }}"
+  when: item[0].skipped is not defined and item[0].item.skipped is not defined
