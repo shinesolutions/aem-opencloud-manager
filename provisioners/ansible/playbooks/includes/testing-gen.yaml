@@ -58,7 +58,7 @@
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/testing/aws/{{ item[0].item.path }}-{{ item[2].item.path }}-{{ item[3].item.path }}/config.xml
     mode: '0644'
   with_nested:
-    - "{{ aem_testing_blue_green_profiles.results }}"
+    - "{{ aem_testing_recovery_profiles.results }}"
     - "{{ testing_recovery_jobs.results }}"
     - "{{ aem_stack_manager_messenger_profiles.results }}"
     - "{{ aem_test_suite_profiles.results }}"
@@ -82,7 +82,7 @@
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/testing/aws/{{ item[0].item.path }}-{{ item[2].item.path }}-{{ item[3].item.path }}/{{ item[1].item.path }}/config.xml
     mode: '0644'
   with_nested:
-    - "{{ aem_testing_blue_green_profiles.results }}"
+    - "{{ aem_testing_recovery_profiles.results }}"
     - "{{ testing_recovery_jobs.results }}"
     - "{{ aem_stack_manager_messenger_profiles.results }}"
     - "{{ aem_test_suite_profiles.results }}"
