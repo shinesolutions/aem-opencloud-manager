@@ -19,6 +19,69 @@
         <trim>false</trim>
       </hudson.model.StringParameterDefinition>
       <hudson.model.StringParameterDefinition>
+        <name>AEM_ARTIFACTS_BASE</name>
+        <description>Base URL where all AEM artifacts are located.</description>
+        <defaultValue></defaultValue>
+        <trim>false</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.ChoiceParameterDefinition>
+        <name>AEM_COMPONENT</name>
+        <description>AEM component</description>
+        <choices class="java.util.Arrays$ArrayList">
+          <a class="string-array">
+            <string>author-primary</string>
+            <string>publish</string>
+            <string>author-publish-dispatcher</string>
+          </a>
+        </choices>
+      </hudson.model.ChoiceParameterDefinition>
+      <hudson.model.ChoiceParameterDefinition>
+        <name>AEM_ID</name>
+        <description>AEM ID</description>
+        <choices class="java.util.Arrays$ArrayList">
+          <a class="string-array">
+            <string>author</string>
+            <string>publish</string>
+          </a>
+        </choices>
+      </hudson.model.ChoiceParameterDefinition>
+      <hudson.model.ChoiceParameterDefinition>
+        <name>AEM_PROFILE</name>
+        <description>AEM installation profile</description>
+        <choices class="java.util.Arrays$ArrayList">
+          <a class="string-array">
+            <string>aem64_sp2</string>
+            <string>aem64_sp1</string>
+            <string>aem64</string>
+            <string>aem63_sp2_cfp2</string>
+            <string>aem63_sp2_cfp1</string>
+            <string>aem63_sp2</string>
+            <string>aem63_sp1_cfp2</string>
+            <string>aem63_sp1</string>
+            <string>aem63</string>
+            <string>aem62_sp1_cfp15</string>
+            <string>aem62_sp1_cfp13</string>
+            <string>aem62_sp1_cfp9</string>
+            <string>aem62_sp1_cfp5</string>
+            <string>aem62_sp1_cfp3</string>
+            <string>aem62_sp1_cfp2</string>
+            <string>aem62</string>
+          </a>
+        </choices>
+      </hudson.model.ChoiceParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>AEM_PORT</name>
+        <description>HTTP port for specific AEM ID</description>
+        <defaultValue>4502</defaultValue>
+        <trim>false</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>AEM_SSL_PORT</name>
+        <description>HTTPS port for specific AEM ID</description>
+        <defaultValue>5432</defaultValue>
+        <trim>false</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
         <name>JENKINS_AGENT_DOCKER_IMAGE</name>
         <description>The name of Docker image to be used as Jenkins build pipeline agent.</description>
         <defaultValue>{{ jenkins.agent.docker_image }}</defaultValue>

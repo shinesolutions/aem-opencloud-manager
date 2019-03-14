@@ -15,15 +15,6 @@ pipeline {
         AOC_CONFIG_DIR = "${env.TMPDIR}/aem-opencloud-config"
     }
     parameters {
-        choice(name: 'AEM_COMPONENT', choices: ['author-primary', 'publish', 'author-publish-dispatcher'], description: 'AEM Component')
-        choice(name: 'AEM_ID', choices: ['author', 'publish'], description: 'AEM ID')
-        choice(name: 'PACKAGE_ACTIVATE', choices: ['true', 'false'], description: 'Activate package activation')
-        choice(name: 'PACKAGE_FORCE', choices: ['true', 'false'], description: 'Force package installation')
-        string(name: 'PACKAGE_GROUP', defaultValue: 'shinesolutions', description: 'Package group name')
-        string(name: 'PACKAGE_NAME', defaultValue: 'aem-helloworld-content', description: 'Package name')
-        choice(name: 'PACKAGE_REPLICATE', choices: ['true', 'false'], description: 'Activate package replication')
-        string(name: 'PACKAGE_SOURCE', defaultValue: 'http://central.maven.org/maven2/com/shinesolutions/aem-helloworld-content/0.0.1/aem-helloworld-content-0.0.1.zip', description: 'Package source URL')
-        string(name: 'PACKAGE_VERSION', defaultValue: '0.0.1', description: 'Package version')
         string(name: 'AOC_VERSION_AEM_STACK_MANAGER_MESSENGER', defaultValue: config.library.aem_stack_manager_messenger, description: 'Version of aem-stack-manager-messenger repo')
     }
     stages {

@@ -15,7 +15,6 @@ pipeline {
         AOC_CONFIG_DIR = "${env.TMPDIR}/aem-opencloud-config"
     }
     parameters {
-        string(name: 'EXPORT_DESCRIPTOR_FILE', defaultValue: 'export-backup-descriptor.json', description: 'Name of the descriptor file to use for exporting from the target AEM Stack')
         string(name: 'AOC_VERSION_AEM_STACK_MANAGER_MESSENGER', defaultValue: config.library.aem_stack_manager_messenger, description: 'Version of aem-stack-manager-messenger repo')
     }
     stages {

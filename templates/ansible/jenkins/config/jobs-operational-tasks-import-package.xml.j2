@@ -18,6 +18,51 @@
         <defaultValue></defaultValue>
         <trim>false</trim>
       </hudson.model.StringParameterDefinition>
+      <hudson.model.ChoiceParameterDefinition>
+        <name>AEM_COMPONENT</name>
+        <description>AEM component name</description>
+        <choices class="java.util.Arrays$ArrayList">
+          <a class="string-array">
+            <string>author-primary</string>
+            <string>publish</string>
+            <string>author-publish-dispatcher</string>
+          </a>
+        </choices>
+      </hudson.model.ChoiceParameterDefinition>
+      <hudson.model.ChoiceParameterDefinition>
+        <name>AEM_ID</name>
+        <description>AEM ID</description>
+        <choices class="java.util.Arrays$ArrayList">
+          <a class="string-array">
+            <string>author</string>
+            <string>publish</string>
+          </a>
+        </choices>
+      </hudson.model.ChoiceParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>PACKAGE_DATESTAMP</name>
+        <description>Package date stamp</description>
+        <defaultValue></defaultValue>
+        <trim>false</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>PACKAGE_GROUP</name>
+        <description>Package group name</description>
+        <defaultValue></defaultValue>
+        <trim>false</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>PACKAGE_NAME</name>
+        <description>Package name</description>
+        <defaultValue></defaultValue>
+        <trim>false</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>PACKAGE_SOURCE_STACK_PREFIX</name>
+        <description>Stack Prefix from the source stack where the package was exported from.</description>
+        <defaultValue></defaultValue>
+        <trim>false</trim>
+      </hudson.model.StringParameterDefinition>
       <hudson.model.StringParameterDefinition>
         <name>JENKINS_AGENT_DOCKER_IMAGE</name>
         <description>The name of Docker image to be used as Jenkins build pipeline agent.</description>

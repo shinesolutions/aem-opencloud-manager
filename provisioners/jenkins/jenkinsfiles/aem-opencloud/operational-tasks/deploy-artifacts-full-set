@@ -15,7 +15,6 @@ pipeline {
         AOC_CONFIG_DIR = "${env.TMPDIR}/aem-opencloud-config"
     }
     parameters {
-        string(name: 'PACKAGE_DESCRIPTOR_FILE', defaultValue: 'deploy-artifacts-descriptor.json', description: 'Name of the descriptor file to deploy on the target AEM Stack')
         string(name: 'AOC_VERSION_AEM_STACK_MANAGER_MESSENGER', defaultValue: config.library.aem_stack_manager_messenger, description: 'Version of aem-stack-manager-messenger repo')
     }
     stages {
@@ -62,8 +61,8 @@ pipeline {
 
 
                     JenkinsStagePreStep this
-
-                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make deploy-artifacts-full-set stack_prefix=${params.STACK_MANAGER_STACK_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_CONFIG_PROFILE}/ descriptor_file=${params.PACKAGE_DESCRIPTOR_FILE}")
+                    AocPrepareParamArtifact(this, params.DEPLOYMENT_DESCRIPTOR_URL, env.TMPDIR + '/aem-stack-manager-messenger/stage/', 'deploy-artifacts-descriptor.json')
+                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make deploy-artifacts-full-set stack_prefix=${params.STACK_MANAGER_STACK_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_CONFIG_PROFILE}/ descriptor_file=stage/deploy-artifacts-descriptor.json")
             }
             post {
                 always {

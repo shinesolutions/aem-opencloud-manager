@@ -15,12 +15,6 @@ pipeline {
         AOC_CONFIG_DIR = "${env.TMPDIR}/aem-opencloud-config"
     }
     parameters {
-        choice(name: 'AEM_COMPONENT', choices: ['author-primary', 'publish', 'author-publish-dispatcher'], description: 'AEM Component')
-        choice(name: 'AEM_ID', choices: ['author', 'publish'], description: 'AEM ID')
-        string(name: 'PACKAGE_DATESTAMP', defaultValue: '', description: 'Package date stamp')
-        string(name: 'PACKAGE_GROUP', defaultValue: '', description: 'Package group name')
-        string(name: 'PACKAGE_NAME', defaultValue: '', description: 'Package name')
-        string(name: 'PACKAGE_SOURCE_STACK_PREFIX', defaultValue: '', description: 'Stack Prefix from the source stack where the package was exported from.')
         string(name: 'AOC_VERSION_AEM_STACK_MANAGER_MESSENGER', defaultValue: config.library.aem_stack_manager_messenger, description: 'Version of aem-stack-manager-messenger repo')
     }
     stages {

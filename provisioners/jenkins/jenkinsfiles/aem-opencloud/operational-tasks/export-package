@@ -15,11 +15,6 @@ pipeline {
         AOC_CONFIG_DIR = "${env.TMPDIR}/aem-opencloud-config"
     }
     parameters {
-        choice(name: 'AEM_COMPONENT', choices: ['author-primary', 'publish', 'author-publish-dispatcher'], description: 'AEM Component')
-        choice(name: 'AEM_ID', choices: ['author', 'publish'], description: 'AEM ID')
-        string(name: 'PACKAGE_FILTER', defaultValue: '', description: 'Package Filter e.g. "[{'root':'/apps/helloworld','rules':[]},{'root':'/content/helloworld','rules':[{'modifier':'exclude','pattern':'.*.\\d*\\.\\d*\\.(png|jpeg|gif)'}]},{'root':'/etc/designs/helloworld','rules':[]}]".')
-        string(name: 'PACKAGE_GROUP', defaultValue: '', description: 'Package group name')
-        string(name: 'PACKAGE_NAME', defaultValue: '', description: 'Package name')
         string(name: 'AOC_VERSION_AEM_STACK_MANAGER_MESSENGER', defaultValue: config.library.aem_stack_manager_messenger, description: 'Version of aem-stack-manager-messenger repo')
     }
     stages {
