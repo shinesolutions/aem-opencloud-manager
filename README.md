@@ -29,6 +29,13 @@ Installation
 - Resolve the [Python packages](https://github.com/shinesolutions/aem-opencloud-manager/blob/master/requirements.txt) dependencies by running `make deps`
 - Install the following plugins on your Jenkins instance:
   * [Pipeline Utility Steps plugin](https://plugins.jenkins.io/pipeline-utility-steps)
+- Approve the following script signatures via Jenkins' `Manage Jenkins`->`In-process Script Approval` menu:
+  * `method java.net.URI getHost`
+  * `method java.net.URI getPath`
+  * `method java.net.URI getScheme`
+  * `new java.net.URI java.lang.String`
+  * `staticMethod org.codehaus.groovy.runtime.DefaultGroovyMethods drop java.lang.Object[] int`
+  * `staticMethod org.codehaus.groovy.runtime.DefaultGroovyMethods init java.lang.Object[]`
 
 Usage
 -----
