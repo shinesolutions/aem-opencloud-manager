@@ -230,17 +230,17 @@
           - export-packages-consolidated
           - export-packages-full-set
 
-      - import_tasks: includes/migration-gen.yaml
-        vars:
-          aem_aws_stack_builder_aem_upgrade_profiles: aem_aws_stack_builder_aem_upgrade_profiles
-          aem_aws_stack_builder_aem_reconfiguration_profiles: aem_aws_stack_builder_aem_reconfiguration_profiles
-          aem_stack_manager_messenger_profiles: aem_stack_manager_messenger_profiles
+    - import_tasks: includes/migration-gen.yaml
+      vars:
+        aem_aws_stack_builder_aem_upgrade_profiles: aem_aws_stack_builder_aem_upgrade_profiles
+        aem_aws_stack_builder_aem_reconfiguration_profiles: aem_aws_stack_builder_aem_reconfiguration_profiles
+        aem_stack_manager_messenger_profiles: aem_stack_manager_messenger_profiles
 
-      - import_tasks: includes/testing-gen.yaml
-        vars:
-          aem_aws_stack_builder_aem_testing_blue_green_profiles: aem_aws_stack_builder_aem_testing_blue_green_profiles
-          aem_aws_stack_builder_aem_consolidated_profiles: aem_aws_stack_builder_aem_consolidated_profiles
-          aem_aws_stack_builder_aem_full_set_profiles: aem_aws_stack_builder_aem_full_set_profiles
-          aem_stack_manager_messenger_profiles: aem_stack_manager_messenger_profiles
-          aem_test_suite_profiles: aem_test_suite_profiles
-          aem_testing_recovery_profiles: aem_testing_recovery_profiles
+    - import_tasks: includes/testing-gen.yaml
+      vars:
+        aem_aws_stack_builder_aem_testing_blue_green_profiles: aem_aws_stack_builder_aem_testing_blue_green_profiles
+        aem_aws_stack_builder_aem_consolidated_profiles: aem_aws_stack_builder_aem_consolidated_profiles
+        aem_aws_stack_builder_aem_full_set_profiles: aem_aws_stack_builder_aem_full_set_profiles
+        aem_stack_manager_messenger_profiles: aem_stack_manager_messenger_profiles
+        aem_test_suite_profiles: aem_test_suite_profiles
+        aem_testing_recovery_profiles: aem_testing_recovery_profiles
