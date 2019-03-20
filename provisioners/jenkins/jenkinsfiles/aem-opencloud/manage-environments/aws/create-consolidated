@@ -41,6 +41,7 @@ pipeline {
         stage('Resolve dependencies') {
             steps {
                     JenkinsStagePreStep this
+                    ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "mv aem-aws-stack-builder-master/* ./ ")
                     ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make deps")
                     ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make deps")
                     ExecCommand(this, env.TMPDIR, "aem-test-suite", "make deps")
