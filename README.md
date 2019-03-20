@@ -42,12 +42,11 @@ Build categories
 
 | Category | Description |
 |----------|-------------|
-| installation | Installs AEM OpenCloud libraries () followed by the AEM AWS Stack Builder dependency libraries () |
-| machine-images | |
-| manage-environments | |
-| manage-stacks | |
-| operations | |
-| testing | |
+| installation | Install AEM OpenCloud libraries ([Packer AEM](https://github.com/shinesolutions/packer-aem), [AEM AWS Stack Builder](https://github.com/shinesolutions/aem-aws-stack-builder), [AEM Stack Manager Messenger](https://github.com/shinesolutions/aem-stack-manager-messenger), [AEM Test Suite](https://github.com/shinesolutions/aem-test-suite)) followed by the AEM AWS Stack Builder dependency libraries. |
+| machine-images | Create machine images containing AEM installations and utilities. |
+| manage-environments | Create and delete AEM Stack Manager, AEM Consolidated, and AEM Full-Set environments. |
+| operational-tasks | Run AEM operational tasks such as deploying AEM packages, taking backups, flushing cache, promoting AEM Author Standby to become Primary, and many others. |
+| testing | Run various tests against AEM environments. |
 
 Testing
 -------
