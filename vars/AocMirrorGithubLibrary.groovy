@@ -12,6 +12,7 @@ def call(script, String user, String repo, String version, String s3Bucket, s3Pa
   {
       libraryUrl = "https://github.com/${user}/${repo}/archive/master.tar.gz"
   }
+  println "Hellooo"
   script.sh """
   mkdir -p ${tmpDir}
   """
