@@ -17,7 +17,7 @@ aem_opencloud:
     artifact_url: https://overwrite-me/overwrite-me.tar.gz
   jenkins_sharedlibs:
     repo_url: overwrite-me
-    repo_branch: master
+    repo_branch: auspost
 
 jenkins:
   protocol: http
