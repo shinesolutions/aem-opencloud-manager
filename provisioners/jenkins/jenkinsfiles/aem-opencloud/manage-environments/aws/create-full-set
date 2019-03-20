@@ -16,6 +16,9 @@ pipeline {
         string(name: 'AOC_VERSION_AEM_AWS_STACK_BUILDER', defaultValue: config.library.aem_aws_stack_builder, description: 'Version of aem-aws-stack-builder repo to archive')
         string(name: 'AOC_VERSION_AEM_STACK_MANAGER_MESSENGER', defaultValue: config.library.aem_stack_manager_messenger, description: 'Version of aem-stack-manager-messenger repo')
         string(name: 'AOC_VERSION_AEM_TEST_SUITE', defaultValue: config.library.aem_test_suite, description: 'Version of aem-test-suite repo to archive')
+        string(name: 'SOURCE_AUTHOR_SNAPSHOT_ID', defaultValue: '', description: 'Source Snapshot ID from the Author repository')
+        string(name: 'SOURCE_PUBLISH_SNAPSHOT_ID', defaultValue: '', description: 'Source Snapshot ID from the Publish repository')
+        string(name: 'SOURCE_SNAPSHOT_STACK_PREFIX', defaultValue: '', description: 'Source Stack Prefix to get source Snapshot IDs from.')
     }
     stages {
         stage('Initialise pipeline') {
@@ -54,6 +57,7 @@ pipeline {
         stage('Prepare configuration') {
             steps {
                     JenkinsStagePreStep this
+                    GenerateOfflineSnapshotConfig(this, params.SOURCE_AUTHOR_SNAPSHOT_ID, params.SOURCE_PUBLISH_SNAPSHOT_ID, params.SOURCE_SNAPSHOT_STACK_PREFIX, env.AOC_CONFIG_PROFILE_DIR_AEM_AWS_STACK_BUILDER)
                     ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make config config_path=${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE_AEM_AWS_STACK_BUILDER}/")
             }
             post {
