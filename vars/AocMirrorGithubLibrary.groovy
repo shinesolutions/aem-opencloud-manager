@@ -8,6 +8,12 @@ import cloud.aws
  */
 def call(script, String user, String repo, String version, String s3Bucket, s3Path, String tmpDir = '/tmp') {
   libraryUrl = "https://github.com/${user}/${repo}/releases/download/${version}/${repo}-${version}.tar.gz"
+
+  if(version == "master"  || version == "latest" )
+  {
+      libraryUrl = "https://github.com/${user}/${repo}/archive/master.tar.gz"
+  }
+
   script.sh """
   mkdir -p ${tmpDir}
   """
