@@ -63,7 +63,7 @@
     path: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/installation/aws/create-packer-aem-resources-{{ item.item.path }}/
     state: directory
     mode: '0776'
-  with_items: "{{ packer_aem_profiles.results }}"
+  with_items: "{{ packer_aem_aws_resources_profiles.results }}"
   when: item.skipped is not defined and item.item.skipped is not defined and item.item.path is match ('aws-*')
 
 - name: "Generate AEM OpenCloud Jenkins job for installation configuration profile create-resources directories (stack-builder)"
@@ -83,7 +83,7 @@
     src: '../../../templates/ansible/jenkins/config/create-resources.xml.j2'
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/installation/aws/create-{{ resource_name }}-resources-{{ item.item.path }}/config.xml
     mode: '0644'
-  with_items: "{{ packer_aem_profiles.results }}"
+  with_items: "{{ packer_aem_aws_resources_profiles.results }}"
   when: item.skipped is not defined and item.item.skipped is not defined and item.item.path is match ('aws-*')
 
 - name: "Generate AEM OpenCloud Jenkins jobs for creating AWS resources config.xml (stack-builder consolidated)"

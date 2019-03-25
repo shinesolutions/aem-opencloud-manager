@@ -1,5 +1,5 @@
 ---
-  
+
 ########################################################################
 # Generate machine-images Jenkins jobs.
 ########################################################################
@@ -16,7 +16,7 @@
     state: directory
     mode: '0776'
   with_nested:
-    - "{{ packer_aem_profiles.results }}"
+    - "{{ packer_aem_aws_profiles.results }}"
     - "{{ machine_images_aws_components.results }}"
   when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[0].item.path is match ('aws-*')
 
@@ -26,7 +26,7 @@
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/machine-images/aws/{{ item[0].item.path }}/config.xml
     mode: '0644'
   with_nested:
-    - "{{ packer_aem_profiles.results }}"
+    - "{{ packer_aem_aws_profiles.results }}"
     - "{{ machine_images_aws_components.results }}"
   when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[0].item.path is match ('aws-*')
 
@@ -36,7 +36,7 @@
     state: directory
     mode: '0776'
   with_nested:
-    - "{{ packer_aem_profiles.results }}"
+    - "{{ packer_aem_aws_profiles.results }}"
     - "{{ machine_images_aws_components.results }}"
   when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[0].item.path is match ('aws-*')
 
@@ -46,6 +46,6 @@
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/machine-images/aws/{{ item[0].item.path }}/{{ item[1].item.path }}/config.xml
     mode: '0644'
   with_nested:
-    - "{{ packer_aem_profiles.results }}"
+    - "{{ packer_aem_aws_profiles.results }}"
     - "{{ machine_images_aws_components.results }}"
   when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[0].item.path is match ('aws-*')
