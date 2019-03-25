@@ -46,22 +46,28 @@
 
     ########################################################################
     # Traverse AEM OpenCloud Configuration files and list down all available
-    # configuration profiles for each AEM OpenCloud library.
+    # configuration profiles for each AEM OpenCloud library category.
     # These configuration profiles will then be used to structure the generated
     # Jenkins pipelines.
     ########################################################################
 
-    - name: Create a list of Packer AEM configuration profiles for AWS AMIs
-      shell: echo {{ item.path }}
-      with_filetree: ../../../stage/aem-opencloud-config/packer-aem/
-      when: item.state == 'directory' and item.path is match ('aws-*') and item.path is not match ('aws-resources*')
-      register: packer_aem_aws_profiles
-
     - name: Create a list of Packer AEM configuration profiles for AWS resources
       shell: echo {{ item.path }}
       with_filetree: ../../../stage/aem-opencloud-config/packer-aem/
-      when: item.state == 'directory' and item.path is match ('aws-resources*')
+      when: item.state == 'directory' and item.path is match ('aws-resources-*')
       register: packer_aem_aws_resources_profiles
+
+    - name: Create a list of Packer AEM configuration profiles for AWS AMIs
+      shell: echo {{ item.path }}
+      with_filetree: ../../../stage/aem-opencloud-config/packer-aem/
+      when: item.state == 'directory' and item.path is match ('aws-*') and item.path is not match ('aws-resources-*')
+      register: packer_aem_aws_profiles
+
+    - name: Create a list of AEM AWS Stack Builder configuration profiles for AWS resources
+      shell: echo {{ item.path }}
+      with_filetree: ../../../stage/aem-opencloud-config/aem-aws-stack-builder/
+      when: item.state == 'directory' and item.path is match ('aws-resources-*')
+      register: aem_aws_stack_builder_aws_resources_profiles
 
     - name: Create a list of AEM AWS Stack Builder AEM Stack Manager configuration profiles
       shell: echo {{ item.path }}
@@ -180,6 +186,7 @@
         aem_aws_stack_builder_aem_full_set_profiles: aem_aws_stack_builder_aem_full_set_profiles
         packer_aem_aws_profiles: packer_aem_aws_profiles
         packer_aem_aws_resources_profiles: packer_aem_aws_resources_profiles
+        aem_aws_stack_builder_aws_resources_profiles: aem_aws_stack_builder_aws_resources_profiles
 
     - import_tasks: includes/machine-images-gen.yaml
       vars:
