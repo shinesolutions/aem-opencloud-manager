@@ -14,7 +14,7 @@ aem_opencloud:
   config:
     artifact_url: https://overwrite-me/overwrite-me.tar.gz
   custom_manager_steps:
-    artifact_url: https://overwrite-me/overwrite-me.tar.gz
+    artifact_url:
   custom_image_provisioner:
     artifact_url:
   custom_stack_provisioner:
