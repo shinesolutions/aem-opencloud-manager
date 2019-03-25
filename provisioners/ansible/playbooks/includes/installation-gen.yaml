@@ -58,38 +58,50 @@
   with_items: "{{ aem_aws_stack_builder_aem_full_set_profiles.results }}"
   when: item.skipped is not defined and item.item.skipped is not defined
 
-- name: "Generate AEM OpenCloud Jenkins job for installation configuration profile Packer AEM create-resources directories"
+- name: "Generate AEM OpenCloud Jenkins job for installation configuration profile Packer AEM AWS resources directories"
+  vars:
+    library: packer-aem
   file:
-    path: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/installation/aws/create-packer-aem-resources-{{ item.item.path }}/
+    path: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/installation/aws/{{ item[1] }}-{{ library }}-resources-{{ item[0].item.path }}/
     state: directory
     mode: '0776'
-  with_items: "{{ packer_aem_aws_resources_profiles.results }}"
-  when: item.skipped is not defined and item.item.skipped is not defined
+  with_nested:
+    - "{{ packer_aem_aws_resources_profiles.results }}"
+    - ["create", "delete"]
+  when: item[0].skipped is not defined and item[0].item.skipped is not defined
 
-- name: "Generate AEM OpenCloud Jenkins job for installation configuration profile Stack Builder create-resources directories"
+- name: "Generate AEM OpenCloud Jenkins job for installation configuration profile AEM AWS Stack Builder AWS resources directories"
+  vars:
+    library: aem-aws-stack-builder
   file:
-    path: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/installation/aws/create-stack-builder-resources-{{ item.item.path }}/
+    path: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/installation/aws/{{ item[1] }}-{{ library }}-resources-{{ item[0].item.path }}/
     state: directory
     mode: '0776'
-  with_items: "{{ aem_aws_stack_builder_aws_resources_profiles.results }}"
-  when: item.skipped is not defined and item.item.skipped is not defined
+  with_nested:
+    - "{{ aem_aws_stack_builder_aws_resources_profiles.results }}"
+    - ["create", "delete"]
+  when: item[0].skipped is not defined and item[0].item.skipped is not defined
 
 - name: "Generate AEM OpenCloud Jenkins jobs for creating Packer AEM AWS resources config.xml"
   vars:
-    resource_name: packer-aem
+    library: packer-aem
   template:
-    src: '../../../templates/ansible/jenkins/config/create-resources.xml.j2'
-    dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/installation/aws/create-{{ resource_name }}-resources-{{ item.item.path }}/config.xml
+    src: '../../../templates/ansible/jenkins/config/aws-resources-{{ library }}.xml.j2'
+    dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/installation/aws/{{ item[1] }}-{{ library }}-resources-{{ item[0].item.path }}/config.xml
     mode: '0644'
-  with_items: "{{ packer_aem_aws_resources_profiles.results }}"
-  when: item.skipped is not defined and item.item.skipped is not defined and item.item.path is match ('aws-*')
+  with_nested:
+    - "{{ packer_aem_aws_resources_profiles.results }}"
+    - ["create", "delete"]
+  when: item[0].skipped is not defined and item[0].item.skipped is not defined
 
-- name: "Generate AEM OpenCloud Jenkins jobs for creating Stack Builder AWS resources config.xml"
+- name: "Generate AEM OpenCloud Jenkins jobs for creating AEM AWS Stack Builder AWS resources config.xml"
   vars:
-    resource_name: stack-builder
+    library: aem-aws-stack-builder
   template:
-    src: '../../../templates/ansible/jenkins/config/create-resources.xml.j2'
-    dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/installation/aws/create-{{ resource_name }}-resources-{{ item.item.path }}/config.xml
+    src: '../../../templates/ansible/jenkins/config/aws-resources-{{ library }}.xml.j2'
+    dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/installation/aws/{{ item[1] }}-{{ library }}-resources-{{ item[0].item.path }}/config.xml
     mode: '0644'
-  with_items: "{{ aem_aws_stack_builder_aws_resources_profiles.results }}"
-  when: item.skipped is not defined and item.item.skipped is not defined
+  with_nested:
+    - "{{ aem_aws_stack_builder_aws_resources_profiles.results }}"
+    - ["create", "delete"]
+  when: item[0].skipped is not defined and item[0].item.skipped is not defined
