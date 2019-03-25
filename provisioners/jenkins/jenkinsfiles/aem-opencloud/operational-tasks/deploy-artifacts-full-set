@@ -61,7 +61,7 @@ pipeline {
 
 
                     JenkinsStagePreStep this
-                    AocPrepareParamArtifact(this, params.DEPLOYMENT_DESCRIPTOR_URL, env.TMPDIR + '/aem-stack-manager-messenger/stage/', 'deploy-artifacts-descriptor.json')
+                    AocPrepareParamArtifact(this, params.AOC_DEPLOYMENT_DESCRIPTOR_URL, env.TMPDIR + '/aem-stack-manager-messenger/stage/', 'deploy-artifacts-descriptor.json')
                     ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make deploy-artifacts-full-set stack_prefix=${params.STACK_MANAGER_STACK_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_CONFIG_PROFILE}/ descriptor_file=stage/deploy-artifacts-descriptor.json")
             }
             post {

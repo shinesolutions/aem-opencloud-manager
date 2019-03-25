@@ -180,25 +180,25 @@
     # Generate the category jobs.
     ########################################################################
 
-    - import_tasks: includes/installation-gen.yaml
-      vars:
-        aem_aws_stack_builder_aem_consolidated_profiles: aem_aws_stack_builder_aem_consolidated_profiles
-        aem_aws_stack_builder_aem_full_set_profiles: aem_aws_stack_builder_aem_full_set_profiles
-        packer_aem_aws_profiles: packer_aem_aws_profiles
-        packer_aem_aws_resources_profiles: packer_aem_aws_resources_profiles
-        aem_aws_stack_builder_aws_resources_profiles: aem_aws_stack_builder_aws_resources_profiles
+    # - import_tasks: includes/installation-gen.yaml
+    #   vars:
+    #     aem_aws_stack_builder_aem_consolidated_profiles: aem_aws_stack_builder_aem_consolidated_profiles
+    #     aem_aws_stack_builder_aem_full_set_profiles: aem_aws_stack_builder_aem_full_set_profiles
+    #     packer_aem_aws_profiles: packer_aem_aws_profiles
+    #     packer_aem_aws_resources_profiles: packer_aem_aws_resources_profiles
+    #     aem_aws_stack_builder_aws_resources_profiles: aem_aws_stack_builder_aws_resources_profiles
+    #
+    # - import_tasks: includes/machine-images-gen.yaml
+    #   vars:
+    #     packer_aem_profiles: packer_aem_profiles
 
-    - import_tasks: includes/machine-images-gen.yaml
-      vars:
-        packer_aem_profiles: packer_aem_profiles
-
-    - import_tasks: includes/manage-environments-gen.yaml
-      vars:
-        aem_aws_stack_builder_aem_stack_manager_profiles: aem_aws_stack_builder_aem_stack_manager_profiles
-        aem_aws_stack_builder_aem_consolidated_profiles: aem_aws_stack_builder_aem_consolidated_profiles
-        aem_aws_stack_builder_aem_full_set_profiles: aem_aws_stack_builder_aem_full_set_profiles
-        aem_stack_manager_messenger_profiles: aem_stack_manager_messenger_profiles
-        aem_test_suite_profiles: aem_test_suite_profiles
+    # - import_tasks: includes/manage-environments-gen.yaml
+    #   vars:
+    #     aem_aws_stack_builder_aem_stack_manager_profiles: aem_aws_stack_builder_aem_stack_manager_profiles
+    #     aem_aws_stack_builder_aem_consolidated_profiles: aem_aws_stack_builder_aem_consolidated_profiles
+    #     aem_aws_stack_builder_aem_full_set_profiles: aem_aws_stack_builder_aem_full_set_profiles
+    #     aem_stack_manager_messenger_profiles: aem_stack_manager_messenger_profiles
+    #     aem_test_suite_profiles: aem_test_suite_profiles
 
     - import_tasks: includes/operational-tasks-gen.yaml
       vars:
@@ -244,18 +244,18 @@
         operational_tasks_with_export_descriptor_params:
           - export-packages-consolidated
           - export-packages-full-set
-
-    - import_tasks: includes/migration-gen.yaml
-      vars:
-        aem_aws_stack_builder_aem_upgrade_profiles: aem_aws_stack_builder_aem_upgrade_profiles
-        aem_aws_stack_builder_aem_reconfiguration_profiles: aem_aws_stack_builder_aem_reconfiguration_profiles
-        aem_stack_manager_messenger_profiles: aem_stack_manager_messenger_profiles
-
-    - import_tasks: includes/testing-gen.yaml
-      vars:
-        aem_aws_stack_builder_aem_testing_blue_green_profiles: aem_aws_stack_builder_aem_testing_blue_green_profiles
-        aem_aws_stack_builder_aem_consolidated_profiles: aem_aws_stack_builder_aem_consolidated_profiles
-        aem_aws_stack_builder_aem_full_set_profiles: aem_aws_stack_builder_aem_full_set_profiles
-        aem_stack_manager_messenger_profiles: aem_stack_manager_messenger_profiles
-        aem_test_suite_profiles: aem_test_suite_profiles
-        aem_testing_recovery_profiles: aem_testing_recovery_profiles
+    #
+    # - import_tasks: includes/migration-gen.yaml
+    #   vars:
+    #     aem_aws_stack_builder_aem_upgrade_profiles: aem_aws_stack_builder_aem_upgrade_profiles
+    #     aem_aws_stack_builder_aem_reconfiguration_profiles: aem_aws_stack_builder_aem_reconfiguration_profiles
+    #     aem_stack_manager_messenger_profiles: aem_stack_manager_messenger_profiles
+    #
+    # - import_tasks: includes/testing-gen.yaml
+    #   vars:
+    #     aem_aws_stack_builder_aem_testing_blue_green_profiles: aem_aws_stack_builder_aem_testing_blue_green_profiles
+    #     aem_aws_stack_builder_aem_consolidated_profiles: aem_aws_stack_builder_aem_consolidated_profiles
+    #     aem_aws_stack_builder_aem_full_set_profiles: aem_aws_stack_builder_aem_full_set_profiles
+    #     aem_stack_manager_messenger_profiles: aem_stack_manager_messenger_profiles
+    #     aem_test_suite_profiles: aem_test_suite_profiles
+    #     aem_testing_recovery_profiles: aem_testing_recovery_profiles

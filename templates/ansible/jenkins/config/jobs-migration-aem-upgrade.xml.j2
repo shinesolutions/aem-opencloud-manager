@@ -19,27 +19,27 @@
         <trim>false</trim>
       </hudson.model.StringParameterDefinition>
       <hudson.model.StringParameterDefinition>
-        <name>PRE_UPGRADE_DEPLOYMENT_DESCRIPTOR_URL</name>
+        <name>AOC_PRE_UPGRADE__DEPLOYMENT_DESCRIPTOR_URL</name>
         <description>URL where deployment descriptor file is located deploying pre-upgrade packages.</description>
-        <defaultValue></defaultValue>
+        <defaultValue>{{ aem_opencloud.deployment_descriptor_url }}</defaultValue>
         <trim>false</trim>
       </hudson.model.StringParameterDefinition>
       <hudson.model.StringParameterDefinition>
-        <name>POST_UPGRADE_DEPLOYMENT_DESCRIPTOR_URL</name>
+        <name>AOC_POST_UPGRADE__DEPLOYMENT_DESCRIPTOR_URL</name>
         <description>URL where deployment descriptor file is located deploying post-upgrade packages.</description>
-        <defaultValue></defaultValue>
+        <defaultValue>{{ aem_opencloud.deployment_descriptor_url }}</defaultValue>
         <trim>false</trim>
       </hudson.model.StringParameterDefinition>
       <hudson.model.StringParameterDefinition>
-        <name>AEM_UPDATE_DEPLOYMENT_DESCRIPTOR_URL</name>
+        <name>AOC_AEM_UPDATE__DEPLOYMENT_DESCRIPTOR_URL</name>
         <description>URL where deployment descriptor file is located to deploy AEM Hotfixes/Service-Packs.</description>
-        <defaultValue></defaultValue>
+        <defaultValue>{{ aem_opencloud.deployment_descriptor_url }}</defaultValue>
         <trim>false</trim>
       </hudson.model.StringParameterDefinition>
       <hudson.model.StringParameterDefinition>
-        <name>CUSTOM_STACK_PROVISIONER_ARTIFACT_URL</name>
+        <name>AOC_CUSTOM_STACK_PROVISIONER_ARTIFACT_URL</name>
         <description>URL where custom stack provisioner artifact is located.</description>
-        <defaultValue></defaultValue>
+        <defaultValue>{{ aem_opencloud.custom_stack_provisioner.artifact_url }}</defaultValue>
         <trim>false</trim>
       </hudson.model.StringParameterDefinition>
       <hudson.model.StringParameterDefinition>

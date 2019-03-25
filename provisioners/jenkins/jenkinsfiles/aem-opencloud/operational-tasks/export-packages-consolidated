@@ -61,7 +61,7 @@ pipeline {
 
 
                     JenkinsStagePreStep this
-                    AocPrepareParamArtifact(this, params.EXPORT_DESCRIPTOR_URL, env.TMPDIR + '/aem-stack-manager-messenger/stage/', 'export-backup-descriptor.json')
+                    AocPrepareParamArtifact(this, params.AOC_EXPORT_DESCRIPTOR_URL, env.TMPDIR + '/aem-stack-manager-messenger/stage/', 'export-backup-descriptor.json')
                     ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make export-packages-consolidated stack_prefix=${params.STACK_MANAGER_STACK_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_CONFIG_PROFILE}/ descriptor_file=${params.EXPORT_DESCRIPTOR_FILE}")
             }
             post {

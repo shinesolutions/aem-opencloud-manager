@@ -61,7 +61,7 @@ pipeline {
         stage('Create machine image') {
             steps {
                     JenkinsStagePreStep this
-                    AocPrepareParamArtifact(this, params.CUSTOM_IMAGE_PROVISIONER_ARTIFACT_URL, env.TMPDIR + '/packer-aem/stage/custom/', 'aem-custom-image-provisioner.tar.gz')
+                    AocPrepareParamArtifact(this, params.AOC_CUSTOM_IMAGE_PROVISIONER_ARTIFACT_URL, env.TMPDIR + '/packer-aem/stage/custom/', 'aem-custom-image-provisioner.tar.gz')
                     ExecCommand(this, env.TMPDIR, "packer-aem", "make aws-java version=${env.BUILD_ID} config_path=${env.AOC_CONFIG_DIR}/packer-aem/${params.AOC_CONFIG_PROFILE_PACKER_AEM}/")
             }
             post {

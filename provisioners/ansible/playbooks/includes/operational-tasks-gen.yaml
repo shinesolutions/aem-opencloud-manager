@@ -101,6 +101,8 @@
   when: item[0].skipped is not defined and item[0].item.skipped is not defined
 
 - name: "Generate AEM OpenCloud Jenkins jobs for operational-tasks config.xml for jobs with deployment descriptor parameter"
+  vars:
+    aem_architecture_type: "{{ 'consolidated' if item[1] is match('.*-consolidated') else 'full-set' }}"
   template:
     src: '../../../templates/ansible/jenkins/config/jobs-operational-tasks-deployment-descriptor.xml.j2'
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item[0].item.path }}/{{ item[1] }}/config.xml
@@ -111,6 +113,8 @@
   when: item[0].skipped is not defined and item[0].item.skipped is not defined
 
 - name: "Generate AEM OpenCloud Jenkins jobs for operational-tasks config.xml for jobs with export descriptor parameter"
+  vars:
+    aem_architecture_type: "{{ 'consolidated' if item[1] is match('.*-consolidated') else 'full-set' }}"
   template:
     src: '../../../templates/ansible/jenkins/config/jobs-operational-tasks-export-descriptor.xml.j2'
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item[0].item.path }}/{{ item[1] }}/config.xml
