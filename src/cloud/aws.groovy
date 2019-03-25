@@ -27,3 +27,10 @@ def s3_upload(script, sourceDir, fileName, bucket, path) {
   aws s3 cp ${sourceDir}/${fileName} s3://${bucket}/${path}/${fileName}
   """
 }
+
+/**
+ * Get the latest snapshot for a specific stack and snapshot type
+ */
+def get_latest_ec2_snapshot(script, stack_prefix, aem_id, snapshot_type) {
+  sh(returnStdout: true, script: """aws ec2 describe-snapshots --filter '{"Name":"tag:StackPrefix","Values":["${stack_prefix}"]}' '{"Name":"tag:SnapshotType","Values":["${snapshot_type}"]}' '{"Name":"tag:AemId","Values":["${aem_id}"]}'|jq -r '.[]|max_by(.StartTime).SnapshotId'""")
+}

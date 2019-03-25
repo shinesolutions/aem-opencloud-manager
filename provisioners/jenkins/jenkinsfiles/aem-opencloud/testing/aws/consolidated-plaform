@@ -1,0 +1,472 @@
+@Library('aem-opencloud-manager') _
+def configString = libraryResource 'aem_opencloud/config.json'
+def config = readJSON text: configString
+pipeline {
+    agent {
+        docker {
+            image params.JENKINS_AGENT_DOCKER_IMAGE
+            args params.JENKINS_AGENT_DOCKER_ARGS
+        }
+    }
+    environment {
+        TMPDIR = "/tmp/shinesolutions/aem-opencloud-manager"
+        AOC_CONFIG_DIR = "${env.TMPDIR}/aem-opencloud-config"
+        AOC_CONFIG_PROFILE_DIR_AEM_AWS_STACK_BUILDER = "${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE_AEM_AWS_STACK_BUILDER}/"
+        AOC_CONFIG_PROFILE_DIR_AEM_STACK_MANAGER = "${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE_AEM_STACK_MANAGER}/"
+        AOC_CONFIG_PROFILE_DIR_AEM_STACK_MANAGER_MESSENGER = "${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_CONFIG_PROFILE_AEM_STACK_MANAGER_MESSENGER}/"
+        AOC_CONFIG_PROFILE_DIR_AEM_TEST_SUITE = "${env.AOC_CONFIG_DIR}/aem-test-suite/${params.AOC_CONFIG_PROFILE_AEM_TEST_SUITE}/"
+    }
+    parameters {
+        string(name: 'AOC_VERSION_AEM_AWS_STACK_BUILDER', defaultValue: config.library.aem_aws_stack_builder, description: 'Version of aem-aws-stack-builder repo to archive')
+        string(name: 'AOC_VERSION_AEM_STACK_MANAGER_MESSENGER', defaultValue: config.library.aem_stack_manager_messenger, description: 'Version of aem-stack-manager-messenger repo')
+        string(name: 'AOC_VERSION_AEM_TEST_SUITE', defaultValue: config.library.aem_test_suite, description: 'Version of aem-test-suite repo to archive')
+        choice(name: 'PACKAGE_ACTIVATE', choices: ['true', 'false'], description: 'Activate package activation')
+        choice(name: 'PACKAGE_FORCE', choices: ['true', 'false'], description: 'Force package installation')
+        string(name: 'PACKAGE_GROUP', defaultValue: 'shinesolutions', description: 'Package group name')
+        string(name: 'PACKAGE_NAME', defaultValue: 'aem-helloworld-content', description: 'Package name')
+        choice(name: 'PACKAGE_REPLICATE', choices: ['true', 'false'], description: 'Activate package replication')
+        string(name: 'PACKAGE_SOURCE', defaultValue: 'http://central.maven.org/maven2/com/shinesolutions/aem-helloworld-content/0.0.1/aem-helloworld-content-0.0.1.zip', description: 'Package source URL')
+        string(name: 'PACKAGE_VERSION', defaultValue: '0.0.1', description: 'Package version')
+        string(name: 'EXPORT_PACKAGE_FILTER', defaultValue: '', description: 'Export Package Filter e.g. "[{'root':'/apps/helloworld','rules':[]},{'root':'/content/helloworld','rules':[{'modifier':'exclude','pattern':'.*.\\d*\\.\\d*\\.(png|jpeg|gif)'}]},{'root':'/etc/designs/helloworld','rules':[]}]".')
+        string(name: 'EXPORT_PACKAGE_GROUP', defaultValue: '', description: 'Export Package group name')
+        string(name: 'EXPORT_PACKAGE_NAME', defaultValue: '', description: 'Export Package name')
+        string(name: 'IMPORT_PACKAGE_DATESTAMP', defaultValue: '2019', description: 'Import Package date stamp')
+        string(name: 'SOURCE_AUTHOR_SNAPSHOT_ID', defaultValue: '', description: 'Source Snapshot ID from the Author repository')
+        string(name: 'SOURCE_PUBLISH_SNAPSHOT_ID', defaultValue: '', description: 'Source Snapshot ID from the Publish repository')
+        string(name: 'SOURCE_SNAPSHOT_STACK_PREFIX', defaultValue: '', description: 'Source Stack Prefix to get source Snapshot IDs from.')    }
+    stages {
+        stage('Initialise Jenkins pipeline') {
+            steps {
+                JenkinsInit(this, params.AOC_CUSTOM_MANAGER_STEPS_ARTIFACT_URL, env.TMPDIR)
+                JenkinsPipelinePreStep this
+            }
+        }
+        stage('Prepare AEM OpenCloud libraries and configuration') {
+            steps {
+                    JenkinsStagePreStep this
+                    AocPrepareLibrary(this, "aem-aws-stack-builder", params.AOC_VERSION_AEM_AWS_STACK_BUILDER, params.AWS_LIBRARY_S3_BUCKET, AWS_LIBRARY_S3_PATH, env.TMPDIR)
+                    AocPrepareLibrary(this, "aem-stack-manager-messenger", params.AOC_VERSION_AEM_STACK_MANAGER_MESSENGER, params.AWS_LIBRARY_S3_BUCKET, AWS_LIBRARY_S3_PATH, env.TMPDIR)
+                    AocPrepareLibrary(this, "aem-test-suite", params.AOC_VERSION_AEM_TEST_SUITE, params.AWS_LIBRARY_S3_BUCKET, AWS_LIBRARY_S3_PATH, env.TMPDIR)
+                    AocPrepareConfig(this, params.AOC_CONFIG_ARTIFACT_URL, env.TMPDIR)
+            }
+            post {
+                always {
+                  JenkinsStagePostStep this
+                }
+            }
+        }
+        stage('Resolve dependencies') {
+            steps {
+                    JenkinsStagePreStep this
+                    ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make deps")
+                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make deps")
+                    ExecCommand(this, env.TMPDIR, "aem-test-suite", "make deps")
+            }
+            post {
+                always {
+                  JenkinsStagePostStep this
+                }
+            }
+        }
+        stage('Prepare configuration') {
+            steps {
+                    JenkinsStagePreStep this
+                    GenerateOfflineSnapshotConfig(this, params.SOURCE_AUTHOR_SNAPSHOT_ID, params.SOURCE_PUBLISH_SNAPSHOT_ID, params.SOURCE_SNAPSHOT_STACK_PREFIX, env.AOC_CONFIG_PROFILE_DIR_AEM_AWS_STACK_BUILDER)
+                    ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make config config_path=${env.AOC_CONFIG_PROFILE_DIR_AEM_AWS_STACK_BUILDER}")
+            }
+            post {
+                always {
+                  // Running stage post-script
+                  JenkinsStagePostStep this
+                }
+            }
+        }
+        stage('Create AEM Stack Manager environment') {
+            steps {
+                    JenkinsStagePreStep this
+                    ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make create-stack-manager config_path=${AOC_CONFIG_PROFILE_DIR_AEM_STACK_MANAGER} stack_prefix=${params.STACK_MANAGER_STACK_PREFIX}")
+            }
+            post {
+                always {
+                  JenkinsStagePostStep this
+                }
+            }
+        }
+        stage('Create AEM Consolidated environment') {
+            steps {
+                    JenkinsStagePreStep this
+                    AocPrepareParamArtifact(this, params.DEPLOYMENT_DESCRIPTOR_URL, env.TMPDIR + '/aem-aws-stack-builder/stage/', 'deploy-artifacts-descriptor.json')
+                    AocPrepareParamArtifact(this, params.CONTENT_HEALTHCHECK_DESCRIPTOR_URL, env.TMPDIR + '/aem-aws-stack-builder/stage/', 'content-healthcheck-descriptor.json')
+                    AocPrepareParamArtifact(this, params.CUSTOM_STACK_PROVISIONER_ARTIFACT_URL, env.TMPDIR + '/aem-aws-stack-builder/stage/custom/', 'custom-stack-provisioner.tar.gz')
+                    ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make create-consolidated config_path=${env.AOC_CONFIG_PROFILE_DIR_AEM_AWS_STACK_BUILDER} stack_prefix=${params.STACK_PREFIX}")
+                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make check-readiness-consolidated stack_prefix=${params.STACK_MANAGER_STACK_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_PROFILE_DIR_AEM_STACK_MANAGER_MESSENGER}")
+            }
+            post {
+                always {
+                  JenkinsStagePostStep this
+                }
+            }
+        }
+        stage('Run acceptance test(Placeholder)') {
+            steps {
+                    JenkinsStagePreStep this
+                    // ExecCommand(this, env.TMPDIR, "aem-test-suite", "make test-acceptance-consolidated config_path=${AOC_CONFIG_PROFILE_DIR_AEM_TEST_SUITE} stack_prefix=${params.STACK_PREFIX}")
+            }
+            post {
+                always {
+                  JenkinsStagePostStep this
+                }
+            }
+        }
+        stage('Unschedule jobs for live-snapshot') {
+            steps {
+                    JenkinsStagePreStep this
+                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make unschedule-live-snapshot-consolidated stack_prefix=${params.STACK_MANAGER_STACK_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_PROFILE_DIR_AEM_STACK_MANAGER_MESSENGER}")
+            }
+            post {
+                always {
+                    JenkinsStagePostStep this
+                }
+            }
+        }
+        stage('Unschedule jobs for offline-snapshot AEM Consolidated Architecture') {
+            steps {
+                    JenkinsStagePreStep this
+                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make unschedule-offline-snapshot-consolidated stack_prefix=${params.STACK_MANAGER_STACK_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_PROFILE_DIR_AEM_STACK_MANAGER_MESSENGER}")
+            }
+            post {
+                always {
+                    JenkinsStagePostStep this
+                }
+            }
+        }
+        stage('Unschedule jobs for offline-compaction-snapshot AEM Consolidated Architecture') {
+            steps {
+                    JenkinsStagePreStep this
+                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make unschedule-offline-compaction-snapshot-consolidated stack_prefix=${params.STACK_MANAGER_STACK_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_PROFILE_DIR_AEM_STACK_MANAGER_MESSENGER}")
+            }
+            post {
+                always {
+                    JenkinsStagePostStep this
+                }
+            }
+        }
+        stage('List packages') {
+            steps {
+                    JenkinsStagePreStep this
+                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make list-packages stack_prefix=${params.STACK_MANAGER_STACK_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_PROFILE_DIR_AEM_STACK_MANAGER_MESSENGER} component=author-publish-dispatcher")
+            }
+            post {
+                always {
+                    JenkinsStagePostStep this
+                }
+            }
+        }
+        stage('Enable CRXDE') {
+            steps {
+                    JenkinsStagePreStep this
+                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make enable-crxde stack_prefix=${params.STACK_MANAGER_STACK_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_PROFILE_DIR_AEM_STACK_MANAGER_MESSENGER} component=author-publish-dispatcher")
+            }
+            post {
+                always {
+                    JenkinsStagePostStep this
+                }
+            }
+        }
+        stage('Disable CRXDE') {
+            steps {
+                    JenkinsStagePreStep this
+                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make disable-crxde stack_prefix=${params.STACK_MANAGER_STACK_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_PROFILE_DIR_AEM_STACK_MANAGER_MESSENGER} component=author-publish-dispatcher")
+            }
+            post {
+                always {
+                    JenkinsStagePostStep this
+                }
+            }
+        }
+        stage('Flush AEM Author-Dispatcher cache') {
+            steps {
+                    JenkinsStagePreStep this
+                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make flush-dispatcher-cache stack_prefix=${params.STACK_MANAGER_STACK_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_PROFILE_DIR_AEM_STACK_MANAGER_MESSENGER} component=author-dispatcher")
+            }
+            post {
+                always {
+                    JenkinsStagePostStep this
+                }
+            }
+        }
+        stage('Flush AEM Publish-Dispatcher cache') {
+            steps {
+                    JenkinsStagePreStep this
+                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make flush-dispatcher-cache stack_prefix=${params.STACK_MANAGER_STACK_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_PROFILE_DIR_AEM_STACK_MANAGER_MESSENGER} component=author-publish-dispatcher")
+            }
+            post {
+                always {
+                    JenkinsStagePostStep this
+                }
+            }
+        }
+        stage('Deploy applications') {
+            steps {
+                    JenkinsStagePreStep this
+                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make deploy-artifacts-consolidated stack_prefix=${params.STACK_MANAGER_STACK_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_PROFILE_DIR_AEM_STACK_MANAGER_MESSENGER} descriptor_file=deploy-artifacts-descriptor.json")
+            }
+            post {
+                always {
+                  JenkinsStagePostStep this
+                }
+            }
+        }
+        stage('Check readiness on AEM Consolidated after deployment') {
+            steps {
+                    JenkinsStagePreStep this
+                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make check-readiness-consolidated stack_prefix=${params.STACK_MANAGER_STACK_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_PROFILE_DIR_AEM_STACK_MANAGER_MESSENGER}")
+            }
+            post {
+                always {
+                  JenkinsStagePostStep this
+                }
+            }
+        }
+        stage('Deploy a single AEM package to AEM Author') {
+            steps {
+
+
+                    JenkinsStagePreStep this
+
+                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make deploy-artifact stack_prefix=${params.STACK_MANAGER_STACK_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_PROFILE_DIR_AEM_STACK_MANAGER_MESSENGER} component=author-publish-dispatcher aem_id=author source=${params.PACKAGE_SOURCE} group=${params.PACKAGE_GROUP} name=${params.PACKAGE_NAME} version=${params.PACKAGE_VERSION} replicate=${params.PACKAGE_REPLICATE} activate=${params.PACKAGE_ACTIVATE} force=${params.PACKAGE_FORCE}")
+            }
+            post {
+                always {
+
+                    JenkinsStagePostStep this
+                }
+            }
+        }
+        stage('Deploy a single AEM package to AEM Publish') {
+            steps {
+
+
+                    JenkinsStagePreStep this
+
+                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make deploy-artifact stack_prefix=${params.STACK_MANAGER_STACK_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_PROFILE_DIR_AEM_STACK_MANAGER_MESSENGER} component=author-publish-dispatcher aem_id=publish source=${params.PACKAGE_SOURCE} group=${params.PACKAGE_GROUP} name=${params.PACKAGE_NAME} version=${params.PACKAGE_VERSION} replicate=${params.PACKAGE_REPLICATE} activate=${params.PACKAGE_ACTIVATE} force=${params.PACKAGE_FORCE}")
+            }
+            post {
+                always {
+
+                    JenkinsStagePostStep this
+                }
+            }
+        }
+        stage('Check readiness on AEM Consolidated after deploying single artifacts') {
+            steps {
+                    JenkinsStagePreStep this
+                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make check-readiness-consolidated stack_prefix=${params.STACK_MANAGER_STACK_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_PROFILE_DIR_AEM_STACK_MANAGER_MESSENGER}")
+            }
+            post {
+                always {
+                  JenkinsStagePostStep this
+                }
+            }
+        }
+        stage('Export package from AEM Author to S3') {
+            steps {
+                    JenkinsStagePreStep this
+                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make export-package stack_prefix=${params.STACK_MANAGER_STACK_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_PROFILE_DIR_AEM_STACK_MANAGER_MESSENGER} component=author-publish-dispatcher aem_id=author package_group=${params.EXPORT_PACKAGE_GROUP} package_name=${params.EXPORT_PACKAGE_NAME} =${params.EXPORT_PACKAGE_FILTER}")
+            }
+            post {
+                always {
+
+                    JenkinsStagePostStep this
+                }
+            }
+        }
+        stage('Export package from AEM Publish to S3') {
+            steps {
+                    JenkinsStagePreStep this
+                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make export-package stack_prefix=${params.STACK_MANAGER_STACK_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_PROFILE_DIR_AEM_STACK_MANAGER_MESSENGER} component=author-publish-dispatcher aem_id=publish package_group=${params.EXPORT_PACKAGE_GROUP} package_name=${params.EXPORT_PACKAGE_NAME} =${params.EXPORT_PACKAGE_FILTER}")
+            }
+            post {
+                always {
+
+                    JenkinsStagePostStep this
+                }
+            }
+        }
+        stage('Import package from S3 to AEM Author') {
+            steps {
+                    JenkinsStagePreStep this
+                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make import-package stack_prefix=${params.STACK_MANAGER_STACK_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_PROFILE_DIR_AEM_STACK_MANAGER_MESSENGER} component=author-publish-dispatcher aem_id=author source_stack_prefix=${params.STACK_PREFIX} package_group=${params.EXPORT_PACKAGE_GROUP} package_name=${params.EXPORT_PACKAGE_NAME} package_datestamp=${params.IMPORT_PACKAGE_DATESTAMP}")
+            }
+            post {
+                always {
+
+                    JenkinsStagePostStep this
+                }
+            }
+        }
+        stage('Import package from S3 to AEM Publish') {
+            steps {
+                    JenkinsStagePreStep this
+                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make import-package stack_prefix=${params.STACK_MANAGER_STACK_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_PROFILE_DIR_AEM_STACK_MANAGER_MESSENGER} component=author-publish-dispatcher aem_id=publish source_stack_prefix=${params.STACK_PREFIX} package_group=${params.EXPORT_PACKAGE_GROUP} package_name=${params.EXPORT_PACKAGE_NAME} package_datestamp=${params.IMPORT_PACKAGE_DATESTAMP}")
+            }
+            post {
+                always {
+
+                    JenkinsStagePostStep this
+                }
+            }
+        }
+        stage('Check readiness on AEM Consolidated after package import') {
+            steps {
+                    JenkinsStagePreStep this
+                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make check-readiness-consolidated stack_prefix=${params.STACK_MANAGER_STACK_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_PROFILE_DIR_AEM_STACK_MANAGER_MESSENGER}")
+            }
+            post {
+                always {
+                  JenkinsStagePostStep this
+                }
+            }
+        }
+        stage('Take live snapshot') {
+            steps {
+                    JenkinsStagePreStep this
+                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make live-snapshot stack_prefix=${params.STACK_MANAGER_STACK_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_PROFILE_DIR_AEM_STACK_MANAGER_MESSENGER} component=author-publish-dispatcher")
+            }
+            post {
+                always {
+
+                    JenkinsStagePostStep this
+                }
+            }
+        }
+        stage('Check readiness on AEM Consolidated after taking live snapshots of AEM repositories') {
+            steps {
+                    JenkinsStagePreStep this
+                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make check-readiness-consolidated stack_prefix=${params.STACK_MANAGER_STACK_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_PROFILE_DIR_AEM_STACK_MANAGER_MESSENGER}")
+            }
+            post {
+                always {
+                  JenkinsStagePostStep this
+                }
+            }
+        }
+        stage('Offline snapshot AEM Consolidated Architecture') {
+            steps {
+
+
+                    JenkinsStagePreStep this
+
+                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make offline-snapshot-consolidated stack_prefix=${params.STACK_MANAGER_STACK_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_PROFILE_DIR_AEM_STACK_MANAGER_MESSENGER}")
+            }
+            post {
+                always {
+
+                    JenkinsStagePostStep this
+                }
+            }
+        }
+        stage('Check readiness on AEM Consolidated after running offline snapshot AEM Consolidated Architecture') {
+            steps {
+                    JenkinsStagePreStep this
+                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make check-readiness-consolidated stack_prefix=${params.STACK_MANAGER_STACK_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_PROFILE_DIR_AEM_STACK_MANAGER_MESSENGER}")
+            }
+            post {
+                always {
+                  JenkinsStagePostStep this
+                }
+            }
+        }
+        stage('Offline compaction snapshot AEM Consolidated Architecture') {
+            steps {
+
+
+                    JenkinsStagePreStep this
+
+                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make offline-compaction-snapshot-consolidated stack_prefix=${params.STACK_MANAGER_STACK_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_PROFILE_DIR_AEM_STACK_MANAGER_MESSENGER}")
+            }
+            post {
+                always {
+
+                    JenkinsStagePostStep this
+                }
+            }
+        }
+        stage('Check readiness on AEM Consolidated after running offline compaction snapshot AEM Consolidated Architecture') {
+            steps {
+                    JenkinsStagePreStep this
+                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make check-readiness-consolidated stack_prefix=${params.STACK_MANAGER_STACK_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_PROFILE_DIR_AEM_STACK_MANAGER_MESSENGER}")
+            }
+            post {
+                always {
+                  JenkinsStagePostStep this
+                }
+            }
+        }
+        stage('Schedule jobs for live-snapshot') {
+            steps {
+                    JenkinsStagePreStep this
+                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make schedule-live-snapshot-consolidated stack_prefix=${params.STACK_MANAGER_STACK_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_PROFILE_DIR_AEM_STACK_MANAGER_MESSENGER}")
+            }
+            post {
+                always {
+
+                    JenkinsStagePostStep this
+                }
+            }
+        }
+        stage('Schedule jobs for offline-snapshot AEM Consolidated Architecture') {
+            steps {
+                    JenkinsStagePreStep this
+                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make schedule-offline-snapshot-consolidated stack_prefix=${params.STACK_MANAGER_STACK_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_PROFILE_DIR_AEM_STACK_MANAGER_MESSENGER}")
+            }
+            post {
+                always {
+
+                    JenkinsStagePostStep this
+                }
+            }
+        }
+        stage('Schedule jobs for offline-compaction-snapshot AEM Consolidated Architecture') {
+            steps {
+                    JenkinsStagePreStep this
+                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make schedule-offline-compaction-snapshot-consolidated stack_prefix=${params.STACK_MANAGER_STACK_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_PROFILE_DIR_AEM_STACK_MANAGER_MESSENGER}")
+            }
+            post {
+                always {
+
+                    JenkinsStagePostStep this
+                }
+            }
+        }
+        stage('Delete AEM Consolidated Architecture') {
+            steps {
+                    JenkinsStagePreStep this
+
+                    ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make delete-consolidated config_path=${env.AOC_CONFIG_PROFILE_DIR_AEM_AWS_STACK_BUILDER} stack_prefix=${params.STACK_PREFIX}")
+            }
+            post {
+                always {
+                  JenkinsStagePostStep this
+                }
+            }
+        }
+        stage('Delete AEM OpenCloud Stack Manager environment') {
+            steps {
+                    JenkinsStagePreStep this
+
+                    ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make delete-stack-manager config_path=${AOC_CONFIG_PROFILE_DIR_AEM_STACK_MANAGER} stack_prefix=${params.STACK_MANAGER_STACK_PREFIX}")
+            }
+            post {
+                always {
+                  JenkinsStagePostStep this
+                }
+            }
+        }
+    }
+    post {
+        always {
+          JenkinsPipelinePostStep this
+        }
+    }
+}
