@@ -72,7 +72,7 @@ pipeline {
         stage('Create AEM Consolidated environment') {
             steps {
                     JenkinsStagePreStep this
-                    AocPrepareParamArtifact(this, params.AOC_CUSTOM_STACK_PROVISIONER_ARTIFACT_URL, env.TMPDIR + '/aem-aws-stack-builder/stage/custom/', 'custom-stack-provisioner.tar.gz')
+                    AocPrepareParamArtifact(this, params.AOC_CUSTOM_STACK_PROVISIONER_ARTIFACT_URL, env.TMPDIR + '/aem-aws-stack-builder/stage/', 'aem-custom-stack-provisioner.tar.gz')
                     ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make create-consolidated config_path=${env.AOC_CONFIG_PROFILE_DIR_AEM_AWS_STACK_BUILDER} stack_prefix=${params.STACK_PREFIX}")
                     ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make check-readiness-consolidated stack_prefix=${params.STACK_MANAGER_STACK_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_CONFIG_PROFILE_AEM_STACK_MANAGER_MESSENGER}/")
             }
