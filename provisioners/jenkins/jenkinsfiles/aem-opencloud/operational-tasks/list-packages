@@ -13,6 +13,7 @@ pipeline {
     environment {
         TMPDIR = "/tmp/shinesolutions/aem-opencloud-manager"
         AOC_CONFIG_DIR = "${env.TMPDIR}/aem-opencloud-config"
+
     }
     parameters {
         string(name: 'AOC_VERSION_AEM_STACK_MANAGER_MESSENGER', defaultValue: config.library.aem_stack_manager_messenger, description: 'Version of aem-stack-manager-messenger repo')
@@ -61,7 +62,7 @@ pipeline {
 
                     JenkinsStagePreStep this
 
-                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make list-packages stack_prefix=${params.STACK_MANAGER_STACK_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_CONFIG_PROFILE}/ component=${params.AEM_COMPONENT}")
+                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make list-packages stack_prefix=${params.STACK_MANAGER_STACK_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_CONFIG_PROFILE_AEM_STACK_MANAGER_MESSENGER}/ component=${params.AEM_COMPONENT}")
             }
             post {
                 always {
