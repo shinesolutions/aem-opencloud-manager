@@ -188,7 +188,7 @@
     - "{{ testing_platform_full_set_jobs.results }}"
     - "{{ aem_stack_manager_messenger_profiles.results }}"
     - "{{ aem_test_suite_profiles.results }}"
-  when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[2].skipped is not defined and item[2].item.skipped is not defined and item[3].skipped is not defined and item[3].item.skipped is not defined 
+  when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[2].skipped is not defined and item[2].item.skipped is not defined and item[3].skipped is not defined and item[3].item.skipped is not defined
 
 - name: "Generate AEM OpenCloud Jenkins jobs for platform consolidated testing config.xml"
   template:
