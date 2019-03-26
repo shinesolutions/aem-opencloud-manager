@@ -60,7 +60,7 @@ pipeline {
 
                     JenkinsStagePreStep this
 
-                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make live-snapshot stack_prefix=${params.STACK_MANAGER_STACK_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-test-suite/${params.AOC_CONFIG_PROFILE}/ component=${params.AEM_COMPONENT}")
+                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make live-snapshot stack_prefix=${params.STACK_MANAGER_STACK_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_CONFIG_PROFILE_AEM_STACK_MANAGER_MESSENGER}/ component=${params.AEM_COMPONENT}")
             }
             post {
                 always {
