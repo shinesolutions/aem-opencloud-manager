@@ -16,7 +16,7 @@
   when: item.state == 'file' and item.path is match('.*aem-reconfiguration')
   register: migration_aem_reconfiguration_jobs
 
-- name: "Generate AEM OpenCloud Jenkins jobs for AEM upgrade migration configuration profile directories"
+- name: "Generate jobs for AEM upgrade migration configuration profile directories"
   file:
     path: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/migration/aws/{{ item[0].item.path }}-{{ item[2].item.path }}/{{ item[1].item.path }}/
     state: directory
@@ -27,7 +27,7 @@
     - "{{ aem_stack_manager_messenger_profiles.results }}"
   when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[2].skipped is not defined and item[2].item.skipped is not defined
 
-- name: "Generate AEM OpenCloud Jenkins jobs for AEM reconfiguration migration configuration profile directories"
+- name: "Generate jobs for AEM reconfiguration migration configuration profile directories"
   file:
     path: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/migration/aws/{{ item[0].item.path }}-{{ item[2].item.path }}/{{ item[1].item.path }}/
     state: directory
@@ -38,7 +38,7 @@
     - "{{ aem_stack_manager_messenger_profiles.results }}"
   when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[2].skipped is not defined and item[2].item.skipped is not defined
 
-- name: "Generate AEM OpenCloud Jenkins jobs for AEM upgrade migration configuration profile config.xml for AEM upgrade migration configuration profile components"
+- name: "Generate jobs for AEM upgrade migration configuration profile config.xml for AEM upgrade migration configuration profile components"
   template:
     src: '../../../templates/ansible/jenkins/config/category-config-profile.xml.j2'
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/migration/aws/{{ item[0].item.path }}-{{ item[2].item.path }}/config.xml
@@ -49,7 +49,7 @@
     - "{{ aem_stack_manager_messenger_profiles.results }}"
   when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[2].skipped is not defined and item[2].item.skipped is not defined
 
-- name: "Generate AEM OpenCloud Jenkins jobs for AEM reconfiguration configuration profile config.xml for AEM upgrade migration configuration profile components"
+- name: "Generate jobs for AEM reconfiguration configuration profile config.xml for AEM upgrade migration configuration profile components"
   template:
     src: '../../../templates/ansible/jenkins/config/category-config-profile.xml.j2'
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/migration/aws/{{ item[0].item.path }}-{{ item[2].item.path }}/config.xml
@@ -60,7 +60,7 @@
     - "{{ aem_stack_manager_messenger_profiles.results }}"
   when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[2].skipped is not defined and item[2].item.skipped is not defined
 
-- name: "Generate AEM OpenCloud Jenkins jobs for AEM upgrade migration config.xml for AEM upgrade migration configuration profile components"
+- name: "Generate jobs for AEM upgrade migration config.xml for AEM upgrade migration configuration profile components"
   template:
     src: ../../../templates/ansible/jenkins/config/jobs-migration-aem-upgrade.xml.j2
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/migration/aws/{{ item[0].item.path }}-{{ item[2].item.path }}/{{ item[1].item.path }}/config.xml
@@ -71,7 +71,7 @@
     - "{{ aem_stack_manager_messenger_profiles.results }}"
   when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[2].skipped is not defined and item[2].item.skipped is not defined
 
-- name: "Generate AEM OpenCloud Jenkins jobs for AEM reconfiguration config.xml for AEM upgrade migration configuration profile components"
+- name: "Generate jobs for AEM reconfiguration config.xml for AEM upgrade migration configuration profile components"
   template:
     src: ../../../templates/ansible/jenkins/config/jobs-migration-aem-reconfiguration.xml.j2
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/migration/aws/{{ item[0].item.path }}-{{ item[2].item.path }}/{{ item[1].item.path }}/config.xml

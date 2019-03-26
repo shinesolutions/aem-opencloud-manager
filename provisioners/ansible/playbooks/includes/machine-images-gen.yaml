@@ -10,7 +10,7 @@
   when: item.state == 'file'
   register: machine_images_aws_components
 
-- name: "Generate AEM OpenCloud Jenkins jobs for machine-images configuration profile directories"
+- name: "Generate jobs for machine-images configuration profile directories"
   file:
     path: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/machine-images/aws/{{ item[0].item.path }}/
     state: directory
@@ -20,7 +20,7 @@
     - "{{ machine_images_aws_components.results }}"
   when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[0].item.path is match ('aws-*')
 
-- name: "Generate AEM OpenCloud Jenkins jobs for machine-images configuration profile config.xml"
+- name: "Generate jobs for machine-images configuration profile config.xml"
   template:
     src: '../../../templates/ansible/jenkins/config/category-config-profile.xml.j2'
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/machine-images/aws/{{ item[0].item.path }}/config.xml
@@ -30,7 +30,7 @@
     - "{{ machine_images_aws_components.results }}"
   when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[0].item.path is match ('aws-*')
 
-- name: "Generate AEM OpenCloud Jenkins jobs for machine-images' configuration profile components"
+- name: "Generate jobs for machine-images' configuration profile components"
   file:
     path: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/machine-images/aws/{{ item[0].item.path }}/{{ item[1].item.path }}/
     state: directory
@@ -40,7 +40,7 @@
     - "{{ machine_images_aws_components.results }}"
   when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[0].item.path is match ('aws-*')
 
-- name: "Generate AEM OpenCloud Jenkins jobs config.xml for machine-images configuration profile components"
+- name: "Generate jobs config.xml for machine-images configuration profile components"
   template:
     src: ../../../templates/ansible/jenkins/config/jobs-machine-images.xml.j2
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/machine-images/aws/{{ item[0].item.path }}/{{ item[1].item.path }}/config.xml

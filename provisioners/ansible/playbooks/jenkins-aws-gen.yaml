@@ -127,7 +127,7 @@
     # Generate Jenkins jobs directory structure.
     ########################################################################
 
-    - name: "Create category directories for generated AEM OpenCloud Jenkins jobs"
+    - name: "Create category directories for generated jobs"
       file:
         path: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/{{ item.path }}
         state: directory
@@ -141,7 +141,7 @@
         dest: "../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/config.xml"
         mode: '0644'
 
-    - name: "Create category config.xml for generated AEM OpenCloud Jenkins jobs"
+    - name: "Create category config.xml for generated jobs"
       template:
         src: '../../../templates/ansible/jenkins/config/category.xml.j2'
         dest: "../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/{{ item.path }}/config.xml"
@@ -154,7 +154,7 @@
     # Generate Jenkins jobs directory structure.
     ########################################################################
 
-    - name: "Create category directories for generated AEM OpenCloud Jenkins jobs"
+    - name: "Create category directories for generated jobs"
       file:
         path: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/{{ item.path }}
         state: directory
@@ -168,7 +168,7 @@
         dest: "../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/config.xml"
         mode: '0644'
 
-    - name: "Create category config.xml for generated AEM OpenCloud Jenkins jobs"
+    - name: "Create category config.xml for generated jobs"
       template:
         src: '../../../templates/ansible/jenkins/config/category.xml.j2'
         dest: "../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/{{ item.path }}/config.xml"

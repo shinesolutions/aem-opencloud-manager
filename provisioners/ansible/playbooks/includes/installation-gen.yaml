@@ -10,7 +10,7 @@
     state: directory
     mode: '0776'
 
-- name: "Generate AEM OpenCloud Jenkins jobs for installation configuration profile AEM AWS Stack Builder Consolidated directories"
+- name: "Generate jobs for installation configuration profile AEM AWS Stack Builder Consolidated directories"
   file:
     path: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/installation/aws/mirror-stack-builder-libraries-{{ item.item.path }}/
     state: directory
@@ -18,7 +18,7 @@
   with_items: "{{ aem_aws_stack_builder_aem_consolidated_profiles.results }}"
   when: item.skipped is not defined and item.item.skipped is not defined
 
-- name: "Generate AEM OpenCloud Jenkins jobs for installation configuration profile AEM AWS Stack Builder Full-Set directories"
+- name: "Generate jobs for installation configuration profile AEM AWS Stack Builder Full-Set directories"
   file:
     path: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/installation/aws/mirror-stack-builder-libraries-{{ item.item.path }}/
     state: directory
@@ -34,7 +34,7 @@
   with_items:
     - { path: mirror-aem-opencloud-libraries, category: installation, platform_type: aws }
 
-- name: "Generate AEM OpenCloud Jenkins jobs for installation configuration profile AEM AWS Stack Builder Consolidated config.xml"
+- name: "Generate jobs for installation configuration profile AEM AWS Stack Builder Consolidated config.xml"
   template:
     src: '../../../templates/ansible/jenkins/config/jobs-installation.xml.j2'
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/installation/aws/mirror-stack-builder-libraries-{{ item.item.path }}/config.xml
@@ -42,7 +42,7 @@
   with_items: "{{ aem_aws_stack_builder_aem_consolidated_profiles.results }}"
   when: item.skipped is not defined and item.item.skipped is not defined
 
-- name: "Generate AEM OpenCloud Jenkins jobs for installation configuration profile AEM AWS Stack Builder Full-Set config.xml"
+- name: "Generate jobs for installation configuration profile AEM AWS Stack Builder Full-Set config.xml"
   template:
     src: '../../../templates/ansible/jenkins/config/jobs-installation.xml.j2'
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/installation/aws/mirror-stack-builder-libraries-{{ item.item.path }}/config.xml
@@ -50,7 +50,7 @@
   with_items: "{{ aem_aws_stack_builder_aem_full_set_profiles.results }}"
   when: item.skipped is not defined and item.item.skipped is not defined
 
-- name: "Generate AEM OpenCloud Jenkins jobs for installation configuration profile AEM AWS Stack Builder config.xml"
+- name: "Generate jobs for installation configuration profile AEM AWS Stack Builder config.xml"
   template:
     src: '../../../templates/ansible/jenkins/config/jobs-installation.xml.j2'
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/installation/aws/mirror-stack-builder-libraries-{{ item.item.path }}/config.xml
@@ -82,7 +82,7 @@
     - ["create", "delete"]
   when: item[0].skipped is not defined and item[0].item.skipped is not defined
 
-- name: "Generate AEM OpenCloud Jenkins jobs for creating Packer AEM AWS resources config.xml"
+- name: "Generate jobs for creating Packer AEM AWS resources config.xml"
   vars:
     library: packer-aem
   template:
@@ -94,7 +94,7 @@
     - ["create", "delete"]
   when: item[0].skipped is not defined and item[0].item.skipped is not defined
 
-- name: "Generate AEM OpenCloud Jenkins jobs for creating AEM AWS Stack Builder AWS resources config.xml"
+- name: "Generate jobs for creating AEM AWS Stack Builder AWS resources config.xml"
   vars:
     library: aem-aws-stack-builder
   template:

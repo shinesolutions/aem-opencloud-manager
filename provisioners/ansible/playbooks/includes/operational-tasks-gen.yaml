@@ -10,7 +10,7 @@
   when: item.state == 'file'
   register: operational_tasks_jobs
 
-- name: "Generate AEM OpenCloud Jenkins jobs for operational-tasks directories"
+- name: "Generate jobs for operational-tasks directories"
   file:
     path: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item[0].item.path }}/{{ item[1].item.path }}/
     state: directory
@@ -20,7 +20,7 @@
     - "{{ operational_tasks_jobs.results }}"
   when: item[0].skipped is not defined and item[0].item.skipped is not defined
 
-- name: "Generate AEM OpenCloud Jenkins jobs for operational-tasks configuration profile config.xml"
+- name: "Generate jobs for operational-tasks configuration profile config.xml"
   template:
     src: '../../../templates/ansible/jenkins/config/category-config-profile.xml.j2'
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item[0].item.path }}/config.xml
@@ -30,7 +30,7 @@
     - "{{ operational_tasks_jobs.results }}"
   when: item[0].skipped is not defined and item[0].item.skipped is not defined
 
-- name: "Generate AEM OpenCloud Jenkins jobs for operational-tasks config.xml for basic jobs"
+- name: "Generate jobs for operational-tasks config.xml for basic jobs"
   template:
     src: '../../../templates/ansible/jenkins/config/jobs-operational-tasks.xml.j2'
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item[0].item.path }}/{{ item[1] }}/config.xml
@@ -40,7 +40,7 @@
     - "{{ operational_tasks_with_basic_params }}"
   when: item[0].skipped is not defined and item[0].item.skipped is not defined
 
-- name: "Generate AEM OpenCloud Jenkins jobs for operational-tasks config.xml for jobs with AEM Author/Publish component parameter"
+- name: "Generate jobs for operational-tasks config.xml for jobs with AEM Author/Publish component parameter"
   template:
     src: '../../../templates/ansible/jenkins/config/jobs-operational-tasks-authorpublish-component.xml.j2'
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item[0].item.path }}/{{ item[1] }}/config.xml
@@ -50,7 +50,7 @@
     - "{{ operational_tasks_with_authorpublish_component_params }}"
   when: item[0].skipped is not defined and item[0].item.skipped is not defined
 
-- name: "Generate AEM OpenCloud Jenkins jobs for operational-tasks config.xml for jobs with AEM Dispatcher component parameter"
+- name: "Generate jobs for operational-tasks config.xml for jobs with AEM Dispatcher component parameter"
   template:
     src: '../../../templates/ansible/jenkins/config/jobs-operational-tasks-dispatcher-component.xml.j2'
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item[0].item.path }}/{{ item[1] }}/config.xml
@@ -60,7 +60,7 @@
     - "{{ operational_tasks_with_dispatcher_component_params }}"
   when: item[0].skipped is not defined and item[0].item.skipped is not defined
 
-- name: "Generate AEM OpenCloud Jenkins jobs for operational-tasks config.xml for jobs with AEM Profile parameter"
+- name: "Generate jobs for operational-tasks config.xml for jobs with AEM Profile parameter"
   template:
     src: '../../../templates/ansible/jenkins/config/jobs-operational-tasks-aem-profile.xml.j2'
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item[0].item.path }}/{{ item[1] }}/config.xml
@@ -70,7 +70,7 @@
     - "{{ operational_tasks_with_aem_profile_params }}"
   when: item[0].skipped is not defined and item[0].item.skipped is not defined
 
-- name: "Generate AEM OpenCloud Jenkins jobs for operational-tasks config.xml for jobs with deploy package parameters"
+- name: "Generate jobs for operational-tasks config.xml for jobs with deploy package parameters"
   template:
     src: '../../../templates/ansible/jenkins/config/jobs-operational-tasks-deploy-package.xml.j2'
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item[0].item.path }}/{{ item[1] }}/config.xml
@@ -80,7 +80,7 @@
     - "{{ operational_tasks_with_deploy_package_params }}"
   when: item[0].skipped is not defined and item[0].item.skipped is not defined
 
-- name: "Generate AEM OpenCloud Jenkins jobs for operational-tasks config.xml for jobs with export package parameters"
+- name: "Generate jobs for operational-tasks config.xml for jobs with export package parameters"
   template:
     src: '../../../templates/ansible/jenkins/config/jobs-operational-tasks-export-package.xml.j2'
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item[0].item.path }}/{{ item[1] }}/config.xml
@@ -90,7 +90,7 @@
     - "{{ operational_tasks_with_export_package_params }}"
   when: item[0].skipped is not defined and item[0].item.skipped is not defined
 
-- name: "Generate AEM OpenCloud Jenkins jobs for operational-tasks config.xml for jobs with import package parameters"
+- name: "Generate jobs for operational-tasks config.xml for jobs with import package parameters"
   template:
     src: '../../../templates/ansible/jenkins/config/jobs-operational-tasks-import-package.xml.j2'
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item[0].item.path }}/{{ item[1] }}/config.xml
@@ -100,7 +100,7 @@
     - "{{ operational_tasks_with_import_package_params }}"
   when: item[0].skipped is not defined and item[0].item.skipped is not defined
 
-- name: "Generate AEM OpenCloud Jenkins jobs for operational-tasks config.xml for jobs with deployment descriptor parameter"
+- name: "Generate jobs for operational-tasks config.xml for jobs with deployment descriptor parameter"
   vars:
     aem_architecture_type: "{{ 'consolidated' if item[1] is match('.*-consolidated') else 'full-set' }}"
   template:
@@ -112,7 +112,7 @@
     - "{{ operational_tasks_with_deployment_descriptor_params }}"
   when: item[0].skipped is not defined and item[0].item.skipped is not defined
 
-- name: "Generate AEM OpenCloud Jenkins jobs for operational-tasks config.xml for jobs with export descriptor parameter"
+- name: "Generate jobs for operational-tasks config.xml for jobs with export descriptor parameter"
   vars:
     aem_architecture_type: "{{ 'consolidated' if item[1] is match('.*-consolidated') else 'full-set' }}"
   template:

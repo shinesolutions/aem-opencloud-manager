@@ -34,7 +34,7 @@
   when: item.state == 'file' and item.path is match('.*promote-author-standby-full-set')
   register: testing_promote_author_standby_jobs
 
-- name: "Generate AEM OpenCloud Jenkins jobs for Blue-Green testing configuration profile directories"
+- name: "Generate jobs for Blue-Green testing configuration profile directories"
   file:
     path: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/testing/aws/{{ item[0].item.path }}-{{ item[2].item.path }}-{{ item[3].item.path }}/{{ item[1].item.path }}/
     state: directory
@@ -46,7 +46,7 @@
     - "{{ aem_test_suite_profiles.results }}"
   when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[2].skipped is not defined and item[2].item.skipped is not defined and item[3].skipped is not defined and item[3].item.skipped is not defined
 
-- name: "Generate AEM OpenCloud Jenkins jobs for recovery testing configuration profile directories"
+- name: "Generate jobs for recovery testing configuration profile directories"
   file:
     path: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/testing/aws/{{ item[0].item.path }}-{{ item[2].item.path }}-{{ item[3].item.path }}/{{ item[1].item.path }}/
     state: directory
@@ -58,7 +58,7 @@
     - "{{ aem_test_suite_profiles.results }}"
   when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[2].skipped is not defined and item[2].item.skipped is not defined and item[3].skipped is not defined and item[3].item.skipped is not defined
 
-- name: "Generate AEM OpenCloud Jenkins jobs for platform full-set testing configuration profile directories"
+- name: "Generate jobs for platform full-set testing configuration profile directories"
   file:
     path: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/testing/aws/{{ item[0].item.path }}-{{ item[2].item.path }}-{{ item[3].item.path }}/{{ item[1].item.path }}/
     state: directory
@@ -70,7 +70,7 @@
     - "{{ aem_test_suite_profiles.results }}"
   when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[2].skipped is not defined and item[2].item.skipped is not defined and item[3].skipped is not defined and item[3].item.skipped is not defined
 
-- name: "Generate AEM OpenCloud Jenkins jobs for platform consolidated testing configuration profile directories"
+- name: "Generate jobs for platform consolidated testing configuration profile directories"
   file:
     path: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/testing/aws/{{ item[0].item.path }}-{{ item[2].item.path }}-{{ item[3].item.path }}/{{ item[1].item.path }}/
     state: directory
@@ -82,7 +82,7 @@
     - "{{ aem_test_suite_profiles.results }}"
   when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[2].skipped is not defined and item[2].item.skipped is not defined and item[3].skipped is not defined and item[3].item.skipped is not defined
 
-- name: "Generate AEM OpenCloud Jenkins jobs for promote author standby full-set testing configuration profile directories"
+- name: "Generate jobs for promote author standby full-set testing configuration profile directories"
   file:
     path: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/testing/aws/{{ item[0].item.path }}-{{ item[2].item.path }}-{{ item[3].item.path }}/{{ item[1].item.path }}/
     state: directory
@@ -94,7 +94,7 @@
     - "{{ aem_test_suite_profiles.results }}"
   when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[2].skipped is not defined and item[2].item.skipped is not defined and item[3].skipped is not defined and item[3].item.skipped is not defined
 
-- name: "Generate AEM OpenCloud Jenkins jobs for Blue-Green testing configuration config.xml"
+- name: "Generate jobs for Blue-Green testing configuration config.xml"
   template:
     src: '../../../templates/ansible/jenkins/config/category-config-profile.xml.j2'
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/testing/aws/{{ item[0].item.path }}-{{ item[2].item.path }}-{{ item[3].item.path }}/config.xml
@@ -106,7 +106,7 @@
     - "{{ aem_test_suite_profiles.results }}"
   when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[2].skipped is not defined and item[2].item.skipped is not defined and item[3].skipped is not defined and item[3].item.skipped is not defined
 
-- name: "Generate AEM OpenCloud Jenkins jobs for recovery testing configuration config.xml"
+- name: "Generate jobs for recovery testing configuration config.xml"
   template:
     src: '../../../templates/ansible/jenkins/config/category-config-profile.xml.j2'
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/testing/aws/{{ item[0].item.path }}-{{ item[2].item.path }}-{{ item[3].item.path }}/config.xml
@@ -118,7 +118,7 @@
     - "{{ aem_test_suite_profiles.results }}"
   when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[2].skipped is not defined and item[2].item.skipped is not defined and item[3].skipped is not defined and item[3].item.skipped is not defined
 
-- name: "Generate AEM OpenCloud Jenkins jobs for platform full-set testing configuration config.xml"
+- name: "Generate jobs for platform full-set testing configuration config.xml"
   template:
     src: '../../../templates/ansible/jenkins/config/category-config-profile.xml.j2'
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/testing/aws/{{ item[0].item.path }}-{{ item[2].item.path }}-{{ item[3].item.path }}/config.xml
@@ -130,7 +130,7 @@
     - "{{ aem_test_suite_profiles.results }}"
   when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[2].skipped is not defined and item[2].item.skipped is not defined and item[3].skipped is not defined and item[3].item.skipped is not defined
 
-- name: "Generate AEM OpenCloud Jenkins jobs for platform consolidated testing configuration config.xml"
+- name: "Generate jobs for platform consolidated testing configuration config.xml"
   template:
     src: '../../../templates/ansible/jenkins/config/category-config-profile.xml.j2'
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/testing/aws/{{ item[0].item.path }}-{{ item[2].item.path }}-{{ item[3].item.path }}/config.xml
@@ -142,7 +142,7 @@
     - "{{ aem_test_suite_profiles.results }}"
   when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[2].skipped is not defined and item[2].item.skipped is not defined and item[3].skipped is not defined and item[3].item.skipped is not defined
 
-- name: "Generate AEM OpenCloud Jenkins jobs for promote author standby full-set testing configuration config.xml"
+- name: "Generate jobs for promote author standby full-set testing configuration config.xml"
   template:
     src: '../../../templates/ansible/jenkins/config/category-config-profile.xml.j2'
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/testing/aws/{{ item[0].item.path }}-{{ item[2].item.path }}-{{ item[3].item.path }}/config.xml
@@ -154,7 +154,7 @@
     - "{{ aem_test_suite_profiles.results }}"
   when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[2].skipped is not defined and item[2].item.skipped is not defined and item[3].skipped is not defined and item[3].item.skipped is not defined
 
-- name: "Generate AEM OpenCloud Jenkins jobs for Blue-Green testing config.xml"
+- name: "Generate jobs for Blue-Green testing config.xml"
   template:
     src: ../../../templates/ansible/jenkins/config/jobs-testing-blue-green.xml.j2
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/testing/aws/{{ item[0].item.path }}-{{ item[2].item.path }}-{{ item[3].item.path }}/{{ item[1].item.path }}/config.xml
@@ -166,7 +166,7 @@
     - "{{ aem_test_suite_profiles.results }}"
   when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[2].skipped is not defined and item[2].item.skipped is not defined and item[3].skipped is not defined and item[3].item.skipped is not defined
 
-- name: "Generate AEM OpenCloud Jenkins jobs for recovery testing config.xml"
+- name: "Generate jobs for recovery testing config.xml"
   template:
     src: ../../../templates/ansible/jenkins/config/jobs-testing.xml.j2
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/testing/aws/{{ item[0].item.path }}-{{ item[2].item.path }}-{{ item[3].item.path }}/{{ item[1].item.path }}/config.xml
@@ -178,7 +178,7 @@
     - "{{ aem_test_suite_profiles.results }}"
   when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[2].skipped is not defined and item[2].item.skipped is not defined and item[3].skipped is not defined and item[3].item.skipped is not defined
 
-- name: "Generate AEM OpenCloud Jenkins jobs for platform full-set testing config.xml"
+- name: "Generate jobs for platform full-set testing config.xml"
   template:
     src: ../../../templates/ansible/jenkins/config/jobs-testing-platform.xml.j2
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/testing/aws/{{ item[0].item.path }}-{{ item[2].item.path }}-{{ item[3].item.path }}/{{ item[1].item.path }}/config.xml
@@ -190,7 +190,7 @@
     - "{{ aem_test_suite_profiles.results }}"
   when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[2].skipped is not defined and item[2].item.skipped is not defined and item[3].skipped is not defined and item[3].item.skipped is not defined
 
-- name: "Generate AEM OpenCloud Jenkins jobs for platform consolidated testing config.xml"
+- name: "Generate jobs for platform consolidated testing config.xml"
   template:
     src: ../../../templates/ansible/jenkins/config/jobs-testing-platform.xml.j2
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/testing/aws/{{ item[0].item.path }}-{{ item[2].item.path }}-{{ item[3].item.path }}/{{ item[1].item.path }}/config.xml
@@ -202,7 +202,7 @@
     - "{{ aem_test_suite_profiles.results }}"
   when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[2].skipped is not defined and item[2].item.skipped is not defined and item[3].skipped is not defined and item[3].item.skipped is not defined
 
-- name: "Generate AEM OpenCloud Jenkins jobs for promote author standby full-set testing config.xml"
+- name: "Generate jobs for promote author standby full-set testing config.xml"
   template:
     src: ../../../templates/ansible/jenkins/config/jobs-testing.xml.j2
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/testing/aws/{{ item[0].item.path }}-{{ item[2].item.path }}-{{ item[3].item.path }}/{{ item[1].item.path }}/config.xml
