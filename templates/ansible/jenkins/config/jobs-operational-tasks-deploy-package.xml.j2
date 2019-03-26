@@ -106,6 +106,18 @@
         <trim>false</trim>
       </hudson.model.StringParameterDefinition>
       <hudson.model.StringParameterDefinition>
+        <name>AOC_CONFIG_PROFILE_AEM_STACK_MANAGER_MESSENGER</name>
+        <description>Name of the AEM Stack Manager Messenger configuration profile.</description>
+        <defaultValue>{{ item[0].item.path }}</defaultValue>
+        <trim>false</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>AOC_CONFIG_ARTIFACT_URL</name>
+        <description>URL to the AEM OpenCloud Configuration artifact.</description>
+        <defaultValue>{{ aem_opencloud.config.artifact_url }}</defaultValue>
+        <trim>false</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
         <name>AOC_CUSTOM_MANAGER_STEPS_ARTIFACT_URL</name>
         <description>URL to the AEM OpenCloud Manager custom manager steps artifact.</description>
         <defaultValue>{{ aem_opencloud.custom_manager_steps.artifact_url }}</defaultValue>
