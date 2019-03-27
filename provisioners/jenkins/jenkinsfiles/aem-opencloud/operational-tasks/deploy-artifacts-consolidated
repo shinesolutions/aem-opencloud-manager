@@ -32,8 +32,6 @@ pipeline {
 
 
                     JenkinsStagePreStep this
-                    AocPrepareParamArtifact(this, params.AOC_DEPLOYMENT_DESCRIPTOR_URL, env.TMPDIR + '/stage/', 'deploy-artifacts-descriptor.json')
-                    AocS3UploadArtifact(this, env.TMPDIR + '/stage/', 'deploy-artifacts-descriptor.json' , params.AWS_LIBRARY_S3_BUCKET, params.STACK_PREFIX)
                     AocPrepareLibrary(this, "aem-stack-manager-messenger", params.AOC_VERSION_AEM_STACK_MANAGER_MESSENGER, params.AWS_LIBRARY_S3_BUCKET, AWS_LIBRARY_S3_PATH, env.TMPDIR)
                     AocPrepareConfig(this, params.AOC_CONFIG_ARTIFACT_URL, env.TMPDIR)
             }
@@ -65,6 +63,7 @@ pipeline {
 
                     JenkinsStagePreStep this
                     AocPrepareParamArtifact(this, params.AOC_DEPLOYMENT_DESCRIPTOR_URL, env.TMPDIR + '/aem-stack-manager-messenger/stage/', 'deploy-artifacts-descriptor.json')
+                    AocS3UploadArtifact(this, env.TMPDIR + '/aem-stack-manager-messenger/stage/', 'deploy-artifacts-descriptor.json' , params.AWS_LIBRARY_S3_BUCKET, params.STACK_PREFIX)
                     ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make deploy-artifacts-consolidated stack_prefix=${params.STACK_MANAGER_STACK_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_CONFIG_PROFILE_AEM_STACK_MANAGER_MESSENGER}/ descriptor_file=deploy-artifacts-descriptor.json")
             }
             post {
