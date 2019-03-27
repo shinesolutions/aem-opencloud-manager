@@ -63,8 +63,9 @@ pipeline {
 
 
                     JenkinsStagePreStep this
-
-                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make export-packages-full-set stack_prefix=${params.STACK_MANAGER_STACK_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_CONFIG_PROFILE_AEM_STACK_MANAGER_MESSENGER}/ descriptor_file=${params.EXPORT_DESCRIPTOR_FILE}")
+                    AocPrepareParamArtifact(this, params.AOC_EXPORT_DESCRIPTOR_URL, env.TMPDIR + '/aem-stack-manager-messenger/stage/', 'export-backup-descriptor.json')
+                    AocS3UploadArtifact(this, env.TMPDIR + '/aem-stack-manager-messenger/stage/', 'export-backup-descriptor.json' , params.AWS_LIBRARY_S3_BUCKET, params.STACK_PREFIX)
+                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make export-packages-full-set stack_prefix=${params.STACK_MANAGER_STACK_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_CONFIG_PROFILE_AEM_STACK_MANAGER_MESSENGER}/ descriptor_file='export-backup-descriptor.json'")
             }
             post {
                 always {
