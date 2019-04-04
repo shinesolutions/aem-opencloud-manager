@@ -10,7 +10,7 @@ def call(script, libraryDir, library, command) {
 
     if [ -x /tmp/shinesolutions/aem-opencloud-manager/custom-manager-steps/exec-pre-common.sh ]
     then
-       echo "Executing exec pre-step script of custom Jenkins shared libraries..."
+       echo "Executing exec pre-step script of Custom Manager Steps..."
        AOC_LIBRARY="${library}" \
          AOC_COMMAND="${command}" \
          /tmp/shinesolutions/aem-opencloud-manager/custom-manager-steps/exec-pre-common.sh
@@ -23,7 +23,7 @@ def call(script, libraryDir, library, command) {
 
     if [ -x /tmp/shinesolutions/aem-opencloud-manager/custom-manager-steps/exec-post-common.sh ]
     then
-       echo "Executing exec post-step script of custom Jenkins shared libraries..."
+       echo "Executing exec post-step script of Custom Manager Steps..."
        AOC_LIBRARY="${library}" \
          AOC_COMMAND="${command}" \
          /tmp/shinesolutions/aem-opencloud-manager/custom-manager-steps/exec-post-common.sh

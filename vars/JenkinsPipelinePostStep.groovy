@@ -8,7 +8,7 @@ def call(script) {
   script.sh """
   if [ -x /tmp/shinesolutions/aem-opencloud-manager/custom-manager-steps/pipeline-post-common.sh ]
   then
-     echo "Executing pipeline post-step script of custom Jenkins shared libraries..."
+     echo "Executing pipeline post-step script of Custom Manager Steps..."
      /tmp/shinesolutions/aem-opencloud-manager/custom-manager-steps/pipeline-post-common.sh
   else
     echo "Jenkins pipeline post-step script is either not provided or not executable"
