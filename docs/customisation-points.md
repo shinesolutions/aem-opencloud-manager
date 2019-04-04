@@ -22,7 +22,7 @@ If you don't configure the Docker image, by default AEM OpenCloud Manager will u
 
 ### Custom Manager Steps
 
-For user-specific steps, they can be defined in a Custom Manager Steps package, which provides pipeline pre-step, pipeline post-step, stage pre-step, and stage post-step.
+For user-specific steps, they can be defined in a Custom Manager Steps package, which provides pipeline pre-step, pipeline post-step, stage pre-step, stage post-step, exec pre-step, exec post-step.
 
 For example, if you need to authenticate to retrieve an STS token or perhaps you need to access an external authentication service first before executing the build steps, then you can have that implemented on either the pipeline pre-step or stage pre-step.
 
