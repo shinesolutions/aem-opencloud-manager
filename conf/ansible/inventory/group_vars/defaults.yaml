@@ -5,12 +5,7 @@ aws:
     s3_path: library
 
 aem_opencloud:
-  version: 3.8-pre.0
-  library:
-    packer_aem: 3.7.0
-    aem_aws_stack_builder: 3.6.0
-    aem_stack_manager_messenger: 2.2.0
-    aem_test_suite: 0.9.10
+  version: 4.0.0-pre.0
   config:
     artifact_url: https://overwrite-me/overwrite-me.tar.gz
   custom_manager_steps:
