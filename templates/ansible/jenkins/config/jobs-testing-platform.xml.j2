@@ -10,85 +10,85 @@
         <name>STACK_PREFIX</name>
         <description>AEM OpenCloud AEM stack prefix.</description>
         <defaultValue></defaultValue>
-        <trim>false</trim>
+        <trim>true</trim>
       </hudson.model.StringParameterDefinition>
       <hudson.model.StringParameterDefinition>
         <name>STACK_MANAGER_STACK_PREFIX</name>
         <description>AEM OpenCloud Stack Manager stack prefix.</description>
         <defaultValue></defaultValue>
-        <trim>false</trim>
+        <trim>true</trim>
       </hudson.model.StringParameterDefinition>
       <hudson.model.StringParameterDefinition>
         <name>AOC_DEPLOYMENT_DESCRIPTOR_URL</name>
         <description>URL where deployment descriptor file is located.</description>
         <defaultValue>{{ aem_opencloud.descriptors['full-set'].deployment_descriptor_url }}</defaultValue>
-        <trim>false</trim>
+        <trim>true</trim>
       </hudson.model.StringParameterDefinition>
       <hudson.model.StringParameterDefinition>
         <name>AOC_CUSTOM_STACK_PROVISIONER_ARTIFACT_URL</name>
         <description>URL where custom stack provisioner artifact is located.</description>
         <defaultValue>{{ aem_opencloud.custom_stack_provisioner.artifact_url }}</defaultValue>
-        <trim>false</trim>
+        <trim>true</trim>
       </hudson.model.StringParameterDefinition>
       <hudson.model.StringParameterDefinition>
         <name>JENKINS_AGENT_DOCKER_IMAGE</name>
         <description>The name of Docker image to be used as Jenkins build pipeline agent.</description>
         <defaultValue>{{ jenkins.agent.docker_image }}</defaultValue>
-        <trim>false</trim>
+        <trim>true</trim>
       </hudson.model.StringParameterDefinition>
       <hudson.model.StringParameterDefinition>
         <name>JENKINS_AGENT_DOCKER_ARGS</name>
         <description>The CLI args for Jenkins to use when running Docker CLI.</description>
         <defaultValue>{{ jenkins.agent.docker_args }}</defaultValue>
-        <trim>false</trim>
+        <trim>true</trim>
       </hudson.model.StringParameterDefinition>
       <hudson.model.StringParameterDefinition>
         <name>AOC_CONFIG_PROFILE_AEM_AWS_STACK_BUILDER</name>
         <description>Name of the AEM AWS Stack Builder configuration profile.</description>
         <defaultValue>{{ item[0].item.path }}</defaultValue>
-        <trim>false</trim>
+        <trim>true</trim>
       </hudson.model.StringParameterDefinition>
       <hudson.model.StringParameterDefinition>
         <name>AOC_CONFIG_PROFILE_AEM_STACK_MANAGER_MESSENGER</name>
         <description>Name of the AEM Stack Manager Messenger configuration profile.</description>
         <defaultValue>{{ item[2].item.path }}</defaultValue>
-        <trim>false</trim>
+        <trim>true</trim>
       </hudson.model.StringParameterDefinition>
       <hudson.model.StringParameterDefinition>
         <name>AOC_CONFIG_PROFILE_AEM_TEST_SUITE</name>
         <description>Name of the AEM Test Suite configuration profile.</description>
         <defaultValue>{{ item[3].item.path }}</defaultValue>
-        <trim>false</trim>
+        <trim>true</trim>
       </hudson.model.StringParameterDefinition>
       <hudson.model.StringParameterDefinition>
         <name>AOC_CONFIG_PROFILE_AEM_STACK_MANAGER</name>
         <description>Name of the configuration profile.</description>
         <defaultValue></defaultValue>
-        <trim>false</trim>
+        <trim>true</trim>
       </hudson.model.StringParameterDefinition>
       <hudson.model.StringParameterDefinition>
         <name>AOC_CONFIG_ARTIFACT_URL</name>
         <description>URL to the AEM OpenCloud Configuration artifact.</description>
         <defaultValue>{{ aem_opencloud.config.artifact_url }}</defaultValue>
-        <trim>false</trim>
+        <trim>true</trim>
       </hudson.model.StringParameterDefinition>
       <hudson.model.StringParameterDefinition>
         <name>AOC_CUSTOM_MANAGER_STEPS_ARTIFACT_URL</name>
         <description>URL to the AEM OpenCloud Manager custom manager steps artifact.</description>
         <defaultValue>{{ aem_opencloud.custom_manager_steps.artifact_url }}</defaultValue>
-        <trim>false</trim>
+        <trim>true</trim>
       </hudson.model.StringParameterDefinition>
       <hudson.model.StringParameterDefinition>
         <name>AWS_LIBRARY_S3_BUCKET</name>
         <description>S3 bucket where the libraries are stored</description>
         <defaultValue>{{ aws.library.s3_bucket }}</defaultValue>
-        <trim>false</trim>
+        <trim>true</trim>
       </hudson.model.StringParameterDefinition>
       <hudson.model.StringParameterDefinition>
         <name>AWS_LIBRARY_S3_PATH</name>
         <description>S3 path (of the specified S3 bucket) where the libraries are stored</description>
         <defaultValue>{{ aws.library.s3_path }}</defaultValue>
-        <trim>false</trim>
+        <trim>true</trim>
       </hudson.model.StringParameterDefinition>
     </parameterDefinitions>
   </hudson.model.ParametersDefinitionProperty>
