@@ -13,6 +13,7 @@ Learn more about AEM OpenCloud Manager:
 * [Configuration](https://github.com/shinesolutions/aem-opencloud-manager/blob/master/docs/configuration.md)
 * [Usage](https://github.com/shinesolutions/aem-opencloud-manager#usage)
 * [Testing](https://github.com/shinesolutions/aem-opencloud-manager#testing)
+* [AWS Permissions](https://github.com/shinesolutions/aem-opencloud-manager/blob/master/docs/aws-permissions.md)
 * [Customisation Points](https://github.com/shinesolutions/aem-opencloud-manager/blob/master/docs/customisation-points.md)
 
 AEM OpenCloud Manager is part of [AEM OpenCloud](https://aemopencloud.io) platform.
@@ -40,6 +41,7 @@ Installation
 Usage
 -----
 
+- Set up the required [AWS Permissions](https://github.com/shinesolutions/aem-opencloud-manager/blob/master/docs/aws-permissions.md)
 - Create [configuration file](https://github.com/shinesolutions/aem-opencloud-manager/blob/master/docs/configuration.md)
 - Generate and provision the pipelines onto a Jenkins instance, for example: `make jenkins-aws config_path=stage/user-config/sandpit/`
 - Visit your Jenkins instance and you should find a new folder named `aem-opencloud-<version>`
