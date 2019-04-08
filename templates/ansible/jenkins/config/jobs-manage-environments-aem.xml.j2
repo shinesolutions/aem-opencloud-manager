@@ -25,6 +25,18 @@
         <trim>true</trim>
       </hudson.model.StringParameterDefinition>
       <hudson.model.StringParameterDefinition>
+        <name>AOC_EXPORT_DESCRIPTOR_URL</name>
+        <description>URL where export descriptor file is located.</description>
+        <defaultValue>{{ aem_opencloud.descriptors[aem_architecture_type].export_descriptor_url }}</defaultValue>
+        <trim>true</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>AOC_CONTENT_HEALTHCHECK_DESCRIPTOR_URL</name>
+        <description>URL where content health check descriptor file is located.</description>
+        <defaultValue>{{ aem_opencloud.descriptors[aem_architecture_type].content_healthcheck_descriptor_url }}</defaultValue>
+        <trim>true</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
         <name>AOC_CUSTOM_STACK_PROVISIONER_ARTIFACT_URL</name>
         <description>URL where custom stack provisioner artifact is located.</description>
         <defaultValue>{{ aem_opencloud.custom_stack_provisioner.artifact_url }}</defaultValue>
