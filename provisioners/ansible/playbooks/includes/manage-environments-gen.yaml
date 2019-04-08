@@ -10,11 +10,19 @@
   when: item.state == 'file' and item.path is match('.*-stack-manager')
   register: manage_environments_aem_stack_manager_jobs
 
+- name: Trim skipped AEM Stack Manager manage environments jobs for AWS
+  set_fact:
+    manage_environments_aem_stack_manager_jobs_trimmed: "{{ manage_environments_aem_stack_manager_jobs | trim_skipped() }}"
+
 - name: Create a list of AEM Consolidated manage environments jobs for AWS
   shell: echo {{ item.path }}
   with_filetree: ../../../provisioners/jenkins/jenkinsfiles/aem-opencloud/manage-environments/aws/
   when: item.state == 'file' and item.path is match('.*-consolidated')
   register: manage_environments_aem_consolidated_jobs
+
+- name: Trim skipped AEM Consolidated manage environments jobs for AWS
+  set_fact:
+    manage_environments_aem_consolidated_jobs_trimmed: "{{ manage_environments_aem_consolidated_jobs | trim_skipped() }}"
 
 - name: Create a list of AEM Full-Set manage environments jobs for AWS
   shell: echo {{ item.path }}
@@ -22,15 +30,18 @@
   when: item.state == 'file' and item.path is match('.*-full-set')
   register: manage_environments_aem_full_set_jobs
 
+- name: Trim skipped AEM Full-Set manage environments jobs for AWS
+  set_fact:
+    manage_environments_aem_full_set_jobs_trimmed: "{{ manage_environments_aem_full_set_jobs | trim_skipped() }}"
+
 - name: "Generate jobs for AEM Stack Manager manage environments configuration profile directories"
   file:
     path: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/manage-environments/aws/{{ item[0].item.path }}/{{ item[1].item.path }}/
     state: directory
     mode: '0776'
   with_nested:
-    - "{{ aem_aws_stack_builder_aem_stack_manager_profiles.results }}"
-    - "{{ manage_environments_aem_stack_manager_jobs.results }}"
-  when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined
+    - "{{ aem_aws_stack_builder_aem_stack_manager_profiles_trimmed.results }}"
+    - "{{ manage_environments_aem_stack_manager_jobs_trimmed.results }}"
 
 - name: "Generate jobs for AEM Consolidated manage environments configuration profile directories"
   file:
@@ -38,11 +49,10 @@
     state: directory
     mode: '0776'
   with_nested:
-    - "{{ aem_aws_stack_builder_aem_consolidated_profiles.results }}"
-    - "{{ manage_environments_aem_consolidated_jobs.results }}"
-    - "{{ aem_stack_manager_messenger_profiles.results }}"
-    - "{{ aem_test_suite_profiles.results }}"
-  when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[2].skipped is not defined and item[2].item.skipped is not defined and item[3].skipped is not defined and item[3].item.skipped is not defined
+    - "{{ aem_aws_stack_builder_aem_consolidated_profiles_trimmed.results }}"
+    - "{{ manage_environments_aem_consolidated_jobs_trimmed.results }}"
+    - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
+    - "{{ aem_test_suite_profiles_trimmed.results }}"
 
 - name: "Generate jobs for AEM Full-Set manage environments configuration profile directories"
   file:
@@ -50,11 +60,10 @@
     state: directory
     mode: '0776'
   with_nested:
-    - "{{ aem_aws_stack_builder_aem_full_set_profiles.results }}"
-    - "{{ manage_environments_aem_full_set_jobs.results }}"
-    - "{{ aem_stack_manager_messenger_profiles.results }}"
-    - "{{ aem_test_suite_profiles.results }}"
-  when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[2].skipped is not defined and item[2].item.skipped is not defined and item[3].skipped is not defined and item[3].item.skipped is not defined
+    - "{{ aem_aws_stack_builder_aem_full_set_profiles_trimmed.results }}"
+    - "{{ manage_environments_aem_full_set_jobs_trimmed.results }}"
+    - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
+    - "{{ aem_test_suite_profiles_trimmed.results }}"
 
 - name: "Generate jobs for AEM Stack Manager configuration profile config.xml for manage-environments configuration profile components"
   template:
@@ -62,9 +71,8 @@
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/manage-environments/aws/{{ item[0].item.path }}/config.xml
     mode: '0644'
   with_nested:
-    - "{{ aem_aws_stack_builder_aem_stack_manager_profiles.results }}"
-    - "{{ manage_environments_aem_stack_manager_jobs.results }}"
-  when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined
+    - "{{ aem_aws_stack_builder_aem_stack_manager_profiles_trimmed.results }}"
+    - "{{ manage_environments_aem_stack_manager_jobs_trimmed.results }}"
 
 - name: "Generate jobs for AEM Consolidated configuration profile config.xml for manage-environments configuration profile components"
   template:
@@ -72,11 +80,10 @@
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/manage-environments/aws/{{ item[0].item.path }}-{{ item[2].item.path }}-{{ item[3].item.path }}/config.xml
     mode: '0644'
   with_nested:
-    - "{{ aem_aws_stack_builder_aem_consolidated_profiles.results }}"
-    - "{{ manage_environments_aem_consolidated_jobs.results }}"
-    - "{{ aem_stack_manager_messenger_profiles.results }}"
-    - "{{ aem_test_suite_profiles.results }}"
-  when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[2].skipped is not defined and item[2].item.skipped is not defined and item[3].skipped is not defined and item[3].item.skipped is not defined
+    - "{{ aem_aws_stack_builder_aem_consolidated_profiles_trimmed.results }}"
+    - "{{ manage_environments_aem_consolidated_jobs_trimmed.results }}"
+    - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
+    - "{{ aem_test_suite_profiles_trimmed.results }}"
 
 - name: "Generate jobs for AEM Full-Set configuration profile config.xml for manage-environments configuration profile components"
   template:
@@ -84,11 +91,10 @@
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/manage-environments/aws/{{ item[0].item.path }}-{{ item[2].item.path }}-{{ item[3].item.path }}/config.xml
     mode: '0644'
   with_nested:
-    - "{{ aem_aws_stack_builder_aem_full_set_profiles.results }}"
-    - "{{ manage_environments_aem_full_set_jobs.results }}"
-    - "{{ aem_stack_manager_messenger_profiles.results }}"
-    - "{{ aem_test_suite_profiles.results }}"
-  when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[2].skipped is not defined and item[2].item.skipped is not defined and item[3].skipped is not defined and item[3].item.skipped is not defined
+    - "{{ aem_aws_stack_builder_aem_full_set_profiles_trimmed.results }}"
+    - "{{ manage_environments_aem_full_set_jobs_trimmed.results }}"
+    - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
+    - "{{ aem_test_suite_profiles_trimmed.results }}"
 
 - name: "Generate jobs for AEM Stack Manager config.xml for manage-environments configuration profile components"
   template:
@@ -96,9 +102,8 @@
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/manage-environments/aws/{{ item[0].item.path }}/{{ item[1].item.path }}/config.xml
     mode: '0644'
   with_nested:
-    - "{{ aem_aws_stack_builder_aem_stack_manager_profiles.results }}"
-    - "{{ manage_environments_aem_stack_manager_jobs.results }}"
-  when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined
+    - "{{ aem_aws_stack_builder_aem_stack_manager_profiles_trimmed.results }}"
+    - "{{ manage_environments_aem_stack_manager_jobs_trimmed.results }}"
 
 - name: "Generate jobs for AEM Consolidated config.xml for manage-environments configuration profile components"
   vars:
@@ -108,11 +113,10 @@
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/manage-environments/aws/{{ item[0].item.path }}-{{ item[2].item.path }}-{{ item[3].item.path }}/{{ item[1].item.path }}/config.xml
     mode: '0644'
   with_nested:
-    - "{{ aem_aws_stack_builder_aem_consolidated_profiles.results }}"
-    - "{{ manage_environments_aem_consolidated_jobs.results }}"
-    - "{{ aem_stack_manager_messenger_profiles.results }}"
-    - "{{ aem_test_suite_profiles.results }}"
-  when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[2].skipped is not defined and item[2].item.skipped is not defined and item[3].skipped is not defined and item[3].item.skipped is not defined
+    - "{{ aem_aws_stack_builder_aem_consolidated_profiles_trimmed.results }}"
+    - "{{ manage_environments_aem_consolidated_jobs_trimmed.results }}"
+    - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
+    - "{{ aem_test_suite_profiles_trimmed.results }}"
 
 - name: "Generate jobs for AEM Full-Set config.xml for manage-environments configuration profile components"
   vars:
@@ -122,8 +126,7 @@
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/manage-environments/aws/{{ item[0].item.path }}-{{ item[2].item.path }}-{{ item[3].item.path }}/{{ item[1].item.path }}/config.xml
     mode: '0644'
   with_nested:
-    - "{{ aem_aws_stack_builder_aem_full_set_profiles.results }}"
-    - "{{ manage_environments_aem_full_set_jobs.results }}"
-    - "{{ aem_stack_manager_messenger_profiles.results }}"
-    - "{{ aem_test_suite_profiles.results }}"
-  when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[2].skipped is not defined and item[2].item.skipped is not defined and item[3].skipped is not defined and item[3].item.skipped is not defined
+    - "{{ aem_aws_stack_builder_aem_full_set_profiles_trimmed.results }}"
+    - "{{ manage_environments_aem_full_set_jobs_trimmed.results }}"
+    - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
+    - "{{ aem_test_suite_profiles_trimmed.results }}"

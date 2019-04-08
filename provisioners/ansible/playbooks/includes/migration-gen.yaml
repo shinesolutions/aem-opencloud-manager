@@ -10,11 +10,19 @@
   when: item.state == 'file' and item.path is match('.*aem-upgrade')
   register: migration_aem_upgrade_jobs
 
+- name: Trim skipped AEM Upgrade jobs for AWS
+  set_fact:
+    migration_aem_upgrade_jobs_trimmed: "{{ migration_aem_upgrade_jobs | trim_skipped() }}"
+
 - name: Create a list of AEM Reconfiguration jobs for AWS
   shell: echo {{ item.path }}
   with_filetree: ../../../provisioners/jenkins/jenkinsfiles/aem-opencloud/migration/aws/
   when: item.state == 'file' and item.path is match('.*aem-reconfiguration')
   register: migration_aem_reconfiguration_jobs
+
+- name: Trim skipped AEM Reconfiguration jobs for AWS
+  set_fact:
+    migration_aem_reconfiguration_jobs_trimmed: "{{ migration_aem_reconfiguration_jobs | trim_skipped() }}"
 
 - name: "Generate jobs for AEM upgrade migration configuration profile directories"
   file:
@@ -22,10 +30,9 @@
     state: directory
     mode: '0776'
   with_nested:
-    - "{{ aem_aws_stack_builder_aem_upgrade_profiles.results }}"
-    - "{{ migration_aem_upgrade_jobs.results }}"
-    - "{{ aem_stack_manager_messenger_profiles.results }}"
-  when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[2].skipped is not defined and item[2].item.skipped is not defined
+    - "{{ aem_aws_stack_builder_aem_upgrade_profiles_trimmed.results }}"
+    - "{{ migration_aem_upgrade_jobs_trimmed.results }}"
+    - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
 
 - name: "Generate jobs for AEM reconfiguration migration configuration profile directories"
   file:
@@ -33,10 +40,9 @@
     state: directory
     mode: '0776'
   with_nested:
-    - "{{ aem_aws_stack_builder_aem_reconfiguration_profiles.results }}"
-    - "{{ migration_aem_reconfiguration_jobs.results }}"
-    - "{{ aem_stack_manager_messenger_profiles.results }}"
-  when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[2].skipped is not defined and item[2].item.skipped is not defined
+    - "{{ aem_aws_stack_builder_aem_reconfiguration_profiles_trimmed.results }}"
+    - "{{ migration_aem_reconfiguration_jobs_trimmed.results }}"
+    - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
 
 - name: "Generate jobs for AEM upgrade migration configuration profile config.xml for AEM upgrade migration configuration profile components"
   template:
@@ -44,10 +50,9 @@
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/migration/aws/{{ item[0].item.path }}-{{ item[2].item.path }}/config.xml
     mode: '0644'
   with_nested:
-    - "{{ aem_aws_stack_builder_aem_upgrade_profiles.results }}"
-    - "{{ migration_aem_upgrade_jobs.results }}"
-    - "{{ aem_stack_manager_messenger_profiles.results }}"
-  when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[2].skipped is not defined and item[2].item.skipped is not defined
+    - "{{ aem_aws_stack_builder_aem_upgrade_profiles_trimmed.results }}"
+    - "{{ migration_aem_upgrade_jobs_trimmed.results }}"
+    - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
 
 - name: "Generate jobs for AEM reconfiguration configuration profile config.xml for AEM upgrade migration configuration profile components"
   template:
@@ -55,10 +60,9 @@
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/migration/aws/{{ item[0].item.path }}-{{ item[2].item.path }}/config.xml
     mode: '0644'
   with_nested:
-    - "{{ aem_aws_stack_builder_aem_reconfiguration_profiles.results }}"
-    - "{{ migration_aem_reconfiguration_jobs.results }}"
-    - "{{ aem_stack_manager_messenger_profiles.results }}"
-  when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[2].skipped is not defined and item[2].item.skipped is not defined
+    - "{{ aem_aws_stack_builder_aem_reconfiguration_profiles_trimmed.results }}"
+    - "{{ migration_aem_reconfiguration_jobs_trimmed.results }}"
+    - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
 
 - name: "Generate jobs for AEM upgrade migration config.xml for AEM upgrade migration configuration profile components"
   template:
@@ -66,10 +70,9 @@
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/migration/aws/{{ item[0].item.path }}-{{ item[2].item.path }}/{{ item[1].item.path }}/config.xml
     mode: '0644'
   with_nested:
-    - "{{ aem_aws_stack_builder_aem_upgrade_profiles.results }}"
-    - "{{ migration_aem_upgrade_jobs.results }}"
-    - "{{ aem_stack_manager_messenger_profiles.results }}"
-  when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[2].skipped is not defined and item[2].item.skipped is not defined
+    - "{{ aem_aws_stack_builder_aem_upgrade_profiles_trimmed.results }}"
+    - "{{ migration_aem_upgrade_jobs_trimmed.results }}"
+    - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
 
 - name: "Generate jobs for AEM reconfiguration config.xml for AEM upgrade migration configuration profile components"
   template:
@@ -77,7 +80,6 @@
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/migration/aws/{{ item[0].item.path }}-{{ item[2].item.path }}/{{ item[1].item.path }}/config.xml
     mode: '0644'
   with_nested:
-    - "{{ aem_aws_stack_builder_aem_reconfiguration_profiles.results }}"
-    - "{{ migration_aem_reconfiguration_jobs.results }}"
-    - "{{ aem_stack_manager_messenger_profiles.results }}"
-  when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[2].skipped is not defined and item[2].item.skipped is not defined
+    - "{{ aem_aws_stack_builder_aem_reconfiguration_profiles_trimmed.results }}"
+    - "{{ migration_aem_reconfiguration_jobs_trimmed.results }}"
+    - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"

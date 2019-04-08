@@ -10,15 +10,18 @@
   when: item.state == 'file'
   register: operational_tasks_jobs
 
+- name: Trim skipped operational tasks
+  set_fact:
+    operational_tasks_jobs_trimmed: "{{ operational_tasks_jobs | trim_skipped() }}"
+
 - name: "Generate jobs for operational-tasks directories"
   file:
     path: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item[0].item.path }}/{{ item[1].item.path }}/
     state: directory
     mode: '0776'
   with_nested:
-    - "{{ aem_stack_manager_messenger_profiles.results }}"
-    - "{{ operational_tasks_jobs.results }}"
-  when: item[0].skipped is not defined and item[0].item.skipped is not defined
+    - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
+    - "{{ operational_tasks_jobs_trimmed.results }}"
 
 - name: "Generate jobs for operational-tasks configuration profile config.xml"
   template:
@@ -26,9 +29,8 @@
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item[0].item.path }}/config.xml
     mode: '0644'
   with_nested:
-    - "{{ aem_stack_manager_messenger_profiles.results }}"
-    - "{{ operational_tasks_jobs.results }}"
-  when: item[0].skipped is not defined and item[0].item.skipped is not defined
+    - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
+    - "{{ operational_tasks_jobs_trimmed.results }}"
 
 - name: "Generate jobs for operational-tasks config.xml for basic jobs"
   template:
@@ -36,9 +38,8 @@
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item[0].item.path }}/{{ item[1] }}/config.xml
     mode: '0644'
   with_nested:
-    - "{{ aem_stack_manager_messenger_profiles.results }}"
+    - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
     - "{{ operational_tasks_with_basic_params }}"
-  when: item[0].skipped is not defined and item[0].item.skipped is not defined
 
 - name: "Generate jobs for operational-tasks config.xml for jobs with AEM Author/Publish component parameter"
   template:
@@ -46,9 +47,8 @@
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item[0].item.path }}/{{ item[1] }}/config.xml
     mode: '0644'
   with_nested:
-    - "{{ aem_stack_manager_messenger_profiles.results }}"
+    - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
     - "{{ operational_tasks_with_authorpublish_component_params }}"
-  when: item[0].skipped is not defined and item[0].item.skipped is not defined
 
 - name: "Generate jobs for operational-tasks config.xml for jobs with AEM Dispatcher component parameter"
   template:
@@ -56,9 +56,8 @@
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item[0].item.path }}/{{ item[1] }}/config.xml
     mode: '0644'
   with_nested:
-    - "{{ aem_stack_manager_messenger_profiles.results }}"
+    - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
     - "{{ operational_tasks_with_dispatcher_component_params }}"
-  when: item[0].skipped is not defined and item[0].item.skipped is not defined
 
 - name: "Generate jobs for operational-tasks config.xml for jobs with AEM Profile parameter"
   template:
@@ -66,9 +65,8 @@
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item[0].item.path }}/{{ item[1] }}/config.xml
     mode: '0644'
   with_nested:
-    - "{{ aem_stack_manager_messenger_profiles.results }}"
+    - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
     - "{{ operational_tasks_with_aem_profile_params }}"
-  when: item[0].skipped is not defined and item[0].item.skipped is not defined
 
 - name: "Generate jobs for operational-tasks config.xml for jobs with deploy package parameters"
   template:
@@ -76,9 +74,8 @@
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item[0].item.path }}/{{ item[1] }}/config.xml
     mode: '0644'
   with_nested:
-    - "{{ aem_stack_manager_messenger_profiles.results }}"
+    - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
     - "{{ operational_tasks_with_deploy_package_params }}"
-  when: item[0].skipped is not defined and item[0].item.skipped is not defined
 
 - name: "Generate jobs for operational-tasks config.xml for jobs with export package parameters"
   template:
@@ -86,9 +83,8 @@
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item[0].item.path }}/{{ item[1] }}/config.xml
     mode: '0644'
   with_nested:
-    - "{{ aem_stack_manager_messenger_profiles.results }}"
+    - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
     - "{{ operational_tasks_with_export_package_params }}"
-  when: item[0].skipped is not defined and item[0].item.skipped is not defined
 
 - name: "Generate jobs for operational-tasks config.xml for jobs with import package parameters"
   template:
@@ -96,9 +92,8 @@
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item[0].item.path }}/{{ item[1] }}/config.xml
     mode: '0644'
   with_nested:
-    - "{{ aem_stack_manager_messenger_profiles.results }}"
+    - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
     - "{{ operational_tasks_with_import_package_params }}"
-  when: item[0].skipped is not defined and item[0].item.skipped is not defined
 
 - name: "Generate jobs for operational-tasks config.xml for jobs with deployment descriptor parameter"
   vars:
@@ -108,9 +103,8 @@
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item[0].item.path }}/{{ item[1] }}/config.xml
     mode: '0644'
   with_nested:
-    - "{{ aem_stack_manager_messenger_profiles.results }}"
+    - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
     - "{{ operational_tasks_with_deployment_descriptor_params }}"
-  when: item[0].skipped is not defined and item[0].item.skipped is not defined
 
 - name: "Generate jobs for operational-tasks config.xml for jobs with export descriptor parameter"
   vars:
@@ -120,6 +114,5 @@
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item[0].item.path }}/{{ item[1] }}/config.xml
     mode: '0644'
   with_nested:
-    - "{{ aem_stack_manager_messenger_profiles.results }}"
+    - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
     - "{{ operational_tasks_with_export_descriptor_params }}"
-  when: item[0].skipped is not defined and item[0].item.skipped is not defined

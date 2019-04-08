@@ -10,11 +10,19 @@
   when: item.state == 'file' and item.path is match('.*blue-green')
   register: testing_blue_green_jobs
 
+- name: Trim skipped Blue-Green testing jobs for AWS
+  set_fact:
+    testing_blue_green_jobs_trimmed: "{{ testing_blue_green_jobs | trim_skipped() }}"
+
 - name: Create a list of recovery testing jobs for AWS
   shell: echo {{ item.path }}
   with_filetree: ../../../provisioners/jenkins/jenkinsfiles/aem-opencloud/testing/aws/
   when: item.state == 'file' and item.path is match('.*recovery')
   register: testing_recovery_jobs
+
+- name: Trim skipped recovery testing jobs for AWS
+  set_fact:
+    testing_recovery_jobs_trimmed: "{{ testing_recovery_jobs | trim_skipped() }}"
 
 - name: Create a list of platform full-set testing jobs for AWS
   shell: echo {{ item.path }}
@@ -22,11 +30,19 @@
   when: item.state == 'file' and item.path is match('.*full-set-platform')
   register: testing_platform_full_set_jobs
 
+- name: Trim skipped platform full-set testing jobs for AWS
+  set_fact:
+    testing_platform_full_set_jobs_trimmed: "{{ testing_platform_full_set_jobs | trim_skipped() }}"
+
 - name: Create a list of platform consolidated testing jobs for AWS
   shell: echo {{ item.path }}
   with_filetree: ../../../provisioners/jenkins/jenkinsfiles/aem-opencloud/testing/aws/
   when: item.state == 'file' and item.path is match('.*consolidated-plaform')
   register: testing_platform_consolidated_jobs
+
+- name: Trim skipped platform consolidated testing jobs for AWS
+  set_fact:
+    testing_platform_consolidated_jobs_trimmed: "{{ testing_platform_consolidated_jobs | trim_skipped() }}"
 
 - name: Create a list of promote author standby full-set testing jobs for AWS
   shell: echo {{ item.path }}
@@ -34,17 +50,20 @@
   when: item.state == 'file' and item.path is match('.*promote-author-standby-full-set')
   register: testing_promote_author_standby_jobs
 
+- name: Trim skipped promote author standby full-set testing jobs for AWS
+  set_fact:
+    testing_promote_author_standby_jobs_trimmed: "{{ testing_promote_author_standby_jobs | trim_skipped() }}"
+
 - name: "Generate jobs for Blue-Green testing configuration profile directories"
   file:
     path: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/testing/aws/{{ item[0].item.path }}-{{ item[2].item.path }}-{{ item[3].item.path }}/{{ item[1].item.path }}/
     state: directory
     mode: '0776'
   with_nested:
-    - "{{ aem_testing_blue_green_profiles.results }}"
-    - "{{ testing_blue_green_jobs.results }}"
-    - "{{ aem_stack_manager_messenger_profiles.results }}"
-    - "{{ aem_test_suite_profiles.results }}"
-  when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[2].skipped is not defined and item[2].item.skipped is not defined and item[3].skipped is not defined and item[3].item.skipped is not defined
+    - "{{ aem_testing_blue_green_profiles_trimmed.results }}"
+    - "{{ testing_blue_green_jobs_trimmed.results }}"
+    - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
+    - "{{ aem_test_suite_profiles_trimmed.results }}"
 
 - name: "Generate jobs for recovery testing configuration profile directories"
   file:
@@ -52,11 +71,10 @@
     state: directory
     mode: '0776'
   with_nested:
-    - "{{ aem_testing_recovery_profiles.results }}"
-    - "{{ testing_recovery_jobs.results }}"
-    - "{{ aem_stack_manager_messenger_profiles.results }}"
-    - "{{ aem_test_suite_profiles.results }}"
-  when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[2].skipped is not defined and item[2].item.skipped is not defined and item[3].skipped is not defined and item[3].item.skipped is not defined
+    - "{{ aem_testing_recovery_profiles_trimmed.results }}"
+    - "{{ testing_recovery_jobs_trimmed.results }}"
+    - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
+    - "{{ aem_test_suite_profiles_trimmed.results }}"
 
 - name: "Generate jobs for platform full-set testing configuration profile directories"
   file:
@@ -64,11 +82,10 @@
     state: directory
     mode: '0776'
   with_nested:
-    - "{{ aem_aws_stack_builder_aem_full_set_profiles.results }}"
-    - "{{ testing_platform_full_set_jobs.results }}"
-    - "{{ aem_stack_manager_messenger_profiles.results }}"
-    - "{{ aem_test_suite_profiles.results }}"
-  when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[2].skipped is not defined and item[2].item.skipped is not defined and item[3].skipped is not defined and item[3].item.skipped is not defined
+    - "{{ aem_aws_stack_builder_aem_full_set_profiles_trimmed.results }}"
+    - "{{ testing_platform_full_set_jobs_trimmed.results }}"
+    - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
+    - "{{ aem_test_suite_profiles_trimmed.results }}"
 
 - name: "Generate jobs for platform consolidated testing configuration profile directories"
   file:
@@ -76,11 +93,10 @@
     state: directory
     mode: '0776'
   with_nested:
-    - "{{ aem_aws_stack_builder_aem_consolidated_profiles.results }}"
-    - "{{ testing_platform_consolidated_jobs.results }}"
-    - "{{ aem_stack_manager_messenger_profiles.results }}"
-    - "{{ aem_test_suite_profiles.results }}"
-  when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[2].skipped is not defined and item[2].item.skipped is not defined and item[3].skipped is not defined and item[3].item.skipped is not defined
+    - "{{ aem_aws_stack_builder_aem_consolidated_profiles_trimmed.results }}"
+    - "{{ testing_platform_consolidated_jobs_trimmed.results }}"
+    - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
+    - "{{ aem_test_suite_profiles_trimmed.results }}"
 
 - name: "Generate jobs for promote author standby full-set testing configuration profile directories"
   file:
@@ -88,11 +104,10 @@
     state: directory
     mode: '0776'
   with_nested:
-    - "{{ aem_aws_stack_builder_aem_full_set_profiles.results }}"
-    - "{{ testing_promote_author_standby_jobs.results }}"
-    - "{{ aem_stack_manager_messenger_profiles.results }}"
-    - "{{ aem_test_suite_profiles.results }}"
-  when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[2].skipped is not defined and item[2].item.skipped is not defined and item[3].skipped is not defined and item[3].item.skipped is not defined
+    - "{{ aem_aws_stack_builder_aem_full_set_profiles_trimmed.results }}"
+    - "{{ testing_promote_author_standby_jobs_trimmed.results }}"
+    - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
+    - "{{ aem_test_suite_profiles_trimmed.results }}"
 
 - name: "Generate jobs for Blue-Green testing configuration config.xml"
   template:
@@ -100,11 +115,10 @@
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/testing/aws/{{ item[0].item.path }}-{{ item[2].item.path }}-{{ item[3].item.path }}/config.xml
     mode: '0644'
   with_nested:
-    - "{{ aem_testing_blue_green_profiles.results }}"
-    - "{{ testing_blue_green_jobs.results }}"
-    - "{{ aem_stack_manager_messenger_profiles.results }}"
-    - "{{ aem_test_suite_profiles.results }}"
-  when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[2].skipped is not defined and item[2].item.skipped is not defined and item[3].skipped is not defined and item[3].item.skipped is not defined
+    - "{{ aem_testing_blue_green_profiles_trimmed.results }}"
+    - "{{ testing_blue_green_jobs_trimmed.results }}"
+    - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
+    - "{{ aem_test_suite_profiles_trimmed.results }}"
 
 - name: "Generate jobs for recovery testing configuration config.xml"
   template:
@@ -112,11 +126,10 @@
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/testing/aws/{{ item[0].item.path }}-{{ item[2].item.path }}-{{ item[3].item.path }}/config.xml
     mode: '0644'
   with_nested:
-    - "{{ aem_testing_recovery_profiles.results }}"
-    - "{{ testing_recovery_jobs.results }}"
-    - "{{ aem_stack_manager_messenger_profiles.results }}"
-    - "{{ aem_test_suite_profiles.results }}"
-  when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[2].skipped is not defined and item[2].item.skipped is not defined and item[3].skipped is not defined and item[3].item.skipped is not defined
+    - "{{ aem_testing_recovery_profiles_trimmed.results }}"
+    - "{{ testing_recovery_jobs_trimmed.results }}"
+    - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
+    - "{{ aem_test_suite_profiles_trimmed.results }}"
 
 - name: "Generate jobs for platform full-set testing configuration config.xml"
   template:
@@ -124,11 +137,10 @@
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/testing/aws/{{ item[0].item.path }}-{{ item[2].item.path }}-{{ item[3].item.path }}/config.xml
     mode: '0644'
   with_nested:
-    - "{{ aem_aws_stack_builder_aem_full_set_profiles.results }}"
-    - "{{ testing_platform_full_set_jobs.results }}"
-    - "{{ aem_stack_manager_messenger_profiles.results }}"
-    - "{{ aem_test_suite_profiles.results }}"
-  when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[2].skipped is not defined and item[2].item.skipped is not defined and item[3].skipped is not defined and item[3].item.skipped is not defined
+    - "{{ aem_aws_stack_builder_aem_full_set_profiles_trimmed.results }}"
+    - "{{ testing_platform_full_set_jobs_trimmed.results }}"
+    - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
+    - "{{ aem_test_suite_profiles_trimmed.results }}"
 
 - name: "Generate jobs for platform consolidated testing configuration config.xml"
   template:
@@ -136,11 +148,10 @@
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/testing/aws/{{ item[0].item.path }}-{{ item[2].item.path }}-{{ item[3].item.path }}/config.xml
     mode: '0644'
   with_nested:
-    - "{{ aem_aws_stack_builder_aem_consolidated_profiles.results }}"
-    - "{{ testing_platform_consolidated_jobs.results }}"
-    - "{{ aem_stack_manager_messenger_profiles.results }}"
-    - "{{ aem_test_suite_profiles.results }}"
-  when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[2].skipped is not defined and item[2].item.skipped is not defined and item[3].skipped is not defined and item[3].item.skipped is not defined
+    - "{{ aem_aws_stack_builder_aem_consolidated_profiles_trimmed.results }}"
+    - "{{ testing_platform_consolidated_jobs_trimmed.results }}"
+    - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
+    - "{{ aem_test_suite_profiles_trimmed.results }}"
 
 - name: "Generate jobs for promote author standby full-set testing configuration config.xml"
   template:
@@ -148,11 +159,10 @@
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/testing/aws/{{ item[0].item.path }}-{{ item[2].item.path }}-{{ item[3].item.path }}/config.xml
     mode: '0644'
   with_nested:
-    - "{{ aem_aws_stack_builder_aem_full_set_profiles.results }}"
-    - "{{ testing_promote_author_standby_jobs.results }}"
-    - "{{ aem_stack_manager_messenger_profiles.results }}"
-    - "{{ aem_test_suite_profiles.results }}"
-  when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[2].skipped is not defined and item[2].item.skipped is not defined and item[3].skipped is not defined and item[3].item.skipped is not defined
+    - "{{ aem_aws_stack_builder_aem_full_set_profiles_trimmed.results }}"
+    - "{{ testing_promote_author_standby_jobs_trimmed.results }}"
+    - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
+    - "{{ aem_test_suite_profiles_trimmed.results }}"
 
 - name: "Generate jobs for Blue-Green testing config.xml"
   template:
@@ -160,11 +170,10 @@
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/testing/aws/{{ item[0].item.path }}-{{ item[2].item.path }}-{{ item[3].item.path }}/{{ item[1].item.path }}/config.xml
     mode: '0644'
   with_nested:
-    - "{{ aem_testing_blue_green_profiles.results }}"
-    - "{{ testing_blue_green_jobs.results }}"
-    - "{{ aem_stack_manager_messenger_profiles.results }}"
-    - "{{ aem_test_suite_profiles.results }}"
-  when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[2].skipped is not defined and item[2].item.skipped is not defined and item[3].skipped is not defined and item[3].item.skipped is not defined
+    - "{{ aem_testing_blue_green_profiles_trimmed.results }}"
+    - "{{ testing_blue_green_jobs_trimmed.results }}"
+    - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
+    - "{{ aem_test_suite_profiles_trimmed.results }}"
 
 - name: "Generate jobs for recovery testing config.xml"
   template:
@@ -172,11 +181,10 @@
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/testing/aws/{{ item[0].item.path }}-{{ item[2].item.path }}-{{ item[3].item.path }}/{{ item[1].item.path }}/config.xml
     mode: '0644'
   with_nested:
-    - "{{ aem_testing_recovery_profiles.results }}"
-    - "{{ testing_recovery_jobs.results }}"
-    - "{{ aem_stack_manager_messenger_profiles.results }}"
-    - "{{ aem_test_suite_profiles.results }}"
-  when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[2].skipped is not defined and item[2].item.skipped is not defined and item[3].skipped is not defined and item[3].item.skipped is not defined
+    - "{{ aem_testing_recovery_profiles_trimmed.results }}"
+    - "{{ testing_recovery_jobs_trimmed.results }}"
+    - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
+    - "{{ aem_test_suite_profiles_trimmed.results }}"
 
 - name: "Generate jobs for platform full-set testing config.xml"
   template:
@@ -184,11 +192,10 @@
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/testing/aws/{{ item[0].item.path }}-{{ item[2].item.path }}-{{ item[3].item.path }}/{{ item[1].item.path }}/config.xml
     mode: '0644'
   with_nested:
-    - "{{ aem_aws_stack_builder_aem_full_set_profiles.results }}"
-    - "{{ testing_platform_full_set_jobs.results }}"
-    - "{{ aem_stack_manager_messenger_profiles.results }}"
-    - "{{ aem_test_suite_profiles.results }}"
-  when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[2].skipped is not defined and item[2].item.skipped is not defined and item[3].skipped is not defined and item[3].item.skipped is not defined
+    - "{{ aem_aws_stack_builder_aem_full_set_profiles_trimmed.results }}"
+    - "{{ testing_platform_full_set_jobs_trimmed.results }}"
+    - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
+    - "{{ aem_test_suite_profiles_trimmed.results }}"
 
 - name: "Generate jobs for platform consolidated testing config.xml"
   template:
@@ -196,11 +203,10 @@
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/testing/aws/{{ item[0].item.path }}-{{ item[2].item.path }}-{{ item[3].item.path }}/{{ item[1].item.path }}/config.xml
     mode: '0644'
   with_nested:
-    - "{{ aem_aws_stack_builder_aem_consolidated_profiles.results }}"
-    - "{{ testing_platform_consolidated_jobs.results }}"
-    - "{{ aem_stack_manager_messenger_profiles.results }}"
-    - "{{ aem_test_suite_profiles.results }}"
-  when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[2].skipped is not defined and item[2].item.skipped is not defined and item[3].skipped is not defined and item[3].item.skipped is not defined
+    - "{{ aem_aws_stack_builder_aem_consolidated_profiles_trimmed.results }}"
+    - "{{ testing_platform_consolidated_jobs_trimmed.results }}"
+    - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
+    - "{{ aem_test_suite_profiles_trimmed.results }}"
 
 - name: "Generate jobs for promote author standby full-set testing config.xml"
   template:
@@ -208,8 +214,7 @@
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/testing/aws/{{ item[0].item.path }}-{{ item[2].item.path }}-{{ item[3].item.path }}/{{ item[1].item.path }}/config.xml
     mode: '0644'
   with_nested:
-    - "{{ aem_aws_stack_builder_aem_full_set_profiles.results }}"
-    - "{{ testing_promote_author_standby_jobs.results }}"
-    - "{{ aem_stack_manager_messenger_profiles.results }}"
-    - "{{ aem_test_suite_profiles.results }}"
-  when: item[0].skipped is not defined and item[0].item.skipped is not defined and item[1].skipped is not defined and item[1].item.skipped is not defined and item[2].skipped is not defined and item[2].item.skipped is not defined and item[3].skipped is not defined and item[3].item.skipped is not defined
+    - "{{ aem_aws_stack_builder_aem_full_set_profiles_trimmed.results }}"
+    - "{{ testing_promote_author_standby_jobs_trimmed.results }}"
+    - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
+    - "{{ aem_test_suite_profiles_trimmed.results }}"
