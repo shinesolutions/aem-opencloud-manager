@@ -18,8 +18,8 @@ The following configurations are available for users to customise:
 | aem_opencloud.jenkins_sharedlibs.repo_url | URL to the [Jenkins shared libraries](https://jenkins.io/doc/book/pipeline/shared-libraries/) repository | Mandatory | |
 | aem_opencloud.jenkins_sharedlibs.repo_branch | Branch name of the Jenkins shared libraries to be used | Optional | `master` |
 | jenkins.protocol | Either `http` or `https`. | Optional | `http` |
-| jenkins.host | FQDN of the Jenkins server | Optional | `localhost` |
-| jenkins.port | Port of the Jenkins server | Optional | `8080` |
+| jenkins.host | FQDN of the Jenkins server | Mandatory | `overwrite-me` |
+| jenkins.port | Port of the Jenkins server | Mandatory | `8080` |
 | jenkins.username | Jenkins username to create jobs. | Mandatory | |
 | jenkins.password | Jenkins user password. | Mandatory | |
 | jenkins.agent.docker_image | Jenkins Docker agent image to use | Optional | `shinesolutions/aem-platform-buildenv:latest` |
