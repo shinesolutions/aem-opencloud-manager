@@ -1,0 +1,6 @@
+---
+tests:
+
+  - path: job/installation/job/aws/
+    job: mirror-aem-opencloud-libraries
+    params: []

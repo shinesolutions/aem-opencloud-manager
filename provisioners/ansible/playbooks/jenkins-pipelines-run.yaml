@@ -1,0 +1,16 @@
+---
+- name: AEM OpenCloud Manager Jenkins pipelines runner
+  hosts: all
+  gather_facts: no
+  connection: local
+
+  tasks:
+    - name: "{{ lookup('env', 'test_category') }}: Include test configuration"
+      include_vars:
+        file: ../../../test/integration/jenkins-pipelines/test-{{ lookup('env','test_category') }}.yaml
+        name: test_config
+
+    - name: "{{ lookup('env', 'test_category') }}: Run Jenkins pipelines"
+      shell: JENKINS_URL={{ jenkins.protocol }}://{{ jenkins.username }}:{{ jenkins.password }}@{{ jenkins.host }}:{{ jenkins.port }}/job/aem-opencloud-{{ aem_opencloud.version }}/{{ item.path }} nestor build {{ item.job }} {{ item.params | join('&') }}
+      no_log: False
+      with_items: "{{ test_config.tests }}"

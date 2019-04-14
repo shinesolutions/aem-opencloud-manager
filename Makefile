@@ -62,8 +62,35 @@ test-integration: deps deps-test
 test-integration-local: deps deps-test-local
 	./test/integration/test-examples.sh "$(cicd_type)" "$(platform_type)"
 
+# only tests jenkins-aws pipelines generation
+# this is used for Travis CI testing which doesn't have access to any public
+# facing Jenkins instance
 test-jenkins-aws-gen: deps deps-test
 	make jenkins-aws-gen config_path=stage/user-config/sandpit/
+
+test-jenkins-pipelines: test-jenkins-pipelines-installation test-jenkins-pipelines-machine-images test-jenkins-pipelines-manage-environments test-jenkins-pipelines-migration test-jenkins-pipelines-operational-tasks test-jenkins-pipelines-testing
+
+test-jenkins-pipelines-installation:
+	$(call test_jenkins_pipeline,'installation')
+
+test-jenkins-pipelines-machine-images:
+	$(call test_jenkins_pipeline,'machine-images')
+
+test-jenkins-pipelines-manage-environments:
+	$(call test_jenkins_pipeline,'manage-environments')
+
+test-jenkins-pipelines-migration:
+	$(call test_jenkins_pipeline,'migration')
+
+test-jenkins-pipelines-operational-tasks:
+	$(call test_jenkins_pipeline,'operational-tasks')
+
+test-jenkins-pipelines-testing:
+	$(call test_jenkins_pipeline,'testing')
+
+define test_jenkins_pipeline
+  test_category=$(1) ./scripts/run-playbook.sh jenkins-pipelines-run "$(config_path)"
+endef
 
 ################################################################################
 # Temporary utility targets
