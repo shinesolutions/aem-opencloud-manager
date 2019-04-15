@@ -4,3 +4,55 @@ tests:
   - path: job/installation/job/aws/
     job: mirror-aem-opencloud-libraries
     params: []
+
+  - path: job/installation/job/aws/
+    job: mirror-stack-builder-libraries-aem-consolidated-amazon-linux2-aem62
+    params: []
+
+  - path: job/installation/job/aws/
+    job: mirror-stack-builder-libraries-aem-consolidated-amazon-linux2-aem63
+    params: []
+
+  - path: job/installation/job/aws/
+    job: mirror-stack-builder-libraries-aem-consolidated-amazon-linux2-aem64
+    params: []
+
+  - path: job/installation/job/aws/
+    job: mirror-stack-builder-libraries-aem-consolidated-rhel7-aem62
+    params: []
+
+  - path: job/installation/job/aws/
+    job: mirror-stack-builder-libraries-aem-consolidated-rhel7-aem63
+    params: []
+
+  - path: job/installation/job/aws/
+    job: mirror-stack-builder-libraries-aem-consolidated-rhel7-aem64
+    params: []
+
+  - path: job/installation/job/aws/
+    job: mirror-stack-builder-libraries-aem-consolidated-rhel7-aem64-saml
+    params: []
+
+  - path: job/installation/job/aws/
+    job: mirror-stack-builder-libraries-aem-full-set-amazon-linux2-aem62
+    params: []
+
+  - path: job/installation/job/aws/
+    job: mirror-stack-builder-libraries-aem-full-set-amazon-linux2-aem63
+    params: []
+
+  - path: job/installation/job/aws/
+    job: mirror-stack-builder-libraries-aem-full-set-amazon-linux2-aem64
+    params: []
+
+  - path: job/installation/job/aws/
+    job: mirror-stack-builder-libraries-aem-full-set-rhel7-aem62
+    params: []
+
+  - path: job/installation/job/aws/
+    job: mirror-stack-builder-libraries-aem-full-set-rhel7-aem63
+    params: []
+
+  - path: job/installation/job/aws/
+    job: mirror-stack-builder-libraries-aem-full-set-rhel7-aem64
+    params: []
