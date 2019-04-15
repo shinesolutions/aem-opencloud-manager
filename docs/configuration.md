@@ -8,7 +8,7 @@ The following configurations are available for users to customise:
 | aws.library.s3_bucket | S3 Bucket to upload/download AEM OpenCloud libraries to/from | Mandatory | |
 | aws.library.s3_path | S3 Path to the location of the AEM OpenCloud library artifacts | Optional | `library` |
 | aem_opencloud.version | AEM OpenCloud version value to be displayed on Jenkins folder with format `aem-opencloud-<version>` | Optional | The current AEM OpenCloud version |
-| aem_opencloud.config.artifact_url | URL to the location of the AEM OpenCloud configuration artifact | Mandatory | |
+| aem_opencloud.config.artifact_url | URL to the location of the AEM OpenCloud tar.gz archive configuration artifact | Mandatory | |
 | aem_opencloud.custom_manager_steps.artifact_url | URL to the location of the AEM OpenCloud [Custom Manager Steps](https://github.com/shinesolutions/aem-opencloud-manager/blob/master/docs/customisation-points.md#custom-manager-steps) artifact | Mandatory | |
 | aem_opencloud.custom_image_provisioner.artifact_url | URL to the location of the AEM OpenCloud [Custom Image Provisioner](https://github.com/shinesolutions/packer-aem/blob/master/docs/customisation-points.md#custom-image-provisioner) artifact | Mandatory | |
 | aem_opencloud.custom_stack_provisioner.artifact_url | URL to the location of the AEM OpenCloud [Custom Stack Provisioner](https://github.com/shinesolutions/aem-aws-stack-builder/blob/master/docs/customisation-points.md#custom-stack-provisioner) artifact | Mandatory | |
