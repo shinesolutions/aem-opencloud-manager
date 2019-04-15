@@ -29,7 +29,7 @@ aem_opencloud:
 
 jenkins:
   protocol: http
-  host: localhost
+  host: overwrite-me
   port: 8080
   username: overwrite-me
   password: overwrite-me
