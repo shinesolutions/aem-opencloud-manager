@@ -70,6 +70,8 @@ pipeline {
             steps {
                     JenkinsStagePreStep this
                     AocPrepareParamArtifact(this, params.AOC_DEPLOYMENT_DESCRIPTOR_URL, env.TMPDIR + '/aem-aws-stack-builder/stage/', 'deploy-artifacts-descriptor.json')
+                    AocPrepareParamArtifact(this, params.AOC_EXPORT_DESCRIPTOR_URL, env.TMPDIR + '/aem-aws-stack-builder/stage/', 'export-backup-descriptor.json')
+                    AocPrepareParamArtifact(this, params.AOC_CONTENT_HEALTHCHECK_DESCRIPTOR_URL, env.TMPDIR + '/aem-aws-stack-builder/stage/', 'content-healthcheck-descriptor.json')
                     AocPrepareParamArtifact(this, params.AOC_CUSTOM_STACK_PROVISIONER_ARTIFACT_URL, env.TMPDIR + '/aem-aws-stack-builder/stage/', 'aem-custom-stack-provisioner.tar.gz')
                     ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make create-full-set config_path=${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE_AEM_AWS_STACK_BUILDER}/ stack_prefix=${params.STACK_PREFIX}")
                     ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make check-readiness-full-set stack_prefix=${params.STACK_MANAGER_STACK_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_CONFIG_PROFILE_AEM_STACK_MANAGER_MESSENGER}/")
