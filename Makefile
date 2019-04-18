@@ -56,10 +56,10 @@ jenkins-aws-provision:
 # Integration test targets.
 ################################################################################
 
-test-integration: deps deps-test
+test-integration: clean deps deps-test
 	./test/integration/test-examples.sh "$(cicd_type)" "$(platform_type)"
 
-test-integration-local: deps deps-test-local
+test-integration-local: clean deps deps-test-local
 	./test/integration/test-examples.sh "$(cicd_type)" "$(platform_type)"
 
 # only tests jenkins-aws pipelines generation
