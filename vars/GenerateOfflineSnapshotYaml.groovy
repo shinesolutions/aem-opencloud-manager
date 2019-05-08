@@ -2,14 +2,22 @@
 import cloud.aws
 
 def call(script, String sourceAuthorSnapshotId, String sourcePublishSnapshotId, String configPath) {
+
+  def extra_conf = "snapshots:"
+  if ( sourceAuthorSnapshotId ) {
+    extra_conf += """
+  author:
+    use_data_vol_snapshot: true
+    data_vol_snapshot_id: ${sourceAuthorSnapshotId}"""
+  }
+  if ( sourcePublishSnapshotId ) {
+      extra_conf += """
+  publish:
+    use_data_vol_snapshot: true
+    data_vol_snapshot_id: ${sourcePublishSnapshotId}"""
+  }
+
   script.sh """
-  echo -e "\n
-  snapshots:
-    author:
-      use_data_vol_snapshot: true
-      data_vol_snapshot_id: ${sourceAuthorSnapshotId}
-    publish:
-      use_data_vol_snapshot: true
-      data_vol_snapshot_id: ${sourcePublishSnapshotId}" > ${configPath}/offline_snapshot.yaml
+    echo "${extra_conf}" > ${configPath}/zzz_offline_snapshot.yaml
   """
 }
