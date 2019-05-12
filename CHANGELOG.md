@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Improved aem upgrade export/import pipeline
+
 ## [4.0.0-pre.2] - 2019-05-10
 
 ### Added

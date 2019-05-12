@@ -40,17 +40,18 @@
     state: directory
     mode: '0776'
   with_nested:
-    - "{{ aem_aws_stack_builder_aem_upgrade_profiles_trimmed.results }}"
+    - "{{ aem_aws_stack_builder_aem_upgrade_in_place_profiles_trimmed.results }}"
     - "{{ migration_aem_upgrade_in_place_jobs_trimmed.results }}"
     - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
 
 - name: "Generate jobs for AEM EXPORT IMPORT upgrade migration configuration profile directories"
   file:
-    path: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/migration/aws/{{ item[0].item.path }}-{{ item[2].item.path }}/{{ item[1].item.path }}/
+    path: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/migration/aws/{{ item[0].item.path }}-{{ item[1].item.path }}-{{ item[3].item.path }}/{{ item[2].item.path }}/
     state: directory
     mode: '0776'
   with_nested:
-    - "{{ aem_aws_stack_builder_aem_upgrade_profiles_trimmed.results }}"
+    - "{{ aem_aws_stack_builder_aem_upgrade_export_profiles_trimmed.results }}"
+    - "{{ aem_aws_stack_builder_aem_upgrade_import_profiles_trimmed.results }}"
     - "{{ migration_aem_upgrade_export_import_jobs_trimmed.results }}"
     - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
 
@@ -70,17 +71,18 @@
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/migration/aws/{{ item[0].item.path }}-{{ item[2].item.path }}/config.xml
     mode: '0644'
   with_nested:
-    - "{{ aem_aws_stack_builder_aem_upgrade_profiles_trimmed.results }}"
+    - "{{ aem_aws_stack_builder_aem_upgrade_in_place_profiles_trimmed.results }}"
     - "{{ migration_aem_upgrade_in_place_jobs_trimmed.results }}"
     - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
 
 - name: "Generate jobs for AEM EXPORT IMPORT upgrade migration configuration profile config.xml for AEM upgrade migration configuration profile components"
   template:
-    src: '../../../templates/ansible/jenkins/config/category-config-profile.xml.j2'
-    dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/migration/aws/{{ item[0].item.path }}-{{ item[2].item.path }}/config.xml
+    src: '../../../templates/ansible/jenkins/config/category-config-profile-aem-upgrade-export-import.xml.j2'
+    dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/migration/aws/{{ item[0].item.path }}-{{ item[1].item.path }}-{{ item[3].item.path }}/config.xml
     mode: '0644'
   with_nested:
-    - "{{ aem_aws_stack_builder_aem_upgrade_profiles_trimmed.results }}"
+    - "{{ aem_aws_stack_builder_aem_upgrade_export_profiles_trimmed.results }}"
+    - "{{ aem_aws_stack_builder_aem_upgrade_import_profiles_trimmed.results}}"
     - "{{ migration_aem_upgrade_export_import_jobs_trimmed.results }}"
     - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
 
@@ -102,7 +104,7 @@
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/migration/aws/{{ item[0].item.path }}-{{ item[2].item.path }}/{{ item[1].item.path }}/config.xml
     mode: '0644'
   with_nested:
-    - "{{ aem_aws_stack_builder_aem_upgrade_profiles_trimmed.results }}"
+    - "{{ aem_aws_stack_builder_aem_upgrade_in_place_profiles_trimmed.results }}"
     - "{{ migration_aem_upgrade_in_place_jobs_trimmed.results }}"
     - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
 
@@ -111,10 +113,11 @@
     aem_architecture_type: consolidated
   template:
     src: ../../../templates/ansible/jenkins/config/jobs-migration-aem-upgrade-export-import.xml.j2
-    dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/migration/aws/{{ item[0].item.path }}-{{ item[2].item.path }}/{{ item[1].item.path }}/config.xml
+    dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/migration/aws/{{ item[0].item.path }}-{{ item[1].item.path }}-{{ item[3].item.path }}/{{ item[2].item.path }}/config.xml
     mode: '0644'
   with_nested:
-    - "{{ aem_aws_stack_builder_aem_upgrade_profiles_trimmed.results }}"
+    - "{{ aem_aws_stack_builder_aem_upgrade_export_profiles_trimmed.results }}"
+    - "{{ aem_aws_stack_builder_aem_upgrade_import_profiles_trimmed.results}}"
     - "{{ migration_aem_upgrade_export_import_jobs_trimmed.results }}"
     - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
 

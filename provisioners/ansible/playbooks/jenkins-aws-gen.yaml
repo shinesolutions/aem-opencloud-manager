@@ -111,15 +111,35 @@
       set_fact:
         aem_aws_stack_builder_aem_full_set_profiles_trimmed: "{{ aem_aws_stack_builder_aem_full_set_profiles | trim_skipped() }}"
 
-    - name: Create a list of AEM AWS Stack Builder AEM Upgrade configuration profiles
+    - name: Create a list of AEM AWS Stack Builder AEM Upgrade In-Place configuration profiles
       shell: echo {{ item.path }}
       with_filetree: ../../../stage/aem-opencloud-config/aem-aws-stack-builder/
-      when: item.state == 'directory' and item.path is match ('aem-upgrade-*')
-      register: aem_aws_stack_builder_aem_upgrade_profiles
+      when: item.state == 'directory' and item.path is match ('aem-upgrade-in-place*')
+      register: aem_aws_stack_builder_aem_upgrade_in_place_profiles
 
-    - name: Trim skipped Packer AEM configuration profiles
+    - name: Trim skipped AEM AWS Stack Builder AEM Upgrade In-Place configuration profiles
       set_fact:
-        aem_aws_stack_builder_aem_upgrade_profiles_trimmed: "{{ aem_aws_stack_builder_aem_upgrade_profiles | trim_skipped() }}"
+        aem_aws_stack_builder_aem_upgrade_in_place_profiles_trimmed: "{{ aem_aws_stack_builder_aem_upgrade_in_place_profiles | trim_skipped() }}"
+
+    - name: Create a list of AEM AWS Stack Builder AEM Upgrade Export configuration profiles
+      shell: echo {{ item.path }}
+      with_filetree: ../../../stage/aem-opencloud-config/aem-aws-stack-builder/
+      when: item.state == 'directory' and item.path is match ('aem-upgrade-export-*')
+      register: aem_aws_stack_builder_aem_upgrade_export_profiles
+
+    - name: Trim skipped AEM AWS Stack Builder AEM Upgrade Export configuration profiles
+      set_fact:
+        aem_aws_stack_builder_aem_upgrade_export_profiles_trimmed: "{{ aem_aws_stack_builder_aem_upgrade_export_profiles | trim_skipped() }}"
+
+    - name: Create a list of AEM AWS Stack Builder AEM Upgrade Import configuration profiles
+      shell: echo {{ item.path }}
+      with_filetree: ../../../stage/aem-opencloud-config/aem-aws-stack-builder/
+      when: item.state == 'directory' and item.path is match ('aem-upgrade-import-*')
+      register: aem_aws_stack_builder_aem_upgrade_import_profiles
+
+    - name: Trim skipped AEM AWS Stack Builder AEM Upgrade Import configuration profiles
+      set_fact:
+        aem_aws_stack_builder_aem_upgrade_import_profiles_trimmed: "{{ aem_aws_stack_builder_aem_upgrade_import_profiles | trim_skipped() }}"
 
     - name: Create a list of AEM AWS Stack Builder AEM Reconfiguration configuration profiles
       shell: echo {{ item.path }}
