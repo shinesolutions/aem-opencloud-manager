@@ -297,6 +297,8 @@ Resources:
                   - route53:ListResourceRecordSets
                   - s3:*
                   - secretsmanager:GetSecretValue
+                  - secretsmanager:CreateSecret
+                  - secretsmanager:TagResource
                   - sns:CreateTopic
                   - sns:GetTopicAttributes
                   - sns:ListTopics
@@ -314,6 +316,8 @@ Resources:
                   - ssm:GetParameterHistory
                   - ssm:GetParameters
                   - ssm:GetParametersByPath
+                  - ssm:PutParameter
+                  - ssm:AddTagsToResource
                 Resource: "*"
               - Effect: Allow
                 Action:
