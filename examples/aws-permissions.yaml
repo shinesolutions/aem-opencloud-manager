@@ -8,7 +8,7 @@ Resources:
   PackerAemArtefactBucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: auspost-aem-opencloud
+      BucketName: aem-opencloud
 
   PackerAemBucketPolicy:
     Type: AWS::IAM::Policy
