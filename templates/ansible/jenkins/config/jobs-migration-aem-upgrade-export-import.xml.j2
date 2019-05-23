@@ -7,12 +7,6 @@
   <hudson.model.ParametersDefinitionProperty>
     <parameterDefinitions>
       <hudson.model.StringParameterDefinition>
-        <name>STACK_PREFIX</name>
-        <description>AEM OpenCloud AEM stack prefix.</description>
-        <defaultValue>AEMCONUgrade</defaultValue>
-        <trim>true</trim>
-      </hudson.model.StringParameterDefinition>
-      <hudson.model.StringParameterDefinition>
         <name>STACK_MANAGER_STACK_PREFIX</name>
         <description>AEM OpenCloud Stack Manager stack prefix.</description>
         <defaultValue></defaultValue>
@@ -43,15 +37,21 @@
         <trim>true</trim>
       </hudson.model.StringParameterDefinition>
       <hudson.model.StringParameterDefinition>
-        <name>AOC_CONFIG_PROFILE_AEM_AWS_STACK_BUILDER</name>
-        <description>Name of the AEM AWS Stack Builder configuration profile.</description>
+        <name>AOC_CONFIG_PROFILE_AEM_AWS_STACK_BUILDER_EXPORT</name>
+        <description>Name of the AEM AWS Stack Builder configuration profile used for exporting the content from the source stack.</description>
         <defaultValue>{{ item[0].item.path }}</defaultValue>
+        <trim>true</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>AOC_CONFIG_PROFILE_AEM_AWS_STACK_BUILDER_IMPORT</name>
+        <description>Name of the AEM AWS Stack Builder configuration profile used for import the content to the destination stack.</description>
+        <defaultValue>{{ item[1].item.path }}</defaultValue>
         <trim>true</trim>
       </hudson.model.StringParameterDefinition>
       <hudson.model.StringParameterDefinition>
         <name>AOC_CONFIG_PROFILE_AEM_STACK_MANAGER_MESSENGER</name>
         <description>Name of the AEM Stack Manager Messenger configuration profile.</description>
-        <defaultValue>{{ item[2].item.path }}</defaultValue>
+        <defaultValue>{{ item[3].item.path }}</defaultValue>
         <trim>true</trim>
       </hudson.model.StringParameterDefinition>
       <hudson.model.StringParameterDefinition>
@@ -64,24 +64,6 @@
         <name>AOC_CUSTOM_MANAGER_STEPS_ARTIFACT_URL</name>
         <description>URL to the AEM OpenCloud Manager custom manager steps artifact.</description>
         <defaultValue>{{ aem_opencloud.custom_manager_steps.artifact_url }}</defaultValue>
-        <trim>true</trim>
-      </hudson.model.StringParameterDefinition>
-      <hudson.model.StringParameterDefinition>
-        <name>PACKAGE_DATESTAMP</name>
-        <description>Package date stamp e.g. 2019</description>
-        <defaultValue></defaultValue>
-        <trim>true</trim>
-      </hudson.model.StringParameterDefinition>
-      <hudson.model.StringParameterDefinition>
-        <name>PACKAGE_GROUP</name>
-        <description>Package group name, same as defined in the export-package-descriptor.json</description>
-        <defaultValue></defaultValue>
-        <trim>true</trim>
-      </hudson.model.StringParameterDefinition>
-      <hudson.model.StringParameterDefinition>
-        <name>PACKAGE_NAME</name>
-        <description>Package name, same as defined in the export-package-descriptor.json</description>
-        <defaultValue></defaultValue>
         <trim>true</trim>
       </hudson.model.StringParameterDefinition>
       <hudson.model.StringParameterDefinition>
@@ -116,7 +98,7 @@
       <submoduleCfg class="list"/>
       <extensions/>
     </scm>
-    <scriptPath>provisioners/jenkins/jenkinsfiles/aem-opencloud/migration/aws/{{ item[1].item.path }}</scriptPath>
+    <scriptPath>provisioners/jenkins/jenkinsfiles/aem-opencloud/migration/aws/{{ item[2].item.path }}</scriptPath>
     <lightweight>true</lightweight>
   </definition>
   <triggers/>
