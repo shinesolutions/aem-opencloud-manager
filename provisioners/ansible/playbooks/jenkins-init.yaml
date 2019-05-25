@@ -1,0 +1,24 @@
+---
+- name: Provision Jenkins with plugins
+  hosts: all
+  gather_facts: no
+  connection: local
+
+  vars:
+    jenkins_updates_base_url: https://updates.jenkins-ci.org/download/plugins/
+    jenkins_plugins:
+      - name: pipeline-utility-steps
+        version: 2.3.0
+        base_url: https://updates.jenkins-ci.org/download/plugins/pipeline-utility-steps/2.3.0/pipeline-utility-steps.hpi
+
+  tasks:
+
+    - name: Download Jenkins plugins HPI files
+      get_url:
+        url: "{{ jenkins_updates_base_url }}/{{ item.name }}/{{ item.version }}/{{ item.name }}.hpi"
+        dest: ../../../stage/jenkins-plugins/{{ item.name }}.hpi
+      with_items: "{{ jenkins_plugins }}"
+
+    - name: Install Jenkins plugins
+      shell: curl -i -F file=@../../../stage/jenkins-plugins/{{ item.name }}.hpi {{ jenkins.protocol }}://{{ jenkins.username }}:{{ jenkins.password }}@{{ jenkins.host }}:{{ jenkins.port }}/jenkins/pluginManager/uploadPlugin
+      with_items: "{{ jenkins_plugins }}"

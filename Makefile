@@ -4,7 +4,7 @@ CONTAINER_NAME := jenkins
 ci: clean deps lint test-jenkins-aws-gen
 
 stage:
-	mkdir -p stage/user-config/
+	mkdir -p stage/user-config/ stage/jenkins-plugins/
 
 clean:
 	rm -rf logs/ stage/
@@ -40,8 +40,12 @@ lint:
 	# ansible-lint provisioners/ansible/playbooks/*.yaml
 
 ################################################################################
+# Provision Jenkins with plugins and pipelines.
 # Generate pipelines and provision them to a Jenkins instance.
 ################################################################################
+
+jenkins-init: stage
+	./scripts/run-playbook.sh jenkins-init "$(config_path)"
 
 jenkins-aws: jenkins-aws-gen jenkins-aws-provision
 
