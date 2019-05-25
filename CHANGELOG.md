@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Improved aem upgrade export/import pipeline
-- Upgrade Packer AEM to 4.4.0
+- Upgrade Packer AEM to 4.4.1
 - Upgrade AEM AWS Stack Builder to 4.3.0
 - Upgrade AEM Stack Manager Messenger to 2.3.1
 - Upgrade AEM Test Suite to 1.2.0
