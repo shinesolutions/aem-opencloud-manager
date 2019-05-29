@@ -18,7 +18,7 @@ The Jenkins pipelines can be configured to run on your own Docker container, you
 
 As long as the Jenkins master host already has the configured Docker image, the pipeline will then start a container for each build, allowing you to control what should be provisioned on the build agent. For example, if you need to authenticate using a particular library, then this library needs to be provisioned on your Docker image.
 
-If you don't configure the Docker image, by default AEM OpenCloud Manager will use `[shinesolutions/aem-platform-buildenv:latest](https://hub.docker.com/r/shinesolutions/aem-platform-buildenv/)` public Docker image.
+If you don't configure the Docker image, by default AEM OpenCloud Manager will use `[shinesolutions/aem-platform-buildenv:<version>](https://hub.docker.com/r/shinesolutions/aem-platform-buildenv/)` public Docker image.
 
 ### Custom Manager Steps
 
