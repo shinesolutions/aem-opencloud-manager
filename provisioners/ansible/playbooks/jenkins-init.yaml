@@ -5,20 +5,20 @@
   connection: local
 
   vars:
-    jenkins_updates_base_url: https://updates.jenkins-ci.org/download/plugins/
     jenkins_plugins:
       - name: pipeline-utility-steps
         version: 2.3.0
-        base_url: https://updates.jenkins-ci.org/download/plugins/pipeline-utility-steps/2.3.0/pipeline-utility-steps.hpi
 
   tasks:
 
-    - name: Download Jenkins plugins HPI files
-      get_url:
-        url: "{{ jenkins_updates_base_url }}/{{ item.name }}/{{ item.version }}/{{ item.name }}.hpi"
-        dest: ../../../stage/jenkins-plugins/{{ item.name }}.hpi
-      with_items: "{{ jenkins_plugins }}"
-
     - name: Install Jenkins plugins
-      shell: curl -i -F file=@../../../stage/jenkins-plugins/{{ item.name }}.hpi {{ jenkins.protocol }}://{{ jenkins.username }}:{{ jenkins.password }}@{{ jenkins.host }}:{{ jenkins.port }}/jenkins/pluginManager/uploadPlugin
+      jenkins_plugin:
+        name: "{{ item.name }}"
+        version: "{{ item.version }}"
+        url_username: "{{ jenkins.username }}"
+        url_password: "{{ jenkins.password }}"
+        url: "{{ jenkins.protocol }}://{{ jenkins.host }}:{{ jenkins.port }}"
+        jenkins_home: "{{ jenkins.os.jenkins_home }}"
+        owner: "{{ jenkins.os.user }}"
+        group: "{{ jenkins.os.group }}"
       with_items: "{{ jenkins_plugins }}"

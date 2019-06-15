@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Add jenkins-init target for Jenkins plugins provisioning
+
 ### Changed
 - Improved aem upgrade export/import pipeline
 - Upgrade Packer AEM to 4.4.1

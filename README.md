@@ -43,7 +43,8 @@ Usage
 
 - Set up the required [AWS Permissions](https://github.com/shinesolutions/aem-opencloud-manager/blob/master/docs/aws-permissions.md)
 - Create [configuration file](https://github.com/shinesolutions/aem-opencloud-manager/blob/master/docs/configuration.md)
-- Generate and provision the pipelines onto a Jenkins instance, for example: `make jenkins-aws config_path=stage/user-config/sandpit/`
+- Provision required plugins onto Jenkins instance: `make jenkins-init config_path=<path/to/config/dir>`
+- Generate and provision the pipelines onto a Jenkins instance: `make jenkins-aws config_path=<path/to/config/dir>`
 - Visit your Jenkins instance and you should find a new folder named `aem-opencloud-<version>`
 
 Build categories

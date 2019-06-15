@@ -36,3 +36,7 @@ jenkins:
   agent:
     docker_image: 'shinesolutions/aem-platform-buildenv:0.11.0'
     docker_args: ''
+  os:
+    jenkins_home:
+    user:
+    group:

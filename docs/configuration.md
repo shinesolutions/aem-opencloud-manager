@@ -24,3 +24,6 @@ The following configurations are available for users to customise:
 | jenkins.password | Jenkins user password. | Mandatory | |
 | jenkins.agent.docker_image | Jenkins Docker agent image to use | Optional | `shinesolutions/aem-platform-buildenv:latest` |
 | jenkins.agent.docker_args | Additional Jenkins Docker agent CLI launch arguments | Optional | |
+| jenkins.os.jenkins_home | [Jenkins home](https://wiki.jenkins.io/display/JENKINS/Administering+Jenkins) directory. | Optional | |
+| jenkins.os.user | OS user which should own Jenkins plugin binaries | Optional | |
+| jenkins.os.group | OS group of `jenkins.os.user` | Optional | |
