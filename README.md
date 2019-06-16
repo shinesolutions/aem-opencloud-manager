@@ -28,9 +28,9 @@ Installation
 
   Alternatively, you can use [AEM Platform BuildEnv](https://github.com/shinesolutions/aem-platform-buildenv) Docker container to run AEM OpenCloud Manager build targets.
 - Resolve the [Python packages](https://github.com/shinesolutions/aem-opencloud-manager/blob/master/requirements.txt) dependencies by running `make deps`
-- Install the following plugins on your Jenkins instance:
+- Provision required plugins onto Jenkins instance: `make jenkins-init config_path=<path/to/config/dir>`, which installs the following plugins:
   * [Pipeline Utility Steps plugin](https://plugins.jenkins.io/pipeline-utility-steps)
-- Approve the following script signatures via Jenkins' `Manage Jenkins`->`In-process Script Approval` menu:
+- Approve the following script signatures, unfortunately you currently have to approve these methods manually one by one via prompts on Jenkins log output.
   * `method java.net.URI getHost`
   * `method java.net.URI getPath`
   * `method java.net.URI getScheme`
@@ -43,7 +43,6 @@ Usage
 
 - Set up the required [AWS Permissions](https://github.com/shinesolutions/aem-opencloud-manager/blob/master/docs/aws-permissions.md)
 - Create [configuration file](https://github.com/shinesolutions/aem-opencloud-manager/blob/master/docs/configuration.md)
-- Provision required plugins onto Jenkins instance: `make jenkins-init config_path=<path/to/config/dir>`
 - Generate and provision the pipelines onto a Jenkins instance: `make jenkins-aws config_path=<path/to/config/dir>`
 - Visit your Jenkins instance and you should find a new folder named `aem-opencloud-<version>`
 
