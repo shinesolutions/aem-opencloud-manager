@@ -19,6 +19,7 @@ pipeline {
         string(name: 'AOC_VERSION_AEM_AWS_STACK_BUILDER', defaultValue: config.library.aem_aws_stack_builder, description: 'Version of aem-aws-stack-builder library to mirror to S3')
         string(name: 'AOC_VERSION_AEM_STACK_MANAGER_MESSENGER', defaultValue: config.library.aem_stack_manager_messenger, description: 'Version of aem-stack-manager-messenger library to mirror to S3')
         string(name: 'AOC_VERSION_AEM_TEST_SUITE', defaultValue: config.library.aem_test_suite, description: 'Version of aem-test-suite library to mirror to S3')
+        string(name: 'AOC_VERSION_AEM_PLATFORM_BUILDENV', defaultValue: config.library.aem-platform-buildenv, description: 'Version of aem-platform-buildenv library to mirror to S3')
     }
     stages {
         stage('Initialise pipeline') {
@@ -34,6 +35,7 @@ pipeline {
                 AocMirrorGithubLibrary(this, "shinesolutions", "aem-aws-stack-builder", params.AOC_VERSION_AEM_AWS_STACK_BUILDER, params.AWS_LIBRARY_S3_BUCKET, params.AWS_LIBRARY_S3_PATH, env.TMPDIR)
                 AocMirrorGithubLibrary(this, "shinesolutions", "aem-stack-manager-messenger", params.AOC_VERSION_AEM_STACK_MANAGER_MESSENGER, params.AWS_LIBRARY_S3_BUCKET, params.AWS_LIBRARY_S3_PATH, env.TMPDIR)
                 AocMirrorGithubLibrary(this, "shinesolutions", "aem-test-suite", params.AOC_VERSION_AEM_TEST_SUITE, params.AWS_LIBRARY_S3_BUCKET, params.AWS_LIBRARY_S3_PATH, env.TMPDIR)
+                AocMirrorGithubLibrary(this, "shinesolutions", "aem-platform-buildenv", params.AOC_VERSION_AEM_PLATFORM_BUILDENV, params.AWS_LIBRARY_S3_BUCKET, params.AWS_LIBRARY_S3_PATH, env.TMPDIR)
             }
             post {
                 always {
