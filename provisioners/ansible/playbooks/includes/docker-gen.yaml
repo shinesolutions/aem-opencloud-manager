@@ -1,0 +1,33 @@
+---
+
+########################################################################
+# Generate docker Jenkins jobs.
+########################################################################
+
+- name: "Generate AEM OpenCloud Jenkins job for docker build image configuration profile main libraries directory"
+  file:
+    path: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/docker/build-image/
+    state: directory
+    mode: '0776'
+
+- name: "Generate AEM OpenCloud Jenkins job for docker publish image configuration profile main libraries directory"
+  file:
+    path: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/docker/publish-image/
+    state: directory
+    mode: '0776'
+
+- name: "Generate AEM OpenCloud Jenkins job for building docker image"
+  vars:
+    library: aem-platform-buildenv
+  template:
+    src: '../../../templates/ansible/jenkins/config/docker-build-image.xml.j2'
+    dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/docker/build-image/config.xml
+    mode: '0644'
+
+- name: "Generate AEM OpenCloud Jenkins job for publishing docker image"
+  vars:
+    library: aem-platform-buildenv
+  template:
+    src: '../../../templates/ansible/jenkins/config/docker-publish-image.xml.j2'
+    dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/docker/publish-image/config.xml
+    mode: '0644'

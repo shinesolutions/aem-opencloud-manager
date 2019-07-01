@@ -221,6 +221,8 @@
     # Generate the category jobs.
     ########################################################################
 
+    - import_tasks: includes/docker-gen.yaml
+
     - import_tasks: includes/installation-gen.yaml
 
     - import_tasks: includes/machine-images-gen.yaml

@@ -1,0 +1,68 @@
+@Library('aem-opencloud-manager') _
+
+def configString = libraryResource 'aem_opencloud/config.json'
+def config = readJSON text: configString
+
+pipeline {
+    agent {
+        docker {
+            image params.JENKINS_AGENT_DOCKER_IMAGE
+            args params.JENKINS_AGENT_DOCKER_ARGS
+        }
+    }
+    environment {
+        TMPDIR = "/tmp/shinesolutions/aem-opencloud-manager"
+        AOC_CONFIG_DIR = "${env.TMPDIR}/aem-opencloud-config"
+    }
+    parameters {
+        string(name: 'AOC_VERSION_AEM_PLATFORM_BUILDENV', defaultValue: config.library.aem-platform-buildenv, description: 'Version of aem-platform-buildenv repo to retrieve')
+    }
+    stages {
+        stage('Initialise pipeline') {
+            steps {
+                JenkinsInit(this, params.AOC_CUSTOM_MANAGER_STEPS_ARTIFACT_URL, env.TMPDIR)
+                JenkinsPipelinePreStep this
+            }
+        }
+        stage('Prepare libraries') {
+            steps {
+                    JenkinsStagePreStep this
+                    AocPrepareLibrary(this, "aem-platform-buildenv", params.AOC_VERSION_AEM_PLATFORM_BUILDENV, params.AWS_LIBRARY_S3_BUCKET, AWS_LIBRARY_S3_PATH, env.TMPDIR)
+                    AocPrepareConfig(this, params.AOC_CONFIG_ARTIFACT_URL, env.TMPDIR)
+            }
+            post {
+                always {
+                  JenkinsStagePostStep this
+                }
+            }
+        }
+        stage('Resolve dependencies') {
+            steps {
+                    JenkinsStagePreStep this
+                    ExecCommand(this, env.TMPDIR, "aem-platform-buildenv", "make deps")
+            }
+            post {
+                always {
+                  JenkinsStagePostStep this
+                }
+            }
+        }
+        stage('Build docker image') {
+            steps {
+                    JenkinsStagePreStep this
+                    AocPrepareParamArtifact(this, params.AOC_CUSTOM_IMAGE_PROVISIONER_ARTIFACT_URL, env.TMPDIR + '/aem-platform-buildenv/stage/custom/', 'aem-custom-image-provisioner.tar.gz')
+                    ExecCommand(this, env.TMPDIR, "aem-platform-buildenv", "make docker-${params.DOCKER_IMAGE_TYPE} config_path=${env.AOC_CONFIG_DIR}/aem-platform-buildenv/")
+            }
+            post {
+                always {
+                  JenkinsStagePostStep this
+                }
+            }
+        }
+    }
+    post {
+        always {
+          JenkinsPipelinePostStep this
+        }
+    }
+}
