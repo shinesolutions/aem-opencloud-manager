@@ -57,6 +57,17 @@ jenkins-aws-provision:
 	./scripts/run-playbook.sh jenkins-aws-provision "$(config_path)"
 
 ################################################################################
+# Provision AWS resources
+# Create below prerequisite resources inorder to run OpenCloud
+#       - Artefact s3 buckets
+#       - Bucket policy
+#       - Instance profile and roles
+################################################################################
+
+jenkins-provision-aws-user-resources:
+	./scripts/run-provision-aws-user-resources-playbook.sh jenkins-provision-aws-user-resources "$(config_path)"
+
+################################################################################
 # Integration test targets.
 ################################################################################
 

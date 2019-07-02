@@ -40,3 +40,8 @@ jenkins:
     jenkins_home:
     user:
     group:
+
+user_resources:
+  aws:
+    resource_prefix: aoc-usrres-b004
+    vpc_id: vpc-0c7ee89f33dbe512c
