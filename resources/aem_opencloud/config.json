@@ -4,6 +4,6 @@
     "aem_aws_stack_builder": "4.4.0",
     "aem_stack_manager_messenger": "2.3.1",
     "aem_test_suite": "1.2.0",
-    "aem_platform_buildenv": "master"
+    "aem_platform_buildenv": "0.11.0"
   }
 }
