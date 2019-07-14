@@ -23,7 +23,7 @@
     - name: Create a new EC2 key
       ec2_key:
         name: "{{ resource_prefix }}-ec2-key"
-        region: ap-southeast-2
+        region: {{ aws.region }}
       register: ec2_key_result
 
     - name: Debug - Print EC2 Key Result
@@ -96,14 +96,11 @@
     - name: Execute the cloudformation template
       cloudformation:
         stack_name: "{{ resource_prefix }}-prereq-stack"
-        state: "present"
-        region: "ap-southeast-2"
+        state: present
+        region: {{ aws.region }}
         disable_rollback: true
         template: "../../../templates/cloudformation/provision-aws-user-resources.yaml"
         template_parameters:
           keyName: "{{ resource_prefix }}-ec2-key"
           aemBucketPrefix: "{{ resource_prefix }}"
           aemVpcId: "{{ vpc_id }}"
-#        tags:
-#          Owner: "Shine Solutions"
-#          Team: "Add Your Team Name"
