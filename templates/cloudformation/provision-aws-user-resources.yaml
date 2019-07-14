@@ -1,0 +1,548 @@
+---
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: A PreReq stack for AEM OpenCloud. It creates Instance Profiles & S3 Bucket to be used AEM OpenCloud resources
+
+Parameters:
+
+  keyName:
+    Description: Name of an existing EC2 KeyPair to enable SSH access to the instances
+    #Type: String
+    Type: 'AWS::EC2::KeyPair::KeyName'
+    ConstraintDescription: must be the name of an existing EC2 KeyPair.
+
+  aemBucketPrefix:
+    Type: String
+    Description: S3 Bucket prefix name for Artefact, Packer and Stack Builder buckets
+
+  aemVpcId:
+    Type: String
+    Description: VPC Id for the security Groups to be created
+
+Resources:
+
+  AemArtefactBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Join
+        - '-'
+        - - !Ref aemBucketPrefix
+          - 'aem-artefacts'
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+        - ServerSideEncryptionByDefault:
+            SSEAlgorithm: AES256
+
+  AemArtefactBucketPolicy:
+    Type: "AWS::S3::BucketPolicy"
+    Properties:
+      Bucket: !Ref 'AemArtefactBucket'
+      PolicyDocument:
+        Statement:
+        - Action: ['s3:GetObject', 's3:ListBucket', 's3:PutObject']
+          Sid: "apDevBambooAccess"
+          Effect: Allow
+          Principal:
+            AWS:
+            - "arn:aws:iam::149659705229:root"
+          Resource:
+          - !Join ['', ['arn:aws:s3:::', !Ref 'AemArtefactBucket']]
+          - !Join ['', ['arn:aws:s3:::', !Ref 'AemArtefactBucket', '/*']]
+
+  StackBuilderArtefactBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+#      BucketName: !Ref aemArtefactBucket
+      BucketName: !Join
+        - '-'
+        - - !Ref aemBucketPrefix
+          - 'stack-builder-artefacts'
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+        - ServerSideEncryptionByDefault:
+            SSEAlgorithm: AES256
+
+
+  StackBuilderArtefactBucketPolicy:
+    Type: "AWS::S3::BucketPolicy"
+    Properties:
+      Bucket: !Ref 'StackBuilderArtefactBucket'
+      PolicyDocument:
+        Statement:
+        - Action: ['s3:GetObject', 's3:ListBucket', 's3:PutObject']
+          Sid: "apDevBambooAccess"
+          Effect: Allow
+          Principal:
+            AWS:
+            - "arn:aws:iam::149659705229:root"
+          Resource:
+          - !Join ['', ['arn:aws:s3:::', !Ref 'StackBuilderArtefactBucket']]
+          - !Join ['', ['arn:aws:s3:::', !Ref 'StackBuilderArtefactBucket', '/*']]
+
+  PackerAemBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+#      BucketName: !Ref aemArtefactBucket
+      BucketName: !Join
+        - '-'
+        - - !Ref aemBucketPrefix
+          - 'packer-artefacts'
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+        - ServerSideEncryptionByDefault:
+            SSEAlgorithm: AES256
+
+
+  PackerAemBucketPolicy:
+    Type: "AWS::S3::BucketPolicy"
+    Properties:
+      Bucket: !Ref 'PackerAemBucket'
+      PolicyDocument:
+        Statement:
+        - Action: ['s3:GetObject', 's3:ListBucket', 's3:PutObject']
+          Sid: "apDevBambooAccess"
+          Effect: Allow
+          Principal:
+            AWS:
+            - "arn:aws:iam::149659705229:root"
+          Resource:
+          - !Join ['', ['arn:aws:s3:::', !Ref 'PackerAemBucket']]
+          - !Join ['', ['arn:aws:s3:::', !Ref 'PackerAemBucket', '/*']]
+
+  OpenCloudPackerAemRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Path: /
+      Policies:
+        - PolicyName: OpenCloudPackerAemRolePolicy
+          PolicyDocument:
+            Statement:
+              - Effect: Allow
+                Action:
+                  - acm:GetCertificate
+                  - ec2:AttachVolume
+                  - ec2:AuthorizeSecurityGroupIngress
+                  - ec2:CopyImage
+                  - ec2:CreateImage
+                  - ec2:CreateKeypair
+                  - ec2:CreateSecurityGroup
+                  - ec2:CreateSnapshot
+                  - ec2:CreateTags
+                  - ec2:CreateVolume
+                  - ec2:DeleteKeypair
+                  - ec2:DeleteSecurityGroup
+                  - ec2:DeleteSnapshot
+                  - ec2:DeleteVolume
+                  - ec2:DeregisterImage
+                  - ec2:DescribeImageAttribute
+                  - ec2:DescribeImages
+                  - ec2:DescribeInstances
+                  - ec2:DescribeRegions
+                  - ec2:DescribeSecurityGroups
+                  - ec2:DescribeSnapshots
+                  - ec2:DescribeSubnets
+                  - ec2:DescribeTags
+                  - ec2:DescribeVolumes
+                  - ec2:DetachVolume
+                  - ec2:GetPasswordData
+                  - ec2:ModifyImageAttribute
+                  - ec2:ModifyInstanceAttribute
+                  - ec2:ModifySnapshotAttribute
+                  - ec2:RegisterImage
+                  - ec2:RunInstances
+                  - ec2:StopInstances
+                  - ec2:TerminateInstances
+                  - iam:PassRole
+                  - kms:Decrypt
+                  - secretsmanager:GetSecretValue
+                  - ssm:GetParameterHistory
+                  - ssm:GetParametersByPath
+                  - ssm:GetParameters
+                  - ssm:GetParameter
+                Resource: "*"
+              - Effect: Allow
+                Action:
+                  - s3:*
+                Resource: "*"
+              - Effect: Allow
+                Action:
+                  - logs:*
+                Resource:
+                  - arn:aws:logs:*:*:*
+
+  OpenCloudPackerAemInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Path: /
+      Roles:
+        - Ref: OpenCloudPackerAemRole
+
+
+
+  OpenCloudStackBuilderRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Path: /
+      Policies:
+        - PolicyName: OpenCloudStackBuilderRolePolicy
+          PolicyDocument:
+            Statement:
+              - Effect: Allow
+                Action:
+                  - acm:*
+                  - autoscaling:AttachInstances
+                  - autoscaling:AttachLoadBalancerTargetGroups
+                  - autoscaling:AttachLoadBalancers
+                  - autoscaling:BatchDeleteScheduledAction
+                  - autoscaling:BatchPutScheduledUpdateGroupAction
+                  - autoscaling:CompleteLifecycleAction
+                  - autoscaling:CreateAutoScalingGroup
+                  - autoscaling:CreateLaunchConfiguration
+                  - autoscaling:CreateOrUpdateTags
+                  - autoscaling:DeleteAutoScalingGroup
+                  - autoscaling:DeleteLaunchConfiguration
+                  - autoscaling:DeleteLifecycleHook
+                  - autoscaling:DeleteNotificationConfiguration
+                  - autoscaling:DeleteScheduledAction
+                  - autoscaling:DeleteTags
+                  - autoscaling:DescribeAccountLimits
+                  - autoscaling:DescribeAdjustmentTypes
+                  - autoscaling:DescribeAutoScalingGroups
+                  - autoscaling:DescribeAutoScalingInstances
+                  - autoscaling:DescribeAutoScalingNotificationTypes
+                  - autoscaling:DescribeLaunchConfigurations
+                  - autoscaling:DescribeLifecycleHookTypes
+                  - autoscaling:DescribeLifecycleHooks
+                  - autoscaling:DescribeLoadBalancerTargetGroups
+                  - autoscaling:DescribeLoadBalancers
+                  - autoscaling:DescribeMetricCollectionTypes
+                  - autoscaling:DescribeNotificationConfigurations
+                  - autoscaling:DescribePolicies
+                  - autoscaling:DescribeScalingActivities
+                  - autoscaling:DescribeScalingProcessTypes
+                  - autoscaling:DescribeScheduledActions
+                  - autoscaling:DescribeTags
+                  - autoscaling:DescribeTerminationPolicyTypes
+                  - autoscaling:DetachInstances
+                  - autoscaling:DetachLoadBalancerTargetGroups
+                  - autoscaling:DetachLoadBalancers
+                  - autoscaling:DisableMetricsCollection
+                  - autoscaling:EnableMetricsCollection
+                  - autoscaling:EnterStandby
+                  - autoscaling:ExitStandby
+                  - autoscaling:PutLifecycleHook
+                  - autoscaling:PutNotificationConfiguration
+                  - autoscaling:PutScalingPolicy
+                  - autoscaling:PutScheduledUpdateGroupAction
+                  - autoscaling:RecordLifecycleActionHeartbeat
+                  - autoscaling:ResumeProcesses
+                  - autoscaling:SetDesiredCapacity
+                  - autoscaling:SetInstanceHealth
+                  - autoscaling:SetInstanceProtection
+                  - autoscaling:SuspendProcesses
+                  - autoscaling:TerminateInstanceInAutoScalingGroup
+                  - autoscaling:UpdateAutoScalingGroup
+                  - cloudformation:CreateStack
+                  - cloudformation:DeleteStack
+                  - cloudformation:DescribeStackEvents
+                  - cloudformation:DescribeStackResources
+                  - cloudformation:DescribeStacks
+                  - cloudformation:GetStackPolicy
+                  - cloudformation:GetTemplate
+                  - cloudformation:GetTemplateSummary
+                  - cloudformation:ListStackResources
+                  - cloudformation:ListStacks
+                  - cloudformation:UpdateStack
+                  - cloudwatch:DescribeAlarmHistory
+                  - cloudwatch:DescribeAlarms
+                  - cloudwatch:DescribeAlarmsForMetric
+                  - cloudwatch:GetDashboard
+                  - cloudwatch:GetMetricData
+                  - cloudwatch:GetMetricStatistics
+                  - cloudwatch:GetMetricWidgetImage
+                  - cloudwatch:ListDashboards
+                  - cloudwatch:ListMetrics
+                  - cloudwatch:PutMetricAlarm
+                  - cloudwatch:PutMetricData
+                  - dynamodb:BatchGetItem
+                  - dynamodb:ConditionCheckItem
+                  - dynamodb:CreateTable
+                  - dynamodb:DescribeBackup
+                  - dynamodb:DescribeContinuousBackups
+                  - dynamodb:DescribeGlobalTable
+                  - dynamodb:DescribeGlobalTableSettings
+                  - dynamodb:DescribeLimits
+                  - dynamodb:DescribeReservedCapacity
+                  - dynamodb:DescribeReservedCapacityOfferings
+                  - dynamodb:DescribeStream
+                  - dynamodb:DescribeTable
+                  - dynamodb:DescribeTimeToLive
+                  - dynamodb:GetItem
+                  - dynamodb:GetRecords
+                  - dynamodb:GetShardIterator
+                  - dynamodb:ListBackups
+                  - dynamodb:ListGlobalTables
+                  - dynamodb:ListStreams
+                  - dynamodb:ListTables
+                  - dynamodb:ListTagsOfResource
+                  - dynamodb:PutItem
+                  - dynamodb:Query
+                  - dynamodb:Scan
+                  - dynamodb:UpdateItem
+                  - dynamodb:UpdateTimeToLive
+                  - ec2:AttachVolume
+                  - ec2:AuthorizeSecurityGroupEgress
+                  - ec2:AuthorizeSecurityGroupIngress
+                  - ec2:CopyImage
+                  - ec2:CreateImage
+                  - ec2:CreateKeyPair
+                  - ec2:CreateKeyPair
+                  - ec2:CreateSecurityGroup
+                  - ec2:CreateSnapshot
+                  - ec2:CreateTags
+                  - ec2:CreateVolume
+                  - ec2:DeleteKeyPair
+                  - ec2:DeleteKeyPair
+                  - ec2:DeleteSecurityGroup
+                  - ec2:DeleteSnapshot
+                  - ec2:DeleteVolume
+                  - ec2:DeregisterImage
+                  - ec2:DescribeAccountAttributes
+                  - ec2:DescribeAvailabilityZones
+                  - ec2:DescribeImageAttribute
+                  - ec2:DescribeImages
+                  - ec2:DescribeInstances
+                  - ec2:DescribeKeyPairs
+                  - ec2:DescribeKeyPairs
+                  - ec2:DescribeRegions
+                  - ec2:DescribeSecurityGroupReferences
+                  - ec2:DescribeSecurityGroups
+                  - ec2:DescribeSnapshots
+                  - ec2:DescribeSubnets
+                  - ec2:DescribeTags
+                  - ec2:DescribeVolumes
+                  - ec2:DescribeVpcs
+                  - ec2:DetachVolume
+                  - ec2:GetPasswordData
+                  - ec2:ImportKeyPair
+                  - ec2:ModifyImageAttribute
+                  - ec2:ModifyInstanceAttribute
+                  - ec2:ModifySnapshotAttribute
+                  - ec2:RegisterImage
+                  - ec2:RevokeSecurityGroupEgress
+                  - ec2:RevokeSecurityGroupIngress
+                  - ec2:RunInstances
+                  - ec2:StopInstances
+                  - ec2:TerminateInstances
+                  - elasticloadbalancing:*
+                  - events:DescribeRule
+                  - events:PutRule
+                  - events:PutTargets
+                  - iam:AddRoleToInstanceProfile
+                  - iam:AttachRolePolicy
+                  - iam:CreateInstanceProfile
+                  - iam:CreatePolicy
+                  - iam:CreateRole
+                  - iam:CreateServiceLinkedRole
+                  - iam:DetachRolePolicy
+                  - iam:GetPolicy
+                  - iam:GetRole
+                  - iam:PassRole
+                  - iam:PutRolePolicy
+                  - iam:RemoveRoleFromInstanceProfile
+                  - iam:UploadServerCertificate
+                  - kms:Decrypt
+                  - lambda:AddPermission
+                  - lambda:CreateAlias
+                  - lambda:CreateFunction
+                  - lambda:GetFunction
+                  - lambda:ListVersionsByFunction
+                  - lambda:PublishVersion
+                  - route53:ChangeResourceRecordSets
+                  - route53:CreateHostedZone
+                  - route53:DeleteHostedZone
+                  - route53:GetChange
+                  - route53:GetHostedZone
+                  - route53:ListHostedZones
+                  - route53:ListHostedZonesByName
+                  - route53:ListResourceRecordSets
+                  - s3:*
+                  - secretsmanager:GetSecretValue
+                  - secretsmanager:CreateSecret
+                  - secretsmanager:TagResource
+                  - sns:CreateTopic
+                  - sns:GetTopicAttributes
+                  - sns:ListTopics
+                  - sns:Publish
+                  - sns:SetTopicAttributes
+                  - sns:Subscribe
+                  - sqs:CreateQueue
+                  - sqs:GetQueueAttributes
+                  - sqs:ListQueues
+                  - sqs:ReceiveMessage
+                  - sqs:SetQueueAttributes
+                  - ssm:CreateDocument
+                  - ssm:DescribeDocument
+                  - ssm:GetParameter
+                  - ssm:GetParameterHistory
+                  - ssm:GetParameters
+                  - ssm:GetParametersByPath
+                  - ssm:PutParameter
+                  - ssm:AddTagsToResource
+                Resource: "*"
+              - Effect: Allow
+                Action:
+                  - s3:*
+                Resource: "*"
+              - Effect: Allow
+                Action:
+                  - logs:*
+                Resource:
+                  - arn:aws:logs:*:*:*
+
+  OpenCloudStackBuilderInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Path: /
+      Roles:
+        - Ref: OpenCloudStackBuilderRole
+
+  OpenCloudStackManagerMessengerRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Path: /
+      Policies:
+        - PolicyName: OpenCloudStackManagerMessengerRolePolicy
+          PolicyDocument:
+            Statement:
+              - Effect: Allow
+                Action:
+                  - sns:SetTopicAttributes
+                  - sns:AddPermission
+                  - sns:RemovePermission
+                  - sns:DeleteTopic
+                  - sns:Subscribe
+                  - sns:ListSubscriptionsByTopic
+                  - sns:Receive
+                  - sns:Publish
+                  - sns:List*
+                  - sns:Get*
+                  - sqs:*
+                Resource: "*"
+              - Effect: Allow
+                Action:
+                  - s3:*
+                Resource: "*"
+              - Effect: Allow
+                Action:
+                  - logs:*
+                Resource:
+                  - arn:aws:logs:*:*:*
+
+  OpenCloudStackManagerMessengerInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Path: /
+      Roles:
+        - Ref: OpenCloudStackManagerMessengerRole
+
+  OpenCloudAemTestSuiteRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Path: /
+      Policies:
+        - PolicyName: OpenCloudAemTestSuiteRolePolicy
+          PolicyDocument:
+            Statement:
+              - Effect: Allow
+                Action:
+                  - acm:GetCertificate
+                  # Add more resources here
+                Resource: "*"
+              - Effect: Allow
+                Action:
+                  - s3:*
+                Resource: "*"
+              - Effect: Allow
+                Action:
+                  - logs:*
+                Resource:
+                  - arn:aws:logs:*:*:*
+
+  OpenCloudAemTestSuiteInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Path: /
+      Roles:
+        - Ref: OpenCloudAemTestSuiteRole
+
+
+  OpenCloudAemPlatformBuildEnvRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Path: /
+      Policies:
+        - PolicyName: OpenCloudAemPlatformBuildEnvRolePolicy
+          PolicyDocument:
+            Statement:
+              - Effect: Allow
+                Action:
+                  - acm:GetCertificate
+                  # Add more resources here
+                Resource: "*"
+              - Effect: Allow
+                Action:
+                  - s3:*
+                Resource: "*"
+              - Effect: Allow
+                Action:
+                  - logs:*
+                Resource:
+                  - arn:aws:logs:*:*:*
+
+  OpenCloudAemPlatformBuildEnvInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Path: /
+      Roles:
+        - Ref: OpenCloudAemPlatformBuildEnvRole

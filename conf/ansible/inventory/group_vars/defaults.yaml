@@ -1,5 +1,6 @@
 ---
 aws:
+  region: overwrite-me
   library:
     s3_bucket: overwrite-me
     s3_path: library
@@ -40,3 +41,8 @@ jenkins:
     jenkins_home:
     user:
     group:
+
+user_resources:
+  aws:
+    resource_prefix: overwrite-me
+    vpc_id: overwrite-me
