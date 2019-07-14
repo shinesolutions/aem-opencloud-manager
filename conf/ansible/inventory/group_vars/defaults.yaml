@@ -1,5 +1,6 @@
 ---
 aws:
+  region: overwrite-me
   library:
     s3_bucket: overwrite-me
     s3_path: library
