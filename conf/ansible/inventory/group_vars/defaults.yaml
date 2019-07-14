@@ -43,5 +43,5 @@ jenkins:
 
 user_resources:
   aws:
-    resource_prefix: aoc-usrres-b004
-    vpc_id: vpc-0c7ee89f33dbe512c
+    resource_prefix: overwrite-me
+    vpc_id: overwrite-me
