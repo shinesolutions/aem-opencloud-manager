@@ -65,7 +65,7 @@ jenkins-aws-provision:
 ################################################################################
 
 jenkins-provision-aws-user-resources:
-	./scripts/run-provision-aws-user-resources-playbook.sh jenkins-provision-aws-user-resources "$(config_path)"
+	./scripts/run-playbook.sh jenkins-provision-aws-user-resources "$(config_path)"
 
 ################################################################################
 # Integration test targets.
