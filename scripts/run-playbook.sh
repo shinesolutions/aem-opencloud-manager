@@ -10,11 +10,11 @@ for config_file in $( find -L "${config_path}" -maxdepth 1 -type f -a \( -name '
 done
 
 mkdir -p logs
-echo "Provisioning Jenkins pipelines..."
+echo "Executing playbook ${playbook_type}..."
 ANSIBLE_CONFIG=conf/ansible/ansible.cfg \
   ANSIBLE_LOG_PATH=$log_path \
   ansible-playbook "provisioners/ansible/playbooks/${playbook_type}.yaml" \
   -i conf/ansible/inventory/hosts \
   --module-path provisioners/ansible/library/ \
   "${extra_vars[@]}"
-echo "Finished provisioning Jenkins resources"
+echo "Finished executing playbook ${playbook_type}"
