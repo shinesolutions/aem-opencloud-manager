@@ -10,8 +10,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add jenkins-init target for Jenkins plugins provisioning
 
 ### Changed
-- Upgrade Packer AEM to 4.6.0
-- Upgrade AEM AWS Stack Builder to 4.5.0
+- Upgrade Packer AEM to 4.7.0
+- Upgrade AEM AWS Stack Builder to 4.6.0
+- Upgrade AEM Stack Manager Messenger to 2.4.0
+- Upgrade AEM Test Suite to 1.3.0
 
 ## [4.0.0] - 2019-05-29
 
