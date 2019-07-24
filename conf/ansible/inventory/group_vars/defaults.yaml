@@ -35,7 +35,7 @@ jenkins:
   username: overwrite-me
   password: overwrite-me
   agent:
-    docker_image: 'shinesolutions/aem-platform-buildenv:0.11.0'
+    docker_image: 'shinesolutions/aem-platform-buildenv:1.0.0'
     docker_args: ''
   os:
     jenkins_home:
