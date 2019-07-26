@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Upgrade default Jenkins agent Docker image to aem-platform-buildenv 1.0.0
+- Upgrade AEM Stack Manager Messenger to 2.4.2
 
 ## [4.1.0-pre.2] - 2019-07-24
 
