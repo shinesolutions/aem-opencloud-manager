@@ -64,8 +64,8 @@ jenkins-aws-provision:
 #       - Instance profile and roles
 ################################################################################
 
-jenkins-provision-aws-user-resources:
-	./scripts/run-playbook.sh jenkins-provision-aws-user-resources "$(config_path)"
+jenkins-aws-user-resources:
+	./scripts/run-playbook.sh jenkins-aws-user-resources "$(config_path)"
 
 ################################################################################
 # Integration test targets.
