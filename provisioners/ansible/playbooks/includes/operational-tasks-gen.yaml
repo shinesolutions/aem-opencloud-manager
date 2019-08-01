@@ -77,14 +77,32 @@
     - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
     - "{{ operational_tasks_with_deploy_package_params }}"
 
-- name: "Generate jobs for operational-tasks config.xml for jobs with export package parameters"
+- name: "Generate jobs for operational-tasks config.xml for jobs with disable saml parameters"
   template:
-    src: '../../../templates/ansible/jenkins/config/jobs-operational-tasks-export-package.xml.j2'
+    src: '../../../templates/ansible/jenkins/config/jobs-operational-tasks-disable-saml.xml.j2'
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item[0].item.path }}/{{ item[1] }}/config.xml
     mode: '0644'
   with_nested:
     - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
-    - "{{ operational_tasks_with_export_package_params }}"
+    - "{{ operational_tasks_with_disable_saml_params }}"
+
+- name: "Generate jobs for operational-tasks config.xml for jobs with enable saml parameters"
+  template:
+    src: '../../../templates/ansible/jenkins/config/jobs-operational-tasks-enable-saml.xml.j2'
+    dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item[0].item.path }}/{{ item[1] }}/config.xml
+    mode: '0644'
+  with_nested:
+    - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
+    - "{{ operational_tasks_with_enable_saml_params }}"
+
+# - name: "Generate jobs for operational-tasks config.xml for jobs with export package parameters"
+#   template:
+#     src: '../../../templates/ansible/jenkins/config/jobs-operational-tasks-export-package.xml.j2'
+#     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item[0].item.path }}/{{ item[1] }}/config.xml
+#     mode: '0644'
+#   with_nested:
+#     - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
+#     - "{{ operational_tasks_with_export_package_params }}"
 
 - name: "Generate jobs for operational-tasks config.xml for jobs with import package parameters"
   template:

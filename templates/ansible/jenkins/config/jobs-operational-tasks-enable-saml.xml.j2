@@ -1,0 +1,213 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<flow-definition plugin="workflow-job@2.31">
+  <actions/>
+  <description>AEM OpenCloud Jenkins job provisioned with AEM OpenCloud Manager.</description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+  <hudson.model.ParametersDefinitionProperty>
+    <parameterDefinitions>
+      <hudson.model.StringParameterDefinition>
+        <name>STACK_PREFIX</name>
+        <description>AEM OpenCloud AEM stack prefix.</description>
+        <defaultValue></defaultValue>
+        <trim>true</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>STACK_MANAGER_STACK_PREFIX</name>
+        <description>AEM OpenCloud Stack Manager stack prefix.</description>
+        <defaultValue></defaultValue>
+        <trim>true</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.ChoiceParameterDefinition>
+        <name>AEM_COMPONENT</name>
+        <description>AEM component name</description>
+        <choices class="java.util.Arrays$ArrayList">
+          <a class="string-array">
+            <string>author-primary</string>
+            <string>publish</string>
+            <string>author-publish-dispatcher</string>
+          </a>
+        </choices>
+      </hudson.model.ChoiceParameterDefinition>
+      <hudson.model.ChoiceParameterDefinition>
+        <name>AEM_ID</name>
+        <description>AEM ID</description>
+        <choices class="java.util.Arrays$ArrayList">
+          <a class="string-array">
+            <string>author</string>
+            <string>publish</string>
+          </a>
+        </choices>
+      </hudson.model.ChoiceParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>SAML_ADD_GROUP_MEMBERSHIPS</name>
+        <description>ADD_GROUP_MEMBERSHIPS</description>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>SAML_CLOCK_TOLERANCE</name>
+        <description>CLOCK_TOLERANCE</description>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>SAML_KEY_STORE_PASSWORD</name>
+        <description>KEY_STORE_PASSWORD</description>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>SAML_SERVICE_RANKING</name>
+        <description>SERVICE_RANKING</description>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>SAML_PATH</name>
+        <description>PATH</description>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>SAML_SERVICE_PROVIDER_ENTITY_ID</name>
+        <description>SERVICE_PROVIDER_ENTITY_ID</description>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>SAML_IDP_URL</name>
+        <description>IDP_URL</description>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>SAML_CERT_FILE</name>
+        <description>SAML certificate URL/S3/file path</description>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>SAML_CERT_IDP_CERT_ALIAS</name>
+        <description>SAML certificate IDP Certificate alias</description>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>SAML_CERT_SERIAL</name>
+        <description>SAML certificate Serial number</description>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>SAML_ASSERTION_CONSUMER_SERVICE_URL</name>
+        <description>ASSERTION_CONSUMER_SERVICE_URL</description>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>SAML_CREATE_USER</name>
+        <description>CREATE_USER</description>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>SAML_DEFAULT_REDIRECT_URL</name>
+        <description>DEFAULT_REDIRECT_URL</description>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>SAML_DEFAULT_GROUPS</name>
+        <description>DEFAULT_GROUPS</description>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>SAML_DIGEST_METHOD</name>
+        <description>DIGEST_METHOD</description>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>SAML_GROUP_MEMBERSHIP_ATTRIBUTE</name>
+        <description>GROUP_MEMBERSHIP_ATTRIBUTE</description>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>SAML_HANDLE_LOGOUT</name>
+        <description>HANDLE_LOGOUT</description>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>SAML_IDP_HTTP_REDIRECT</name>
+        <description>IDP_HTTP_REDIRECT</description>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>SAML_LOGOUT_URL</name>
+        <description>LOGOUT_URL</description>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>SAML_NAME_ID_FORMAT</name>
+        <description>NAME_ID_FORMAT</description>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>SAML_SIGNATURE_METHOD</name>
+        <description>SIGNATURE_METHOD</description>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>SAML_SYNCHRONIZE_ATTRIBUTES</name>
+        <description>SYNCHRONIZE_ATTRIBUTES</description>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>SAML_USE_ENCRYPTION</name>
+        <description>USE_ENCRYPTION</description>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>SAML_USER_ID_ATTRIBUTE</name>
+        <description>USER_ID_ATTRIBUTE</description>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>SAML_USER_INTERMEDIATE_PATH</name>
+        <description>USER_INTERMEDIATE_PATH</description>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>SAML_SP_PRIVATE_KEY_ALIAS</name>
+        <description>SP_PRIVATE_KEY_ALIAS</description>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>JENKINS_AGENT_DOCKER_IMAGE</name>
+        <description>The name of Docker image to be used as Jenkins build pipeline agent.</description>
+        <defaultValue>{{ jenkins.agent.docker_image }}</defaultValue>
+        <trim>true</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>JENKINS_AGENT_DOCKER_ARGS</name>
+        <description>The CLI args for Jenkins to use when running Docker CLI.</description>
+        <defaultValue>{{ jenkins.agent.docker_args }}</defaultValue>
+        <trim>true</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>AOC_CONFIG_PROFILE_AEM_STACK_MANAGER_MESSENGER</name>
+        <description>Name of the AEM Stack Manager Messenger configuration profile.</description>
+        <defaultValue>{{ item[0].item.path }}</defaultValue>
+        <trim>true</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>AOC_CONFIG_ARTIFACT_URL</name>
+        <description>URL to the AEM OpenCloud Configuration artifact.</description>
+        <defaultValue>{{ aem_opencloud.config.artifact_url }}</defaultValue>
+        <trim>true</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>AOC_CUSTOM_MANAGER_STEPS_ARTIFACT_URL</name>
+        <description>URL to the AEM OpenCloud Manager custom manager steps artifact.</description>
+        <defaultValue>{{ aem_opencloud.custom_manager_steps.artifact_url }}</defaultValue>
+        <trim>true</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>AWS_LIBRARY_S3_BUCKET</name>
+        <description>S3 bucket where the libraries are stored</description>
+        <defaultValue>{{ aws.library.s3_bucket }}</defaultValue>
+        <trim>true</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>AWS_LIBRARY_S3_PATH</name>
+        <description>S3 path (of the specified S3 bucket) where the libraries are stored</description>
+        <defaultValue>{{ aws.library.s3_path }}</defaultValue>
+        <trim>true</trim>
+      </hudson.model.StringParameterDefinition>
+    </parameterDefinitions>
+  </hudson.model.ParametersDefinitionProperty>
+</properties>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition" plugin="workflow-cps@2.61">
+    <scm class="hudson.plugins.git.GitSCM" plugin="git@3.9.1">
+      <configVersion>2</configVersion>
+      <userRemoteConfigs>
+        <hudson.plugins.git.UserRemoteConfig>
+          <url>{{ aem_opencloud.jenkins_sharedlibs.repo_url }}</url>
+        </hudson.plugins.git.UserRemoteConfig>
+      </userRemoteConfigs>
+      <branches>
+        <hudson.plugins.git.BranchSpec>
+          <name>{{ aem_opencloud.jenkins_sharedlibs.repo_branch }}</name>
+        </hudson.plugins.git.BranchSpec>
+      </branches>
+      <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+      <submoduleCfg class="list"/>
+      <extensions/>
+    </scm>
+    <scriptPath>provisioners/jenkins/jenkinsfiles/aem-opencloud/operational-tasks/{{ item[1] }}/</scriptPath>
+    <lightweight>true</lightweight>
+  </definition>
+  <triggers/>
+  <disabled>false</disabled>
+</flow-definition>
