@@ -134,3 +134,39 @@
   with_nested:
     - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
     - "{{ operational_tasks_with_export_descriptor_params }}"
+
+- name: "Generate jobs for operational-tasks config.xml for jobs with AEM Test Suite basic parameter"
+  template:
+    src: '../../../templates/ansible/jenkins/config/jobs-operational-tasks-test.xml.j2'
+    dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item[0].item.path }}/{{ item[1] }}/config.xml
+    mode: '0644'
+  with_nested:
+    - "{{ aem_test_suite_profiles_trimmed.results }}"
+    - "{{ operational_tasks_with_aem_test_suite_basic_params }}"
+
+- name: "Generate jobs for operational-tasks config.xml for jobs with AEM Test Suite AEM architecture parameter"
+  template:
+    src: '../../../templates/ansible/jenkins/config/jobs-operational-tasks-test-architecture-type.xml.j2'
+    dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item[0].item.path }}/{{ item[1] }}/config.xml
+    mode: '0644'
+  with_nested:
+    - "{{ aem_test_suite_profiles_trimmed.results }}"
+    - "{{ operational_tasks_with_aem_test_suite_aem_architecture_params }}"
+
+- name: "Generate jobs for operational-tasks config.xml for jobs with AEM Test Suite AEM architecture parameter"
+  template:
+    src: '../../../templates/ansible/jenkins/config/jobs-operational-tasks-test-recovery.xml.j2'
+    dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item[0].item.path }}/{{ item[1] }}/config.xml
+    mode: '0644'
+  with_nested:
+    - "{{ aem_test_suite_profiles_trimmed.results }}"
+    - "{{ operational_tasks_with_aem_test_suite_recovery_params }}"
+
+- name: "Generate jobs for operational-tasks config.xml for jobs with AEM Test Suite AEM architecture parameter"
+  template:
+    src: '../../../templates/ansible/jenkins/config/jobs-operational-tasks-test-aem-security.xml.j2'
+    dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/operational-tasks/{{ item[0].item.path }}/{{ item[1] }}/config.xml
+    mode: '0644'
+  with_nested:
+    - "{{ aem_test_suite_profiles_trimmed.results }}"
+    - "{{ operational_tasks_with_aem_test_suite_security_params }}"

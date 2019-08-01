@@ -7,45 +7,15 @@
   <hudson.model.ParametersDefinitionProperty>
     <parameterDefinitions>
       <hudson.model.StringParameterDefinition>
-        <name>STACK_PREFIX_BLUE</name>
+        <name>STACK_PREFIX</name>
         <description>AEM OpenCloud AEM stack prefix.</description>
-        <defaultValue>FSBlue</defaultValue>
-        <trim>true</trim>
-      </hudson.model.StringParameterDefinition>
-        <hudson.model.StringParameterDefinition>
-          <name>STACK_PREFIX_GREEN</name>
-          <description>AEM OpenCloud AEM stack prefix.</description>
-          <defaultValue>FSGreen</defaultValue>
-          <trim>true</trim>
-        </hudson.model.StringParameterDefinition>
-      <hudson.model.StringParameterDefinition>
-        <name>STACK_MANAGER_STACK_PREFIX</name>
-        <description>AEM OpenCloud Stack Manager stack prefix.</description>
         <defaultValue></defaultValue>
         <trim>true</trim>
       </hudson.model.StringParameterDefinition>
       <hudson.model.StringParameterDefinition>
-        <name>AOC_DEPLOYMENT_DESCRIPTOR_URL</name>
-        <description>URL where deployment descriptor file is located.</description>
-        <defaultValue>{{ aem_opencloud.descriptors[aem_architecture_type].deployment_descriptor_url }}</defaultValue>
-        <trim>true</trim>
-      </hudson.model.StringParameterDefinition>
-      <hudson.model.StringParameterDefinition>
-        <name>AOC_EXPORT_DESCRIPTOR_URL</name>
-        <description>URL where export descriptor file is located.</description>
-        <defaultValue>{{ aem_opencloud.descriptors[aem_architecture_type].export_descriptor_url }}</defaultValue>
-        <trim>true</trim>
-      </hudson.model.StringParameterDefinition>
-      <hudson.model.StringParameterDefinition>
-        <name>AOC_CONTENT_HEALTHCHECK_DESCRIPTOR_URL</name>
-        <description>URL where content health check descriptor file is located.</description>
-        <defaultValue>{{ aem_opencloud.descriptors[aem_architecture_type].content_healthcheck_descriptor_url }}</defaultValue>
-        <trim>true</trim>
-      </hudson.model.StringParameterDefinition>
-      <hudson.model.StringParameterDefinition>
-        <name>AOC_CUSTOM_STACK_PROVISIONER_ARTIFACT_URL</name>
-        <description>URL where custom stack provisioner artifact is located.</description>
-        <defaultValue>{{ aem_opencloud.custom_stack_provisioner.artifact_url }}</defaultValue>
+        <name>AOC_CONFIG_PROFILE_AEM_TEST_SUITE</name>
+        <description>Name of the AEM Test Suite configuration profile.</description>
+        <defaultValue>{{ item[0].item.path }}</defaultValue>
         <trim>true</trim>
       </hudson.model.StringParameterDefinition>
       <hudson.model.StringParameterDefinition>
@@ -61,27 +31,9 @@
         <trim>true</trim>
       </hudson.model.StringParameterDefinition>
       <hudson.model.StringParameterDefinition>
-        <name>AOC_CONFIG_PROFILE_AEM_AWS_STACK_BUILDER</name>
-        <description>Name of the AEM AWS Stack Builder configuration profile.</description>
-        <defaultValue>{{ item[0].item.path }}</defaultValue>
-        <trim>true</trim>
-      </hudson.model.StringParameterDefinition>
-      <hudson.model.StringParameterDefinition>
-        <name>AOC_STACK_MANAGER_CONFIG_PROFILE_AEM_AWS_STACK_BUILDER</name>
-        <description>Name of the AEM AWS Stack Builder configuration profile.</description>
-        <defaultValue>{{ item[4].item.path }}</defaultValue>
-        <trim>true</trim>
-      </hudson.model.StringParameterDefinition>
-      <hudson.model.StringParameterDefinition>
         <name>AOC_CONFIG_PROFILE_AEM_STACK_MANAGER_MESSENGER</name>
         <description>Name of the AEM Stack Manager Messenger configuration profile.</description>
-        <defaultValue>{{ item[2].item.path }}</defaultValue>
-        <trim>true</trim>
-      </hudson.model.StringParameterDefinition>
-      <hudson.model.StringParameterDefinition>
-        <name>AOC_CONFIG_PROFILE_AEM_TEST_SUITE</name>
-        <description>Name of the AEM Test Suite configuration profile.</description>
-        <defaultValue>{{ item[3].item.path }}</defaultValue>
+        <defaultValue>{{ item[0].item.path }}</defaultValue>
         <trim>true</trim>
       </hudson.model.StringParameterDefinition>
       <hudson.model.StringParameterDefinition>
@@ -128,7 +80,7 @@
       <submoduleCfg class="list"/>
       <extensions/>
     </scm>
-    <scriptPath>provisioners/jenkins/jenkinsfiles/aem-opencloud/testing/aws/{{ item[1].item.path }}</scriptPath>
+    <scriptPath>provisioners/jenkins/jenkinsfiles/aem-opencloud/operational-tasks/{{ item[1] }}/</scriptPath>
     <lightweight>true</lightweight>
   </definition>
   <triggers/>

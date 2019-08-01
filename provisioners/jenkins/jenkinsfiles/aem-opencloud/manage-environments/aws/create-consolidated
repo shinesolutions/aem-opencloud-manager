@@ -16,7 +16,7 @@ pipeline {
     parameters {
         string(name: 'AOC_VERSION_AEM_AWS_STACK_BUILDER', defaultValue: config.library.aem_aws_stack_builder, description: 'Version of aem-aws-stack-builder repo to archive')
         string(name: 'AOC_VERSION_AEM_STACK_MANAGER_MESSENGER', defaultValue: config.library.aem_stack_manager_messenger, description: 'Version of aem-stack-manager-messenger repo')
-        string(name: 'AOC_VERSION_AEM_TEST_SUITE', defaultValue: config.library.aem_test_suite, description: 'Version of aem-test-suite repo to archive')
+        // string(name: 'AOC_VERSION_AEM_TEST_SUITE', defaultValue: config.library.aem_test_suite, description: 'Version of aem-test-suite repo to archive')
         string(name: 'SOURCE_AUTHOR_SNAPSHOT_ID', defaultValue: '', description: 'Source Snapshot ID from the Author repository')
         string(name: 'SOURCE_PUBLISH_SNAPSHOT_ID', defaultValue: '', description: 'Source Snapshot ID from the Publish repository')
         string(name: 'SOURCE_SNAPSHOT_STACK_PREFIX', defaultValue: '', description: 'Source Stack Prefix to get source Snapshot IDs from.')
@@ -31,9 +31,9 @@ pipeline {
         stage('Prepare libraries') {
             steps {
                     JenkinsStagePreStep this
-                    AocPrepareLibrary(this, "aem-aws-stack-builder", params.AOC_VERSION_AEM_AWS_STACK_BUILDER, params.AWS_LIBRARY_S3_BUCKET, AWS_LIBRARY_S3_PATH, env.TMPDIR)
-                    AocPrepareLibrary(this, "aem-stack-manager-messenger", params.AOC_VERSION_AEM_STACK_MANAGER_MESSENGER, params.AWS_LIBRARY_S3_BUCKET, AWS_LIBRARY_S3_PATH, env.TMPDIR)
-                    // AocPrepareLibrary(this, "aem-test-suite", params.AOC_VERSION_AEM_TEST_SUITE, params.AWS_LIBRARY_S3_BUCKET, AWS_LIBRARY_S3_PATH, env.TMPDIR)
+                    AocPrepareLibrary(this, "aem-aws-stack-builder", params.AOC_VERSION_AEM_AWS_STACK_BUILDER, params.AWS_LIBRARY_S3_BUCKET, params.AWS_LIBRARY_S3_PATH, env.TMPDIR)
+                    AocPrepareLibrary(this, "aem-stack-manager-messenger", params.AOC_VERSION_AEM_STACK_MANAGER_MESSENGER, params.AWS_LIBRARY_S3_BUCKET, params.AWS_LIBRARY_S3_PATH, env.TMPDIR)
+                    // AocPrepareLibrary(this, "aem-test-suite", params.AOC_VERSION_AEM_TEST_SUITE, params.AWS_LIBRARY_S3_BUCKET, params.AWS_LIBRARY_S3_PATH, env.TMPDIR)
                     AocPrepareConfig(this, params.AOC_CONFIG_ARTIFACT_URL, env.TMPDIR)
             }
             post {
@@ -47,6 +47,7 @@ pipeline {
                     JenkinsStagePreStep this
                     ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make deps")
                     ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make deps")
+                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make stage")
                     // ExecCommand(this, env.TMPDIR, "aem-test-suite", "make deps")
             }
             post {
@@ -60,6 +61,7 @@ pipeline {
                     JenkinsStagePreStep this
                     GenerateOfflineSnapshotConfig(this, params.SOURCE_AUTHOR_SNAPSHOT_ID, params.SOURCE_PUBLISH_SNAPSHOT_ID, params.SOURCE_SNAPSHOT_STACK_PREFIX, env.AOC_CONFIG_PROFILE_DIR_AEM_AWS_STACK_BUILDER)
                     ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make config config_path=${env.AOC_CONFIG_PROFILE_DIR_AEM_AWS_STACK_BUILDER}")
+                    // ExecCommand(this, env.TMPDIR, "aem-test-suite", "make config-aem-aws config_path=${env.AOC_CONFIG_PROFILE_DIR_AEM_TEST_SUITE}")
             }
             post {
                 always {
@@ -71,7 +73,7 @@ pipeline {
             steps {
                     JenkinsStagePreStep this
                     AocPrepareParamArtifact(this, params.AOC_DEPLOYMENT_DESCRIPTOR_URL, env.TMPDIR + '/aem-aws-stack-builder/stage/', 'deploy-artifacts-descriptor.json')
-                    AocPrepareParamArtifact(this, params.AOC_EXPORT_DESCRIPTOR_URL, env.TMPDIR + '/aem-aws-stack-builder/stage/', 'export-backup-descriptor.json')
+                    AocPrepareParamArtifact(this, params.AOC_EXPORT_DESCRIPTOR_URL, env.TMPDIR + '/aem-aws-stack-builder/stage/', 'export-backups-descriptor.json')
                     AocPrepareParamArtifact(this, params.AOC_CONTENT_HEALTHCHECK_DESCRIPTOR_URL, env.TMPDIR + '/aem-aws-stack-builder/stage/', 'content-healthcheck-descriptor.json')
                     AocPrepareParamArtifact(this, params.AOC_CUSTOM_STACK_PROVISIONER_ARTIFACT_URL, env.TMPDIR + '/aem-aws-stack-builder/stage/', 'aem-custom-stack-provisioner.tar.gz')
                     ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make create-consolidated config_path=${env.AOC_CONFIG_PROFILE_DIR_AEM_AWS_STACK_BUILDER} stack_prefix=${params.STACK_PREFIX}")
@@ -86,9 +88,7 @@ pipeline {
         stage('Run acceptance tests') {
             steps {
                 JenkinsStagePreStep this
-                // ExecCommand(this, env.TMPDIR, "aem-test-suite", "make test-acceptance-author-primary stack_prefix=${params.STACK_PREFIX}")
-                // ExecCommand(this, env.TMPDIR, "aem-test-suite", "make test-acceptance-publish stack_prefix=${params.STACK_PREFIX}")
-                // ExecCommand(this, env.TMPDIR, "aem-test-suite", "make test-acceptance-publish-dispatcher stack_prefix=${params.STACK_PREFIX}")
+                // ExecCommand(this, env.TMPDIR, "aem-test-suite", "make test-acceptance-consolidated stack_prefix=${params.STACK_PREFIX}")
             }
             post {
                 always {

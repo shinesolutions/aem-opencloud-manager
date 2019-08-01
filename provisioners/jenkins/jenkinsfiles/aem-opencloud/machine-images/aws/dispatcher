@@ -27,7 +27,7 @@ pipeline {
         stage('Prepare libraries') {
             steps {
                     JenkinsStagePreStep this
-                    AocPrepareLibrary(this, "packer-aem", params.AOC_VERSION_PACKER_AEM, params.AWS_LIBRARY_S3_BUCKET, AWS_LIBRARY_S3_PATH, env.TMPDIR)
+                    AocPrepareLibrary(this, "packer-aem", params.AOC_VERSION_PACKER_AEM, params.AWS_LIBRARY_S3_BUCKET, params.AWS_LIBRARY_S3_PATH, env.TMPDIR)
                     AocPrepareConfig(this, params.AOC_CONFIG_ARTIFACT_URL, env.TMPDIR)
             }
             post {
