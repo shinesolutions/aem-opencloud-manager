@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Add feature to manage SAML
+
 ### Changed
 - Upgrade default Jenkins agent Docker image to aem-platform-buildenv 1.0.0
 - Upgrade AEM Stack Manager Messenger to 2.6.0
