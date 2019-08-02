@@ -39,14 +39,14 @@ pipeline {
         stage('Prepare AEM OpenCloud libraries and configuration') {
             steps {
                     JenkinsStagePreStep this
-                    AocPrepareLibrary(this, "aem-aws-stack-builder", params.AOC_VERSION_AEM_AWS_STACK_BUILDER, params.AWS_LIBRARY_S3_BUCKET, AWS_LIBRARY_S3_PATH, env.TMPDIR)
+                    AocPrepareLibrary(this, "aem-aws-stack-builder", params.AOC_VERSION_AEM_AWS_STACK_BUILDER, params.AWS_LIBRARY_S3_BUCKET, params.AWS_LIBRARY_S3_PATH, env.TMPDIR)
                     AocPrepareParamArtifact(this, params.AOC_PRE_UPGRADE__DEPLOYMENT_DESCRIPTOR_URL, env.TMPDIR + '/aem-aws-stack-builder/stage/', 'pre-deployment-descriptor.json')
                     AocPrepareParamArtifact(this, params.AOC_POST_UPGRADE__DEPLOYMENT_DESCRIPTOR_URL, env.TMPDIR + '/aem-aws-stack-builder/stage/', 'post-deployment-descriptor.json')
                     AocPrepareParamArtifact(this, params.AOC_AEM_UPDATE__DEPLOYMENT_DESCRIPTOR_URL, env.TMPDIR + '/aem-aws-stack-builder/stage/', 'aem-update-deployment-descriptor.json')
                     AocS3UploadArtifact(this, env.TMPDIR + '/aem-aws-stack-builder/stage/', 'pre-deployment-descriptor.json' , params.STACK_S3_BUCKET, params.STACK_PREFIX)
                     AocS3UploadArtifact(this, env.TMPDIR + '/aem-aws-stack-builder/stage/', 'post-deployment-descriptor.json' , params.STACK_S3_BUCKET, params.STACK_PREFIX)
                     AocS3UploadArtifact(this, env.TMPDIR + '/aem-aws-stack-builder/stage/', 'aem-update-deployment-descriptor.json' , params.STACK_S3_BUCKET, params.STACK_PREFIX)
-                    AocPrepareLibrary(this, "aem-stack-manager-messenger", params.AOC_VERSION_AEM_STACK_MANAGER_MESSENGER, params.AWS_LIBRARY_S3_BUCKET, AWS_LIBRARY_S3_PATH, env.TMPDIR)
+                    AocPrepareLibrary(this, "aem-stack-manager-messenger", params.AOC_VERSION_AEM_STACK_MANAGER_MESSENGER, params.AWS_LIBRARY_S3_BUCKET, params.AWS_LIBRARY_S3_PATH, env.TMPDIR)
                     AocPrepareConfig(this, params.AOC_CONFIG_ARTIFACT_URL, env.TMPDIR)
             }
             post {
@@ -60,6 +60,7 @@ pipeline {
                     JenkinsStagePreStep this
                     ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make deps")
                     ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make deps")
+                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make stage")
             }
             post {
                 always {

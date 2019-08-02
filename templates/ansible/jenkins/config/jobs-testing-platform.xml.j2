@@ -21,13 +21,103 @@
       <hudson.model.StringParameterDefinition>
         <name>AOC_DEPLOYMENT_DESCRIPTOR_URL</name>
         <description>URL where deployment descriptor file is located.</description>
-        <defaultValue>{{ aem_opencloud.descriptors['full-set'].deployment_descriptor_url }}</defaultValue>
+        <defaultValue>{{ aem_opencloud.descriptors[aem_architecture_type].deployment_descriptor_url }}</defaultValue>
+        <trim>true</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>AOC_EXPORT_DESCRIPTOR_URL</name>
+        <description>URL where export descriptor file is located.</description>
+        <defaultValue>{{ aem_opencloud.descriptors[aem_architecture_type].export_descriptor_url }}</defaultValue>
+        <trim>true</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>AOC_CONTENT_HEALTHCHECK_DESCRIPTOR_URL</name>
+        <description>URL where content health check descriptor file is located.</description>
+        <defaultValue>{{ aem_opencloud.descriptors[aem_architecture_type].content_healthcheck_descriptor_url }}</defaultValue>
         <trim>true</trim>
       </hudson.model.StringParameterDefinition>
       <hudson.model.StringParameterDefinition>
         <name>AOC_CUSTOM_STACK_PROVISIONER_ARTIFACT_URL</name>
         <description>URL where custom stack provisioner artifact is located.</description>
         <defaultValue>{{ aem_opencloud.custom_stack_provisioner.artifact_url }}</defaultValue>
+        <trim>true</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.ChoiceParameterDefinition>
+        <name>DEPLOY_PACKAGE_ACTIVATE</name>
+        <description>Enable package activation</description>
+        <choices class="java.util.Arrays$ArrayList">
+          <a class="string-array">
+            <string>true</string>
+            <string>false</string>
+          </a>
+        </choices>
+      </hudson.model.ChoiceParameterDefinition>
+      <hudson.model.ChoiceParameterDefinition>
+        <name>DEPLOY_PACKAGE_FORCE</name>
+        <description>Force package installation</description>
+        <choices class="java.util.Arrays$ArrayList">
+          <a class="string-array">
+            <string>true</string>
+            <string>false</string>
+          </a>
+        </choices>
+      </hudson.model.ChoiceParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>DEPLOY_PACKAGE_GROUP</name>
+        <description>Package group name</description>
+        <defaultValue></defaultValue>
+        <trim>true</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>DEPLOY_PACKAGE_NAME</name>
+        <description>Package name</description>
+        <defaultValue></defaultValue>
+        <trim>true</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.ChoiceParameterDefinition>
+        <name>DEPLOY_PACKAGE_REPLICATE</name>
+        <description>Enable package replication</description>
+        <choices class="java.util.Arrays$ArrayList">
+          <a class="string-array">
+            <string>true</string>
+            <string>false</string>
+          </a>
+        </choices>
+      </hudson.model.ChoiceParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>DEPLOY_PACKAGE_SOURCE</name>
+        <description>Package source URL</description>
+        <defaultValue></defaultValue>
+        <trim>true</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>DEPLOY_PACKAGE_VERSION</name>
+        <description>Package version</description>
+        <defaultValue></defaultValue>
+        <trim>true</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>IMPORT_PACKAGE_GROUP</name>
+        <description>Package group name</description>
+        <defaultValue></defaultValue>
+        <trim>true</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>IMPORT_PACKAGE_NAME</name>
+        <description>Package name</description>
+        <defaultValue></defaultValue>
+        <trim>true</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>IMPORT_PACKAGE_DATESTAMP</name>
+        <description>Package date stamp</description>
+        <defaultValue></defaultValue>
+        <trim>true</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>IMPORT_PACKAGE_SOURCE_STACK_PREFIX</name>
+        <description>Stack Prefix from the source stack where the package was exported from.</description>
+        <defaultValue></defaultValue>
         <trim>true</trim>
       </hudson.model.StringParameterDefinition>
       <hudson.model.StringParameterDefinition>
@@ -43,9 +133,15 @@
         <trim>true</trim>
       </hudson.model.StringParameterDefinition>
       <hudson.model.StringParameterDefinition>
-        <name>AOC_CONFIG_PROFILE_AEM_AWS_STACK_BUILDER</name>
+        <name>AOC_AEM_STACK_CONFIG_PROFILE_AEM_AWS_STACK_BUILDER</name>
         <description>Name of the AEM AWS Stack Builder configuration profile.</description>
         <defaultValue>{{ item[0].item.path }}</defaultValue>
+        <trim>true</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>AOC_STACK_MANAGER_CONFIG_PROFILE_AEM_AWS_STACK_BUILDER</name>
+        <description>Name of the AEM AWS Stack Builder configuration profile.</description>
+        <defaultValue>{{ item[4].item.path }}</defaultValue>
         <trim>true</trim>
       </hudson.model.StringParameterDefinition>
       <hudson.model.StringParameterDefinition>
@@ -58,12 +154,6 @@
         <name>AOC_CONFIG_PROFILE_AEM_TEST_SUITE</name>
         <description>Name of the AEM Test Suite configuration profile.</description>
         <defaultValue>{{ item[3].item.path }}</defaultValue>
-        <trim>true</trim>
-      </hudson.model.StringParameterDefinition>
-      <hudson.model.StringParameterDefinition>
-        <name>AOC_CONFIG_PROFILE_AEM_STACK_MANAGER</name>
-        <description>Name of the configuration profile.</description>
-        <defaultValue></defaultValue>
         <trim>true</trim>
       </hudson.model.StringParameterDefinition>
       <hudson.model.StringParameterDefinition>
@@ -92,7 +182,7 @@
       </hudson.model.StringParameterDefinition>
     </parameterDefinitions>
   </hudson.model.ParametersDefinitionProperty>
-</properties>
+  </properties>
   <definition class="org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition" plugin="workflow-cps@2.61">
     <scm class="hudson.plugins.git.GitSCM" plugin="git@3.9.1">
       <configVersion>2</configVersion>

@@ -21,7 +21,19 @@
       <hudson.model.StringParameterDefinition>
         <name>AOC_DEPLOYMENT_DESCRIPTOR_URL</name>
         <description>URL where deployment descriptor file is located.</description>
-        <defaultValue>{{ aem_opencloud.descriptors['full-set'].deployment_descriptor_url }}</defaultValue>
+        <defaultValue>{{ aem_opencloud.descriptors[aem_architecture_type].deployment_descriptor_url }}</defaultValue>
+        <trim>true</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>AOC_EXPORT_DESCRIPTOR_URL</name>
+        <description>URL where export descriptor file is located.</description>
+        <defaultValue>{{ aem_opencloud.descriptors[aem_architecture_type].export_descriptor_url }}</defaultValue>
+        <trim>true</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>AOC_CONTENT_HEALTHCHECK_DESCRIPTOR_URL</name>
+        <description>URL where content health check descriptor file is located.</description>
+        <defaultValue>{{ aem_opencloud.descriptors[aem_architecture_type].content_healthcheck_descriptor_url }}</defaultValue>
         <trim>true</trim>
       </hudson.model.StringParameterDefinition>
       <hudson.model.StringParameterDefinition>
@@ -43,9 +55,15 @@
         <trim>true</trim>
       </hudson.model.StringParameterDefinition>
       <hudson.model.StringParameterDefinition>
-        <name>AOC_CONFIG_PROFILE_AEM_AWS_STACK_BUILDER</name>
+        <name>AOC_AEM_STACK_CONFIG_PROFILE_AEM_AWS_STACK_BUILDER</name>
         <description>Name of the AEM AWS Stack Builder configuration profile.</description>
         <defaultValue>{{ item[0].item.path }}</defaultValue>
+        <trim>true</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>AOC_STACK_MANAGER_CONFIG_PROFILE_AEM_AWS_STACK_BUILDER</name>
+        <description>Name of the AEM AWS Stack Builder configuration profile.</description>
+        <defaultValue>{{ item[4].item.path }}</defaultValue>
         <trim>true</trim>
       </hudson.model.StringParameterDefinition>
       <hudson.model.StringParameterDefinition>

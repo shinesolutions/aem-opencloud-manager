@@ -13,12 +13,10 @@ pipeline {
     environment {
         TMPDIR = "/tmp/shinesolutions/aem-opencloud-manager"
         AOC_CONFIG_DIR = "${env.TMPDIR}/aem-opencloud-config"
+
     }
     parameters {
-        string(name: 'REALM', defaultValue: 'nonprod', description: 'Evnironment realm for configuration path')
-
-        string(name: 'STACK_PREFIX', defaultValue: '', description: 'AEM OpenCloud stack prefix.')
-        string(name: 'AOC_VERSION_AEM_TEST_SUITE', defaultValue: config.library.aem_test_suite, description: 'Version of aem-test-suite repo to archive')
+        string(name: 'AOC_VERSION_AEM_STACK_MANAGER_MESSENGER', defaultValue: config.library.aem_stack_manager_messenger, description: 'Version of aem-stack-manager-messenger repo')
     }
     stages {
         stage('Initialise pipeline') {
@@ -35,7 +33,8 @@ pipeline {
 
                     JenkinsStagePreStep this
 
-                    AocPrepareLibrary(this, "aem-test-suite", params.AOC_VERSION_AEM_TEST_SUITE, params.AWS_LIBRARY_S3_BUCKET, AWS_LIBRARY_S3_PATH, env.TMPDIR)
+                    AocPrepareLibrary(this, "aem-stack-manager-messenger", params.AOC_VERSION_AEM_STACK_MANAGER_MESSENGER, params.AWS_LIBRARY_S3_BUCKET, params.AWS_LIBRARY_S3_PATH, env.TMPDIR)
+                    AocPrepareConfig(this, params.AOC_CONFIG_ARTIFACT_URL, env.TMPDIR)
             }
             post {
                 always {
@@ -50,7 +49,7 @@ pipeline {
 
                     JenkinsStagePreStep this
 
-                    ExecCommand(this, env.TMPDIR, "aem-test-suite", "make deps")
+                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make deps")
             }
             post {
                 always {
@@ -59,28 +58,13 @@ pipeline {
                 }
             }
         }
-        stage('Prepare configuration') {
+        stage('Trigger AEM Stack Manager event') {
             steps {
 
 
                     JenkinsStagePreStep this
-                    // Create aem-test-suite configuration
-                    ExecCommand(this, env.TMPDIR, "aem-test-suite", "make config-aem config_path=${env.AOC_CONFIG_DIR}/aem-test-suite/${params.AOC_CONFIG_PROFILE}/")
-            }
-            post {
-                always {
 
-                    JenkinsStagePostStep this
-                }
-            }
-        }
-        stage('Trigger Test') {
-            steps {
-
-
-                    JenkinsStagePreStep this
-                    // Trigger Test
-                    ExecCommand(this, env.TMPDIR, "aem-test-suite", "make test-security-publish-dispatcher stack_prefix=${params.STACK_PREFIX}")
+                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make export-package stack_prefix=${params.STACK_MANAGER_STACK_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_CONFIG_PROFILE_AEM_STACK_MANAGER_MESSENGER}/ component=${params.AEM_COMPONENT} aem_id=${params.AEM_ID} package_group=${params.PACKAGE_GROUP} package_name=${params.PACKAGE_NAME} package_filter=${params.PACKAGE_FILTER}")
             }
             post {
                 always {

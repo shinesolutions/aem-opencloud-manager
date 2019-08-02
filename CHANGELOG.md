@@ -13,6 +13,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upgrade default Jenkins agent Docker image to aem-platform-buildenv 1.0.0
 - Upgrade AEM Stack Manager Messenger to 2.6.0
 - Rename jenkins-provision-aws-user-resources to jenkins-aws-user-resources for consistency
+- Renamed testing operational tasks
+
+### Fixed
+- Fixed several bugs in Jenkins testing pipelines
+
+### Removed
+- Removed operational task `export-package` due to bugs
 
 ## [4.1.0-pre.2] - 2019-07-24
 

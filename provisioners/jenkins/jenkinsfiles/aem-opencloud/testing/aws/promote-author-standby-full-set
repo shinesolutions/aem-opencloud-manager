@@ -11,7 +11,8 @@ pipeline {
     environment {
         TMPDIR = "/tmp/shinesolutions/aem-opencloud-manager"
         AOC_CONFIG_DIR = "${env.TMPDIR}/aem-opencloud-config"
-        AOC_CONFIG_PROFILE_DIR_AEM_AWS_STACK_BUILDER = "${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE_AEM_AWS_STACK_BUILDER}/"
+        AOC_FULLSET_CONFIG_PROFILE_DIR_AEM_AWS_STACK_BUILDER = "${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_AEM_STACK_CONFIG_PROFILE_AEM_AWS_STACK_BUILDER}/"
+        AOC_STACK_MANAGER_CONFIG_PROFILE_DIR_AEM_AWS_STACK_BUILDER = "${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_STACK_MANAGER_CONFIG_PROFILE_AEM_AWS_STACK_BUILDER}/"
         AOC_CONFIG_PROFILE_DIR_AEM_STACK_MANAGER_MESSENGER = "${env.AOC_CONFIG_DIR}/aem-stack-manager-messenger/${params.AOC_CONFIG_PROFILE_AEM_STACK_MANAGER_MESSENGER}/"
         AOC_CONFIG_PROFILE_DIR_AEM_TEST_SUITE = "${env.AOC_CONFIG_DIR}/aem-test-suite/${params.AOC_CONFIG_PROFILE_AEM_TEST_SUITE}/"
     }
@@ -21,20 +22,20 @@ pipeline {
         string(name: 'AOC_VERSION_AEM_TEST_SUITE', defaultValue: config.library.aem_test_suite, description: 'Version of aem-test-suite repo to archive')
         string(name: 'SOURCE_AUTHOR_SNAPSHOT_ID', defaultValue: '', description: 'Source Snapshot ID from the Author repository')
         string(name: 'SOURCE_PUBLISH_SNAPSHOT_ID', defaultValue: '', description: 'Source Snapshot ID from the Publish repository')
-        string(name: 'SOURCE_SNAPSHOT_STACK_PREFIX', defaultValue: '', description: 'Source Stack Prefix to get source Snapshot IDs from.')    }
+        string(name: 'SOURCE_SNAPSHOT_STACK_PREFIX', defaultValue: '', description: 'Source Stack Prefix to get source Snapshot IDs from.')
+    }
+
     stages {
-        stage('Initialise Jenkins pipeline') {
+        stage('Initialise pipeline') {
             steps {
                 JenkinsInit(this, params.AOC_CUSTOM_MANAGER_STEPS_ARTIFACT_URL, env.TMPDIR)
                 JenkinsPipelinePreStep this
             }
         }
-        stage('Prepare AEM OpenCloud libraries and configuration') {
+        stage('Prepare AEM Stack Manager libraries') {
             steps {
                     JenkinsStagePreStep this
-                    AocPrepareLibrary(this, "aem-aws-stack-builder", params.AOC_VERSION_AEM_AWS_STACK_BUILDER, params.AWS_LIBRARY_S3_BUCKET, AWS_LIBRARY_S3_PATH, env.TMPDIR)
-                    AocPrepareLibrary(this, "aem-stack-manager-messenger", params.AOC_VERSION_AEM_STACK_MANAGER_MESSENGER, params.AWS_LIBRARY_S3_BUCKET, AWS_LIBRARY_S3_PATH, env.TMPDIR)
-                    AocPrepareLibrary(this, "aem-test-suite", params.AOC_VERSION_AEM_TEST_SUITE, params.AWS_LIBRARY_S3_BUCKET, AWS_LIBRARY_S3_PATH, env.TMPDIR)
+                    AocPrepareLibrary(this, "aem-aws-stack-builder", params.AOC_VERSION_AEM_AWS_STACK_BUILDER, params.AWS_LIBRARY_S3_BUCKET, params.AWS_LIBRARY_S3_PATH, env.TMPDIR)
                     AocPrepareConfig(this, params.AOC_CONFIG_ARTIFACT_URL, env.TMPDIR)
             }
             post {
@@ -43,11 +44,60 @@ pipeline {
                 }
             }
         }
-        stage('Resolve dependencies') {
+        stage('Resolve AEM Stack Manager dependencies') {
+            steps {
+                    JenkinsStagePreStep this
+                    ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make deps")
+            }
+            post {
+                always {
+                  JenkinsStagePostStep this
+                }
+            }
+        }
+        stage('Prepare AEM Stack Manager configuration') {
+            steps {
+                    JenkinsStagePreStep this
+                    ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make config config_path=${env.AOC_STACK_MANAGER_CONFIG_PROFILE_DIR_AEM_AWS_STACK_BUILDER}")
+            }
+            post {
+                always {
+                  JenkinsStagePostStep this
+                }
+            }
+        }
+        stage('Create AEM Stack Manager environment') {
+            steps {
+                    JenkinsStagePreStep this
+                    ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make create-stack-manager config_path=${env.AOC_STACK_MANAGER_CONFIG_PROFILE_DIR_AEM_AWS_STACK_BUILDER} stack_prefix=${params.STACK_MANAGER_STACK_PREFIX}")
+            }
+            post {
+                always {
+                  JenkinsStagePostStep this
+                }
+            }
+        }
+        stage('Prepare AEM Full-Set libraries') {
+            steps {
+                    JenkinsStagePreStep this
+                    sh "rm -rf ${env.TMPDIR}"
+                    AocPrepareLibrary(this, "aem-aws-stack-builder", params.AOC_VERSION_AEM_AWS_STACK_BUILDER, params.AWS_LIBRARY_S3_BUCKET, params.AWS_LIBRARY_S3_PATH, env.TMPDIR)
+                    AocPrepareLibrary(this, "aem-stack-manager-messenger", params.AOC_VERSION_AEM_STACK_MANAGER_MESSENGER, params.AWS_LIBRARY_S3_BUCKET, params.AWS_LIBRARY_S3_PATH, env.TMPDIR)
+                    AocPrepareLibrary(this, "aem-test-suite", params.AOC_VERSION_AEM_TEST_SUITE, params.AWS_LIBRARY_S3_BUCKET, params.AWS_LIBRARY_S3_PATH, env.TMPDIR)
+                    AocPrepareConfig(this, params.AOC_CONFIG_ARTIFACT_URL, env.TMPDIR)
+            }
+            post {
+                always {
+                  JenkinsStagePostStep this
+                }
+            }
+        }
+        stage('Resolve AEM Full-Set dependencies') {
             steps {
                     JenkinsStagePreStep this
                     ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make deps")
                     ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make deps")
+                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make stage")
                     ExecCommand(this, env.TMPDIR, "aem-test-suite", "make deps")
             }
             post {
@@ -56,15 +106,15 @@ pipeline {
                 }
             }
         }
-        stage('Prepare configuration for AEM environment') {
+        stage('Prepare AEM Full-Set configuration') {
             steps {
                     JenkinsStagePreStep this
-                    GenerateOfflineSnapshotConfig(this, params.SOURCE_AUTHOR_SNAPSHOT_ID, params.SOURCE_PUBLISH_SNAPSHOT_ID, params.SOURCE_SNAPSHOT_STACK_PREFIX, env.AOC_CONFIG_PROFILE_DIR_AEM_AWS_STACK_BUILDER)
-                    ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make config config_path=${env.AOC_CONFIG_PROFILE_DIR_AEM_AWS_STACK_BUILDER}")
+                    GenerateOfflineSnapshotConfig(this, params.SOURCE_AUTHOR_SNAPSHOT_ID, params.SOURCE_PUBLISH_SNAPSHOT_ID, params.SOURCE_SNAPSHOT_STACK_PREFIX, env.AOC_FULLSET_CONFIG_PROFILE_DIR_AEM_AWS_STACK_BUILDER)
+                    ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make config config_path=${env.AOC_FULLSET_CONFIG_PROFILE_DIR_AEM_AWS_STACK_BUILDER}")
+                    ExecCommand(this, env.TMPDIR, "aem-test-suite", "make config-aem-aws config_path=${env.AOC_CONFIG_PROFILE_DIR_AEM_TEST_SUITE}")
             }
             post {
                 always {
-                  // Running stage post-script
                   JenkinsStagePostStep this
                 }
             }
@@ -73,9 +123,10 @@ pipeline {
             steps {
                     JenkinsStagePreStep this
                     AocPrepareParamArtifact(this, params.AOC_DEPLOYMENT_DESCRIPTOR_URL, env.TMPDIR + '/aem-aws-stack-builder/stage/', 'deploy-artifacts-descriptor.json')
+                    AocPrepareParamArtifact(this, params.AOC_EXPORT_DESCRIPTOR_URL, env.TMPDIR + '/aem-aws-stack-builder/stage/', 'export-backups-descriptor.json')
                     AocPrepareParamArtifact(this, params.AOC_CONTENT_HEALTHCHECK_DESCRIPTOR_URL, env.TMPDIR + '/aem-aws-stack-builder/stage/', 'content-healthcheck-descriptor.json')
                     AocPrepareParamArtifact(this, params.AOC_CUSTOM_STACK_PROVISIONER_ARTIFACT_URL, env.TMPDIR + '/aem-aws-stack-builder/stage/', 'aem-custom-stack-provisioner.tar.gz')
-                    ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make create-full-set config_path=${env.AOC_CONFIG_PROFILE_DIR_AEM_AWS_STACK_BUILDER} stack_prefix=${params.STACK_PREFIX}")
+                    ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make create-full-set config_path=${env.AOC_FULLSET_CONFIG_PROFILE_DIR_AEM_AWS_STACK_BUILDER} stack_prefix=${params.STACK_PREFIX}")
                     ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make check-readiness-full-set stack_prefix=${params.STACK_MANAGER_STACK_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_PROFILE_DIR_AEM_STACK_MANAGER_MESSENGER}")
             }
             post {
@@ -84,10 +135,10 @@ pipeline {
                 }
             }
         }
-        stage('Run acceptance test') {
+        stage('Run acceptance tests') {
             steps {
-                    JenkinsStagePreStep this
-                    ExecCommand(this, env.TMPDIR, "aem-test-suite", "make test-acceptance-full-set config_path=${AOC_CONFIG_PROFILE_DIR_AEM_TEST_SUITE} stack_prefix=${params.STACK_PREFIX}")
+                JenkinsStagePreStep this
+                ExecCommand(this, env.TMPDIR, "aem-test-suite", "make test-acceptance-full-set config_path=${env.AOC_CONFIG_PROFILE_DIR_AEM_TEST_SUITE} stack_prefix=${params.STACK_PREFIX}")
             }
             post {
                 always {
@@ -95,40 +146,7 @@ pipeline {
                 }
             }
         }
-        stage('Deploy applications on AEM Full-Set') {
-            steps {
-                    JenkinsStagePreStep this
-                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make deploy-artifacts-full-set stack_prefix=${params.STACK_MANAGER_STACK_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_PROFILE_DIR_AEM_STACK_MANAGER_MESSENGER} descriptor_file=deploy-artifacts-descriptor.json")
-            }
-            post {
-                always {
-                  JenkinsStagePostStep this
-                }
-            }
-        }
-        stage('Check readiness on AEM Full-Set after deployment') {
-            steps {
-                    JenkinsStagePreStep this
-                    ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make check-readiness-full-set stack_prefix=${params.STACK_MANAGER_STACK_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_PROFILE_DIR_AEM_STACK_MANAGER_MESSENGER}")
-            }
-            post {
-                always {
-                  JenkinsStagePostStep this
-                }
-            }
-        }
-        stage('Terminate Author-Primary (Placeholder)') {
-            steps {
-                    JenkinsStagePreStep this
-                    // ExecCommand(this, env.TMPDIR, "aem-test-suite", "make terminate-author-primary config_path=${AOC_CONFIG_PROFILE_DIR_AEM_TEST_SUITE} stack_prefix=${params.STACK_PREFIX}")
-            }
-            post {
-                always {
-                  JenkinsStagePostStep this
-                }
-            }
-        }
-        stage('Promote Author-Standby to Author-Primary') {
+        stage('Promote Author Standby to Author primary') {
             steps {
                     JenkinsStagePreStep this
                     ExecCommand(this, env.TMPDIR, "aem-stack-manager-messenger", "make promote-author stack_prefix=${params.STACK_MANAGER_STACK_PREFIX} target_aem_stack_prefix=${params.STACK_PREFIX} config_path=${env.AOC_CONFIG_PROFILE_DIR_AEM_STACK_MANAGER_MESSENGER}")
@@ -140,11 +158,21 @@ pipeline {
                 }
             }
         }
-        stage('Delete AEM Full-Set Architecture') {
+        stage('Delete AEM OpenCloud Full-Set environment') {
             steps {
                     JenkinsStagePreStep this
-
-                    ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make delete-full-set config_path=${env.AOC_CONFIG_PROFILE_DIR_AEM_AWS_STACK_BUILDER} stack_prefix=${params.STACK_PREFIX}")
+                    ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make delete-full-set config_path=${env.AOC_FULLSET_CONFIG_PROFILE_DIR_AEM_AWS_STACK_BUILDER} stack_prefix=${params.STACK_PREFIX}")
+            }
+            post {
+                always {
+                  JenkinsStagePostStep this
+                }
+            }
+        }
+        stage('Delete AEM OpenCloud Stack Manager environment') {
+            steps {
+                    JenkinsStagePreStep this
+                    ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make delete-stack-manager config_path=${env.AOC_STACK_MANAGER_CONFIG_PROFILE_DIR_AEM_AWS_STACK_BUILDER} stack_prefix=${params.STACK_MANAGER_STACK_PREFIX}")
             }
             post {
                 always {

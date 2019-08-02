@@ -171,26 +171,6 @@
       set_fact:
         aem_test_suite_profiles_trimmed: "{{ aem_test_suite_profiles | trim_skipped() }}"
 
-    - name: Create a list of AEM AWS Stack Builder AEM Testing Blue-Gren configuration profiles
-      shell: echo {{ item.path }}
-      with_filetree: ../../../stage/aem-opencloud-config/aem-aws-stack-builder/
-      when: item.state == 'directory' and item.path is match ('aem-testing-blue-green-*')
-      register: aem_testing_blue_green_profiles
-
-    - name: Trim skipped AEM AWS Stack Builder AEM Testing Blue-Gren configuration profiles
-      set_fact:
-        aem_testing_blue_green_profiles_trimmed: "{{ aem_testing_blue_green_profiles | trim_skipped() }}"
-
-    - name: Create a list of AEM AWS Stack Builder AEM Testing recovery configuration profiles
-      shell: echo {{ item.path }}
-      with_filetree: ../../../stage/aem-opencloud-config/aem-aws-stack-builder/
-      when: item.state == 'directory' and item.path is match ('aem-testing-recovery-*')
-      register: aem_testing_recovery_profiles
-
-    - name: Trim skipped AEM AWS Stack Builder AEM Testing recovery configuration profiles
-      set_fact:
-        aem_testing_recovery_profiles_trimmed: "{{ aem_testing_recovery_profiles | trim_skipped() }}"
-
     ########################################################################
     # Generate Jenkins jobs directory structure.
     ########################################################################
@@ -274,6 +254,14 @@
         operational_tasks_with_export_descriptor_params:
           - export-packages-consolidated
           - export-packages-full-set
+        operational_tasks_with_aem_test_suite_basic_params:
+          - test-contenthealthcheck-alarm
+        operational_tasks_with_aem_test_suite_aem_architecture_params:
+          - test-acceptance
+        operational_tasks_with_aem_test_suite_recovery_params:
+          - test-recovery
+        operational_tasks_with_aem_test_suite_security_params:
+          - test-aem-security
 
     - import_tasks: includes/migration-gen.yaml
 
