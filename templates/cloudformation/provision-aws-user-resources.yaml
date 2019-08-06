@@ -219,6 +219,7 @@ Resources:
                   - autoscaling:DeleteLaunchConfiguration
                   - autoscaling:DeleteLifecycleHook
                   - autoscaling:DeleteNotificationConfiguration
+                  - autoscaling:DeletePolicy
                   - autoscaling:DeleteScheduledAction
                   - autoscaling:DeleteTags
                   - autoscaling:DescribeAccountLimits
@@ -269,6 +270,7 @@ Resources:
                   - cloudformation:ListStackResources
                   - cloudformation:ListStacks
                   - cloudformation:UpdateStack
+                  - cloudwatch:DeleteAlarms
                   - cloudwatch:DescribeAlarmHistory
                   - cloudwatch:DescribeAlarms
                   - cloudwatch:DescribeAlarmsForMetric
@@ -283,6 +285,7 @@ Resources:
                   - dynamodb:BatchGetItem
                   - dynamodb:ConditionCheckItem
                   - dynamodb:CreateTable
+                  - dynamodb:DeleteTable
                   - dynamodb:DescribeBackup
                   - dynamodb:DescribeContinuousBackups
                   - dynamodb:DescribeGlobalTable
@@ -360,9 +363,13 @@ Resources:
                   - iam:CreatePolicy
                   - iam:CreateRole
                   - iam:CreateServiceLinkedRole
+                  - iam:DeleteInstanceProfile
+                  - iam:DeleteRole
+                  - iam:DeleteRolePolicy
                   - iam:DetachRolePolicy
                   - iam:GetPolicy
                   - iam:GetRole
+                  - iam:ListPolicyVersions
                   - iam:PassRole
                   - iam:PutRolePolicy
                   - iam:RemoveRoleFromInstanceProfile
@@ -371,9 +378,12 @@ Resources:
                   - lambda:AddPermission
                   - lambda:CreateAlias
                   - lambda:CreateFunction
+                  - lambda:DeleteAlias
+                  - lambda:DeleteFunction
                   - lambda:GetFunction
                   - lambda:ListVersionsByFunction
                   - lambda:PublishVersion
+                  - lambda:RemovePermission
                   - route53:ChangeResourceRecordSets
                   - route53:CreateHostedZone
                   - route53:DeleteHostedZone
@@ -383,20 +393,25 @@ Resources:
                   - route53:ListHostedZonesByName
                   - route53:ListResourceRecordSets
                   - s3:*
-                  - secretsmanager:GetSecretValue
+                  - sdb:DeleteDomain
                   - secretsmanager:CreateSecret
+                  - secretsmanager:GetSecretValue
                   - secretsmanager:TagResource
                   - sns:CreateTopic
+                  - sns:DeleteTopic
                   - sns:GetTopicAttributes
                   - sns:ListTopics
                   - sns:Publish
                   - sns:SetTopicAttributes
                   - sns:Subscribe
+                  - sns:Unsubscribe
                   - sqs:CreateQueue
+                  - sqs:DeleteQueue
                   - sqs:GetQueueAttributes
                   - sqs:ListQueues
                   - sqs:ReceiveMessage
                   - sqs:SetQueueAttributes
+                  - ssm:AddTagsToResource
                   - ssm:CreateDocument
                   - ssm:DescribeDocument
                   - ssm:GetParameter
@@ -404,7 +419,6 @@ Resources:
                   - ssm:GetParameters
                   - ssm:GetParametersByPath
                   - ssm:PutParameter
-                  - ssm:AddTagsToResource
                 Resource: "*"
               - Effect: Allow
                 Action:
