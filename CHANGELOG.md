@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Add feature to manage SAML
+- Add permissions for deleting AWS CloudFormation stacks
 
 ### Changed
 - Upgrade default Jenkins agent Docker image to aem-platform-buildenv 1.0.0
