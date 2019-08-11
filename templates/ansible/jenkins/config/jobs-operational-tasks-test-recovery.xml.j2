@@ -25,7 +25,7 @@
       <hudson.model.StringParameterDefinition>
         <name>AOC_CONFIG_PROFILE_AEM_TEST_SUITE</name>
         <description>Name of the AEM Test Suite configuration profile.</description>
-        <defaultValue>{{ item[0].item.path }}</defaultValue>
+        <defaultValue>{{ item[2].item.path }}</defaultValue>
         <trim>true</trim>
       </hudson.model.StringParameterDefinition>
       <hudson.model.StringParameterDefinition>
@@ -43,7 +43,7 @@
       <hudson.model.StringParameterDefinition>
         <name>AOC_CONFIG_PROFILE_AEM_STACK_MANAGER_MESSENGER</name>
         <description>Name of the AEM Stack Manager Messenger configuration profile.</description>
-        <defaultValue>{{ item[0].item.path }}</defaultValue>
+        <defaultValue>{{ item[1] }}</defaultValue>
         <trim>true</trim>
       </hudson.model.StringParameterDefinition>
       <hudson.model.StringParameterDefinition>
@@ -90,7 +90,7 @@
       <submoduleCfg class="list"/>
       <extensions/>
     </scm>
-    <scriptPath>provisioners/jenkins/jenkinsfiles/aem-opencloud/operational-tasks/{{ item[1] }}/</scriptPath>
+    <scriptPath>provisioners/jenkins/jenkinsfiles/aem-opencloud/operational-tasks/{{ item[0].item.path }}/</scriptPath>
     <lightweight>true</lightweight>
   </definition>
   <triggers/>
