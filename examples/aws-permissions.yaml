@@ -270,6 +270,7 @@ Resources:
                   - events:DescribeRule
                   - events:PutRule
                   - events:PutTargets
+                  - events:RemoveTargets
                   - iam:AddRoleToInstanceProfile
                   - iam:AttachRolePolicy
                   - iam:CreateInstanceProfile
@@ -280,6 +281,7 @@ Resources:
                   - iam:DeleteRole
                   - iam:DeleteRolePolicy
                   - iam:DetachRolePolicy
+                  - iam:DeletePolicy
                   - iam:GetPolicy
                   - iam:GetRole
                   - iam:ListPolicyVersions
