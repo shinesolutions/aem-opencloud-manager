@@ -350,10 +350,10 @@ Resources:
                   - ec2:RegisterImage
                   - ec2:RevokeSecurityGroupEgress
                   - ec2:RevokeSecurityGroupIngress
-                  - ec2:RunInstances
                   - ec2:StopInstances
                   - ec2:TerminateInstances
                   - elasticloadbalancing:*
+                  - events:DeleteRule
                   - events:DescribeRule
                   - events:PutRule
                   - events:PutTargets
@@ -415,6 +415,7 @@ Resources:
                   - sqs:SetQueueAttributes
                   - ssm:AddTagsToResource
                   - ssm:CreateDocument
+                  - ssm:DeleteDocument
                   - ssm:DescribeDocument
                   - ssm:GetParameter
                   - ssm:GetParameterHistory
