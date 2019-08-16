@@ -354,6 +354,7 @@ Resources:
                   - ec2:StopInstances
                   - ec2:TerminateInstances
                   - elasticloadbalancing:*
+                  - events:DeleteRule
                   - events:DescribeRule
                   - events:PutRule
                   - events:PutTargets
@@ -415,6 +416,7 @@ Resources:
                   - sqs:SetQueueAttributes
                   - ssm:AddTagsToResource
                   - ssm:CreateDocument
+                  - ssm:DeleteDocument
                   - ssm:DescribeDocument
                   - ssm:GetParameter
                   - ssm:GetParameterHistory
