@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upgrade AEM AWS Stack Builder to 4.8.0
 - Upgrade AEM Stack Manager Messenger to 2.7.0
 - Upgrade AEM Test Suite to 1.4.0
+- Upgrade default Jenkins agent Docker image to aem-platform-buildenv 1.1.0
 
 ### Fixed
 - Fixed error in generating operational test tasks
