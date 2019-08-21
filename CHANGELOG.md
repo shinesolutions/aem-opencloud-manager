@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+- Fix missing content-healthcheck descriptor on blue-green testing's green env creation
+
 ## [4.1.0-pre.4] - 2019-08-19
 
 ### Changed
