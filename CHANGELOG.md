@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Fix missing content-healthcheck descriptor on blue-green testing's green env creation
+- Fix path to Jenkinsfile for the operational tasks using aem-test-suite
 
 ## [4.1.0-pre.4] - 2019-08-19
 
