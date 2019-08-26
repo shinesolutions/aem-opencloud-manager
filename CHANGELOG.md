@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+- Update operational task `test-security` to prepare configuration for aem-test-suite
+
 ## [4.1.0-pre.5] - 2019-08-23
 
 ### Changed

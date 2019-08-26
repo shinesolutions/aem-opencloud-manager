@@ -50,10 +50,22 @@ pipeline {
                 }
             }
         }
+        stage('Prepare configuration for aem-test-suite') {
+            steps {
+                    JenkinsStagePreStep this
+                    ExecCommand(this, env.TMPDIR, "aem-test-suite", "make config-aem config_path=${env.AOC_CONFIG_PROFILE_DIR_AEM_TEST_SUITE}")
+            }
+            post {
+                always {
+                  // Running stage post-script
+                  JenkinsStagePostStep this
+                }
+            }
+        }
         stage('Run Security test') {
             steps {
                 JenkinsStagePreStep this
-                ExecCommand(this, env.TMPDIR, "aem-test-suite", "make test-security-${params.AEM_SECURITY_TEST_PLAN} config_path=${env.AOC_CONFIG_PROFILE_DIR_AEM_TEST_SUITE} stack_prefix=${params.STACK_PREFIX}")
+                ExecCommand(this, env.TMPDIR, "aem-test-suite", "make test-security-${params.AEM_SECURITY_TEST_PLAN} stack_prefix=${params.STACK_PREFIX}")
             }
             post {
                 always {
