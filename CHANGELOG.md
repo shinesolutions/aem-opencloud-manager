@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 - Upgrade Packer AEM to 4.4.2
+- Upgrade AEM AWS Stack Builder to 4.3.1
 
 ## [4.0.0] - 2019-05-29
 
