@@ -28,6 +28,7 @@ pipeline {
     stages {
         stage('Initialise pipeline') {
             steps {
+                slackSend (color: '#FFFF00', message: "START: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
                 JenkinsInit(this, params.AOC_CUSTOM_MANAGER_STEPS_ARTIFACT_URL, env.TMPDIR)
                 JenkinsPipelinePreStep this
             }
