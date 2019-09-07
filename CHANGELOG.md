@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Update operational task `test-security` to prepare configuration for aem-test-suite
 - Upgrade AEM Test Suite to 1.5.0
-- Upgrade AEM AWS Stack Builder to 4.10.0
+- Upgrade AEM AWS Stack Builder to 4.11.0
 
 ## [4.1.0-pre.5] - 2019-08-23
 
