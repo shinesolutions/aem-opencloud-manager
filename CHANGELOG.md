@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Upgrade AEM AWS Stack Builder to 4.9.0
+- Upgrade AEM Test Suite to 1.6.0
 
 ### Fixed
 - Fix missing content-healthcheck descriptor on blue-green testing's green env creation
