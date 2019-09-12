@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+- Upgrade Packer AEM to 4.11.1
+- Upgrade AEM AWS Stack Builder to 4.12.0
+
 ## [4.1.0-pre.6] - 2019-09-08
 ### Added
 - Add Slack notification in the pipeline
