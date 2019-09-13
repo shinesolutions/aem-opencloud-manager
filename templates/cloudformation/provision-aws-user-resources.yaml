@@ -526,6 +526,260 @@ Resources:
       Roles:
         - Ref: OpenCloudAemTestSuiteRole
 
+  # A unified role contains the permissions defined in
+  # OpenCloudPackerAemRole, OpenCloudStackBuilderRole, OpenCloudStackManagerMessengerRole, OpenCloudAemTestSuiteRole
+  # This is handy if the user would like to use a convenient all-in-one role when using AEM OpenCloud Manager,
+  # alternatively, user can assume role for each of OpenCloudPackerAemRole, OpenCloudStackBuilderRole, OpenCloudStackManagerMessengerRole, OpenCloudAemTestSuiteRole
+  # per pipeline as necessary.
+  OpenCloudUnifiedRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Path: /
+      Policies:
+        - PolicyName: OpenCloudUnifiedRolePolicy
+          PolicyDocument:
+            Statement:
+              - Effect: Allow
+                Action:
+                  - acm:*
+                  - acm:GetCertificate
+                  - autoscaling:AttachInstances
+                  - autoscaling:AttachLoadBalancerTargetGroups
+                  - autoscaling:AttachLoadBalancers
+                  - autoscaling:BatchDeleteScheduledAction
+                  - autoscaling:BatchPutScheduledUpdateGroupAction
+                  - autoscaling:CompleteLifecycleAction
+                  - autoscaling:CreateAutoScalingGroup
+                  - autoscaling:CreateLaunchConfiguration
+                  - autoscaling:CreateOrUpdateTags
+                  - autoscaling:DeleteAutoScalingGroup
+                  - autoscaling:DeleteLaunchConfiguration
+                  - autoscaling:DeleteLifecycleHook
+                  - autoscaling:DeleteNotificationConfiguration
+                  - autoscaling:DeletePolicy
+                  - autoscaling:DeleteScheduledAction
+                  - autoscaling:DeleteTags
+                  - autoscaling:DescribeAccountLimits
+                  - autoscaling:DescribeAdjustmentTypes
+                  - autoscaling:DescribeAutoScalingGroups
+                  - autoscaling:DescribeAutoScalingInstances
+                  - autoscaling:DescribeAutoScalingNotificationTypes
+                  - autoscaling:DescribeLaunchConfigurations
+                  - autoscaling:DescribeLifecycleHookTypes
+                  - autoscaling:DescribeLifecycleHooks
+                  - autoscaling:DescribeLoadBalancerTargetGroups
+                  - autoscaling:DescribeLoadBalancers
+                  - autoscaling:DescribeMetricCollectionTypes
+                  - autoscaling:DescribeNotificationConfigurations
+                  - autoscaling:DescribePolicies
+                  - autoscaling:DescribeScalingActivities
+                  - autoscaling:DescribeScalingProcessTypes
+                  - autoscaling:DescribeScheduledActions
+                  - autoscaling:DescribeTags
+                  - autoscaling:DescribeTerminationPolicyTypes
+                  - autoscaling:DetachInstances
+                  - autoscaling:DetachLoadBalancerTargetGroups
+                  - autoscaling:DetachLoadBalancers
+                  - autoscaling:DisableMetricsCollection
+                  - autoscaling:EnableMetricsCollection
+                  - autoscaling:EnterStandby
+                  - autoscaling:ExitStandby
+                  - autoscaling:PutLifecycleHook
+                  - autoscaling:PutNotificationConfiguration
+                  - autoscaling:PutScalingPolicy
+                  - autoscaling:PutScheduledUpdateGroupAction
+                  - autoscaling:RecordLifecycleActionHeartbeat
+                  - autoscaling:ResumeProcesses
+                  - autoscaling:SetDesiredCapacity
+                  - autoscaling:SetInstanceHealth
+                  - autoscaling:SetInstanceProtection
+                  - autoscaling:SuspendProcesses
+                  - autoscaling:TerminateInstanceInAutoScalingGroup
+                  - autoscaling:UpdateAutoScalingGroup
+                  - cloudformation:CreateStack
+                  - cloudformation:DeleteStack
+                  - cloudformation:DescribeStackEvents
+                  - cloudformation:DescribeStackResources
+                  - cloudformation:DescribeStacks
+                  - cloudformation:GetStackPolicy
+                  - cloudformation:GetTemplate
+                  - cloudformation:GetTemplateSummary
+                  - cloudformation:ListStackResources
+                  - cloudformation:ListStacks
+                  - cloudformation:UpdateStack
+                  - cloudwatch:DeleteAlarms
+                  - cloudwatch:DescribeAlarmHistory
+                  - cloudwatch:DescribeAlarms
+                  - cloudwatch:DescribeAlarmsForMetric
+                  - cloudwatch:GetDashboard
+                  - cloudwatch:GetMetricData
+                  - cloudwatch:GetMetricStatistics
+                  - cloudwatch:GetMetricWidgetImage
+                  - cloudwatch:ListDashboards
+                  - cloudwatch:ListMetrics
+                  - cloudwatch:PutMetricAlarm
+                  - cloudwatch:PutMetricData
+                  - dynamodb:BatchGetItem
+                  - dynamodb:ConditionCheckItem
+                  - dynamodb:CreateTable
+                  - dynamodb:DeleteTable
+                  - dynamodb:DescribeBackup
+                  - dynamodb:DescribeContinuousBackups
+                  - dynamodb:DescribeGlobalTable
+                  - dynamodb:DescribeGlobalTableSettings
+                  - dynamodb:DescribeLimits
+                  - dynamodb:DescribeReservedCapacity
+                  - dynamodb:DescribeReservedCapacityOfferings
+                  - dynamodb:DescribeStream
+                  - dynamodb:DescribeTable
+                  - dynamodb:DescribeTimeToLive
+                  - dynamodb:GetItem
+                  - dynamodb:GetRecords
+                  - dynamodb:GetShardIterator
+                  - dynamodb:ListBackups
+                  - dynamodb:ListGlobalTables
+                  - dynamodb:ListStreams
+                  - dynamodb:ListTables
+                  - dynamodb:ListTagsOfResource
+                  - dynamodb:PutItem
+                  - dynamodb:Query
+                  - dynamodb:Scan
+                  - dynamodb:UpdateItem
+                  - dynamodb:UpdateTimeToLive
+                  - ec2:AttachVolume
+                  - ec2:AuthorizeSecurityGroupEgress
+                  - ec2:AuthorizeSecurityGroupIngress
+                  - ec2:CopyImage
+                  - ec2:CreateImage
+                  - ec2:CreateKeyPair
+                  - ec2:CreateKeypair
+                  - ec2:CreateSecurityGroup
+                  - ec2:CreateSnapshot
+                  - ec2:CreateTags
+                  - ec2:CreateVolume
+                  - ec2:DeleteKeyPair
+                  - ec2:DeleteKeypair
+                  - ec2:DeleteSecurityGroup
+                  - ec2:DeleteSnapshot
+                  - ec2:DeleteVolume
+                  - ec2:DeregisterImage
+                  - ec2:DescribeAccountAttributes
+                  - ec2:DescribeAvailabilityZones
+                  - ec2:DescribeImageAttribute
+                  - ec2:DescribeImages
+                  - ec2:DescribeInstances
+                  - ec2:DescribeKeyPairs
+                  - ec2:DescribeRegions
+                  - ec2:DescribeSecurityGroupReferences
+                  - ec2:DescribeSecurityGroups
+                  - ec2:DescribeSnapshots
+                  - ec2:DescribeSubnets
+                  - ec2:DescribeTags
+                  - ec2:DescribeVolumes
+                  - ec2:DescribeVpcs
+                  - ec2:DetachVolume
+                  - ec2:GetPasswordData
+                  - ec2:ImportKeyPair
+                  - ec2:ModifyImageAttribute
+                  - ec2:ModifyInstanceAttribute
+                  - ec2:ModifySnapshotAttribute
+                  - ec2:RegisterImage
+                  - ec2:RevokeSecurityGroupEgress
+                  - ec2:RevokeSecurityGroupIngress
+                  - ec2:RunInstances
+                  - ec2:StopInstances
+                  - ec2:TerminateInstances
+                  - elasticloadbalancing:*
+                  - events:DeleteRule
+                  - events:DescribeRule
+                  - events:PutRule
+                  - events:PutTargets
+                  - events:RemoveTargets
+                  - iam:AddRoleToInstanceProfile
+                  - iam:AttachRolePolicy
+                  - iam:CreateInstanceProfile
+                  - iam:CreatePolicy
+                  - iam:CreateRole
+                  - iam:CreateServiceLinkedRole
+                  - iam:DeleteInstanceProfile
+                  - iam:DeletePolicy
+                  - iam:DeleteRole
+                  - iam:DeleteRolePolicy
+                  - iam:DetachRolePolicy
+                  - iam:GetPolicy
+                  - iam:GetRole
+                  - iam:ListPolicyVersions
+                  - iam:PassRole
+                  - iam:PutRolePolicy
+                  - iam:RemoveRoleFromInstanceProfile
+                  - iam:UploadServerCertificate
+                  - kms:Decrypt
+                  - lambda:AddPermission
+                  - lambda:CreateAlias
+                  - lambda:CreateFunction
+                  - lambda:DeleteAlias
+                  - lambda:DeleteFunction
+                  - lambda:GetFunction
+                  - lambda:ListVersionsByFunction
+                  - lambda:PublishVersion
+                  - lambda:RemovePermission
+                  - route53:ChangeResourceRecordSets
+                  - route53:CreateHostedZone
+                  - route53:DeleteHostedZone
+                  - route53:GetChange
+                  - route53:GetHostedZone
+                  - route53:ListHostedZones
+                  - route53:ListHostedZonesByName
+                  - route53:ListResourceRecordSets
+                  - s3:*
+                  - sdb:DeleteDomain
+                  - secretsmanager:CreateSecret
+                  - secretsmanager:GetSecretValue
+                  - secretsmanager:TagResource
+                  - sns:AddPermission
+                  - sns:CreateTopic
+                  - sns:DeleteTopic
+                  - sns:Get*
+                  - sns:GetTopicAttributes
+                  - sns:List*
+                  - sns:ListSubscriptionsByTopic
+                  - sns:ListTopics
+                  - sns:Publish
+                  - sns:Receive
+                  - sns:RemovePermission
+                  - sns:SetTopicAttributes
+                  - sns:Subscribe
+                  - sns:Unsubscribe
+                  - sqs:*
+                  - sqs:CreateQueue
+                  - sqs:DeleteQueue
+                  - sqs:GetQueueAttributes
+                  - sqs:ListQueues
+                  - sqs:ReceiveMessage
+                  - sqs:SetQueueAttributes
+                  - ssm:AddTagsToResource
+                  - ssm:CreateDocument
+                  - ssm:DeleteDocument
+                  - ssm:DescribeDocument
+                  - ssm:GetParameter
+                  - ssm:GetParameterHistory
+                  - ssm:GetParameters
+                  - ssm:GetParametersByPath
+                  - ssm:PutParameter
+                Resource: "*"
+              - Effect: Allow
+                Action:
+                  - logs:*
+                Resource:
+                  - arn:aws:logs:*:*:*
 
   OpenCloudAemPlatformBuildEnvRole:
     Type: AWS::IAM::Role
