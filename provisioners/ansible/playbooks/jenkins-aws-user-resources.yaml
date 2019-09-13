@@ -4,8 +4,7 @@
   gather_facts: no
   connection: local
   vars:
-    resource_prefix: "{{ user_resources.aws.resource_prefix }}"
-    vpc_id: "{{ user_resources.aws.vpc_id }}"
+    stack_prefix: "{{ user_resources.aws.stack_prefix }}"
 
   tasks:
 
@@ -22,8 +21,8 @@
 
     - name: Create a new EC2 key
       ec2_key:
-        name: "{{ resource_prefix }}-ec2-key"
-        region: {{ aws.region }}
+        name: "{{ stack_prefix }}-ec2-key"
+        region: "{{ aws.region }}"
       register: ec2_key_result
 
     - name: Debug - Print EC2 Key Result
@@ -33,47 +32,48 @@
       - debug
 
     - name: Save private key
-      copy: content="{{ ec2_key_result.key.private_key }}" dest="{{ playbook_dir }}/secrets/{{ resource_prefix }}.aemopencloud.pem" mode=0600
+      copy: content="{{ ec2_key_result.key.private_key }}" dest="{{ playbook_dir }}/secrets/{{ stack_prefix }}.aemopencloud.pem" mode=0600
       when: ec2_key_result.changed
       register: ec2_save_key_result
 
     - name: Upload private key to parameter store
-      command: aws ssm put-parameter --name "/aem-opencloud/{{ resource_prefix }}-ec2-pem-key" --type SecureString --value file://{{ playbook_dir }}/secrets/{{ resource_prefix }}.aemopencloud.pem --overwrite
+      command: aws ssm put-parameter --region "{{ aws.region }}" --name "/aem-opencloud/{{ stack_prefix }}-ec2-pem-key" --type SecureString --value file://{{ playbook_dir }}/secrets/{{ stack_prefix }}.aemopencloud.pem --overwrite
       when: ec2_key_result.changed
       register: put_param_result
 
     - name: Delete private key
       file:
-        path: "{{ playbook_dir }}/secrets/{{ resource_prefix }}.aemopencloud.pem"
+        path: "{{ playbook_dir }}/secrets/{{ stack_prefix }}.aemopencloud.pem"
         state: absent
       when: ec2_key_result.changed
 
     - name: obtain all facts for a single ACM certificate
       aws_acm_facts:
+        region: "{{ aws.region }}"
       register: acm_cert_result
 
     - name: Generate CA private key.
       openssl_privatekey:
-        path: '{{ playbook_dir }}/secrets/{{resource_prefix}}-openssl-key.pem'
+        path: '{{ playbook_dir }}/secrets/{{stack_prefix}}-openssl-key.pem'
       register: ca_private_key
 
     - name: Generate CA CSR.
       openssl_csr:
-        path: '{{ playbook_dir }}/secrets/{{ resource_prefix }}-openssl-key.csr'
-        privatekey_path: '{{ playbook_dir }}/secrets/{{ resource_prefix }}-openssl-key.pem'
-        common_name: "{{ resource_prefix }}-acm-common-name"
+        path: '{{ playbook_dir }}/secrets/{{ stack_prefix }}-openssl-key.csr'
+        privatekey_path: '{{ playbook_dir }}/secrets/{{ stack_prefix }}-openssl-key.pem'
+        common_name: "{{ stack_prefix }}-acm-common-name"
       when: ca_private_key.changed
 
     - name: Generate a Self Signed certificate CA.
       openssl_certificate:
-        path: '{{ playbook_dir }}/secrets/{{ resource_prefix }}-openssl-key.crt'
-        privatekey_path: '{{ playbook_dir }}/secrets/{{ resource_prefix }}-openssl-key.pem'
-        csr_path: '{{ playbook_dir }}/secrets/{{ resource_prefix }}-openssl-key.csr'
+        path: '{{ playbook_dir }}/secrets/{{ stack_prefix }}-openssl-key.crt'
+        privatekey_path: '{{ playbook_dir }}/secrets/{{ stack_prefix }}-openssl-key.pem'
+        csr_path: '{{ playbook_dir }}/secrets/{{ stack_prefix }}-openssl-key.csr'
         provider: selfsigned
       when: ca_private_key.changed
 
     - name: Import Certificate to AWS ACM
-      command: aws acm import-certificate --certificate file://{{ playbook_dir }}/secrets/{{ resource_prefix }}-openssl-key.crt  --private-key file://{{ playbook_dir }}/secrets/{{ resource_prefix }}-openssl-key.pem
+      command: aws acm import-certificate --region "{{ aws.region }}" --certificate file://{{ playbook_dir }}/secrets/{{ stack_prefix }}-openssl-key.crt  --private-key file://{{ playbook_dir }}/secrets/{{ stack_prefix }}-openssl-key.pem
       when: ca_private_key.changed
       register: acm_import_certificate_result
 
@@ -84,23 +84,23 @@
       - debug
 
     - name: Upload Certificate private key to parameter store
-      command: aws ssm put-parameter --name "/aem-opencloud/{{ resource_prefix }}-acm-pem-key" --type SecureString --value file://{{ playbook_dir }}/secrets/{{ resource_prefix }}-openssl-key.pem --overwrite
+      command: aws ssm put-parameter --region "{{ aws.region }}" --name "/aem-opencloud/{{ stack_prefix }}-acm-pem-key" --type SecureString --value file://{{ playbook_dir }}/secrets/{{ stack_prefix }}-openssl-key.pem --overwrite
       when: ca_private_key.changed
       register: put_param_result_02
 
     - name: Upload Certificate to IAM
-      command: aws iam upload-server-certificate --server-certificate-name "{{ resource_prefix }}-iam-certificate" --certificate-body file://{{ playbook_dir }}/secrets/{{ resource_prefix }}-openssl-key.crt --private-key file://{{ playbook_dir }}/secrets/{{ resource_prefix }}-openssl-key.pem
+      command: aws iam upload-server-certificate --region "{{ aws.region }}" --server-certificate-name "{{ stack_prefix }}-iam-certificate" --certificate-body file://{{ playbook_dir }}/secrets/{{ stack_prefix }}-openssl-key.crt --private-key file://{{ playbook_dir }}/secrets/{{ stack_prefix }}-openssl-key.pem
       when: ca_private_key.changed
       register: put_param_result_03
 
     - name: Execute the cloudformation template
       cloudformation:
-        stack_name: "{{ resource_prefix }}-prereq-stack"
+        stack_name: "{{ stack_prefix }}-prereq-stack"
         state: present
-        region: {{ aws.region }}
+        region: "{{ aws.region }}"
         disable_rollback: true
         template: "../../../templates/cloudformation/provision-aws-user-resources.yaml"
         template_parameters:
-          keyName: "{{ resource_prefix }}-ec2-key"
-          aemBucketPrefix: "{{ resource_prefix }}"
-          aemVpcId: "{{ vpc_id }}"
+          keyName: "{{ stack_prefix }}-ec2-key"
+          aemBucketPrefix: "{{ stack_prefix }}"
+          aemVpcId: "{{ aws.vpc_id }}"
