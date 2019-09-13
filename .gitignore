@@ -2,6 +2,9 @@
 .idea/
 *.retry
 *.cert
+*.crt
+*.csr
+*.pem
 *.key
 logs/
 stage
