@@ -774,12 +774,23 @@ Resources:
                   - ssm:GetParameters
                   - ssm:GetParametersByPath
                   - ssm:PutParameter
+                  - ec2:ReplaceIamInstanceProfileAssociation
+                  - iam:ListInstanceProfiles
+                  - iam:ListInstanceProfilesForRole
+
                 Resource: "*"
               - Effect: Allow
                 Action:
                   - logs:*
                 Resource:
                   - arn:aws:logs:*:*:*
+
+  OpenCloudUnifiedInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Path: /
+      Roles:
+        - Ref: OpenCloudUnifiedRole
 
   OpenCloudAemPlatformBuildEnvRole:
     Type: AWS::IAM::Role
