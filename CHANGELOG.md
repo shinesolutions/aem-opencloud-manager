@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Rename make target jenkins-aws-user-resources to jenkins-aws-resources
 - Move stack_prefix from user config to make target arg for jenkins-aws-resources
 - Replace user_resources.aws.vpc_id with aws.vpc_id configuration
+- Change Slack failure message prefix from FAIL to FAILURE
 
 ## [4.1.0-pre.6] - 2019-09-08
 ### Added
