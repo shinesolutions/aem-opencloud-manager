@@ -138,6 +138,9 @@ pipeline {
             }
         }
         stage('Run SM-Event upgrade-repository-migration') {
+            when {
+              equals expected: false, actual: params.SKIP_AEM_REPOSITORY_MIGRATION
+            }
             steps {
 
                     JenkinsStagePreStep this
