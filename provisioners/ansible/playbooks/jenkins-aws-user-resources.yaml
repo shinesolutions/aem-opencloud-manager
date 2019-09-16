@@ -47,11 +47,6 @@
         state: absent
       when: ec2_key_result.changed
 
-    - name: obtain all facts for a single ACM certificate
-      aws_acm_facts:
-        region: "{{ aws.region }}"
-      register: acm_cert_result
-
     - name: Generate CA private key.
       openssl_privatekey:
         path: '{{ playbook_dir }}/secrets/{{stack_prefix}}-openssl-key.pem'
