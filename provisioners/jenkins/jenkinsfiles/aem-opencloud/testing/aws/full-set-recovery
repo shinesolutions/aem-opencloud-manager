@@ -28,7 +28,11 @@ pipeline {
     stages {
         stage('Initialise pipeline') {
             steps {
-                slackSend (color: '#FFFF00', message: "START: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+                script {
+                    if (params.ENABLE_SLACK_NOTIFICATIONS == true) {
+                        slackSend (color: '#FFFF00', message: "START: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+                    }
+                }
                 JenkinsInit(this, params.AOC_CUSTOM_MANAGER_STEPS_ARTIFACT_URL, env.TMPDIR)
                 JenkinsPipelinePreStep this
             }
@@ -186,10 +190,18 @@ pipeline {
           JenkinsPipelinePostStep this
         }
         success {
-          slackSend (color: '#00FF00', message: "SUCCESS: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+          script {
+            if (params.ENABLE_SLACK_NOTIFICATIONS == true) {
+                slackSend (color: '#00FF00', message: "SUCCESS: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+            }
+          }
         }
         failure {
-          slackSend (color: '#FF0000', message: "FAILURE: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+          script {
+            if (params.ENABLE_SLACK_NOTIFICATIONS == true) {
+                slackSend (color: '#FF0000', message: "FAILURE: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+            }
+          }
         }
     }
 }

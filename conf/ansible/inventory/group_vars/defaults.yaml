@@ -8,6 +8,7 @@ aws:
 
 aem_opencloud:
   version: 4.1.0-pre.7
+  enable_slack_notifications: false
   config:
     artifact_url: https://overwrite-me/overwrite-me.tar.gz
   custom_manager_steps:

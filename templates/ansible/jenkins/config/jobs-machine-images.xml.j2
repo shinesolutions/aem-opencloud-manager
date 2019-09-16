@@ -6,6 +6,12 @@
   <properties>
   <hudson.model.ParametersDefinitionProperty>
     <parameterDefinitions>
+      <hudson.model.BooleanParameterDefinition>
+        <name>ENABLE_SLACK_NOTIFICATIONS</name>
+        <description>If activated SLACK notifications will be send out.</description>
+        <defaultValue>{{ aem_opencloud.enable_slack_notifications }}</defaultValue>
+        <trim>true</trim>
+      </hudson.model.BooleanParameterDefinition>
       <hudson.model.StringParameterDefinition>
         <name>AOC_CUSTOM_IMAGE_PROVISIONER_ARTIFACT_URL</name>
         <description>URL where custom image provisioner artifact is located.</description>

@@ -6,6 +6,12 @@
   <properties>
   <hudson.model.ParametersDefinitionProperty>
     <parameterDefinitions>
+      <hudson.model.BooleanParameterDefinition>
+        <name>ENABLE_SLACK_NOTIFICATIONS</name>
+        <description>If activated SLACK notifications will be send out.</description>
+        <defaultValue>{{ aem_opencloud.enable_slack_notifications }}</defaultValue>
+        <trim>true</trim>
+      </hudson.model.BooleanParameterDefinition>
       <hudson.model.StringParameterDefinition>
         <name>STACK_PREFIX</name>
         <description>AEM OpenCloud AEM stack prefix.</description>
