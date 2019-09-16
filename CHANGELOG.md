@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Add OpenCloudUnifiedRole IAM role with unified permissions to aws-resources
+- Added parameter to AEM In-Place upgrade to skip repository migration
 
 ### Changed
 - Upgrade Packer AEM to 4.11.1
