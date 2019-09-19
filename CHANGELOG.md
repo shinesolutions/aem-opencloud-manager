@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Upgrade Packer AEM to 4.11.1
-- Upgrade AEM AWS Stack Builder to 4.12.0
+- Upgrade AEM AWS Stack Builder to 4.13.0
 - Rename make target jenkins-aws-user-resources to jenkins-aws-resources
 - Move stack_prefix from user config to make target arg for jenkins-aws-resources
 - Replace user_resources.aws.vpc_id with aws.vpc_id configuration
