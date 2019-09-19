@@ -18,7 +18,7 @@
         url_username: "{{ jenkins.username }}"
         url_password: "{{ jenkins.password }}"
         url: "{{ jenkins.protocol }}://{{ jenkins.host }}:{{ jenkins.port }}"
-        jenkins_home: "{{ jenkins.os.jenkins_home }}"
+        jenkins_home: "/usr/share/jenkins/"
         owner: "{{ jenkins.os.user }}"
         group: "{{ jenkins.os.group }}"
       with_items: "{{ jenkins_plugins }}"
