@@ -62,7 +62,7 @@ pipeline {
                 }
             }
         }
-        stage('Delete AEM OpenCloud Consolidated environment') {
+        stage('Switch-DNS AEM OpenCloud Consolidated environment') {
             steps {
                     JenkinsStagePreStep this
 
