@@ -57,7 +57,7 @@ pipeline {
         stage('Prepare configuration') {
             steps {
                     JenkinsStagePreStep this
-                    ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make config config_path=${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE_AEM_AWS_STACK_BUILDER}/")
+                    ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make config config_path=${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE_AEM_AWS_STACK_BUILDER}/ ")
             }
             post {
                 always {
@@ -69,7 +69,7 @@ pipeline {
             steps {
                     JenkinsStagePreStep this
 
-                    ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make switch-dns-full-set config_path=${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE_AEM_AWS_STACK_BUILDER}/ stack_prefix=${params.STACK_PREFIX} publish_zone=${params.PUBLSIH_ZONE} publish_record=${params.PUBLISH_RECORD} author_zone=${params.AUTHOR_ZONE}  author_record=${params.AUTHOR_RECORD}")
+                    ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make switch-dns-full-set config_path=${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE_AEM_AWS_STACK_BUILDER}/ stack_prefix=${params.STACK_PREFIX} publish_zone=${env.PUBLSIH_ZONE} publish_dispatcher_record==${env.PUBLISH_RECORD} author_zone=${env.AUTHOR_ZONE}  author_dispatcher_record==${env.AUTHOR_RECORD}")
             }
             post {
                 always {
