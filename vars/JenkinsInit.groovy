@@ -11,7 +11,7 @@ def call(script, String aocCustomManagerStepsDownloadUrl, String tmpDir = '/tmp'
   fileName = "custom-manager-steps.tar.gz"
   aocCustomManagerStepsDir = "${tmpDir}/custom-manager-steps/"
   script.sh """
-  echo 'Initialising Jenkins environment...' 
+  echo 'Initialising Jenkins environment...'
   mkdir -p ${tmpDir}/
   """
   def parsedUri = new URI(aocCustomManagerStepsDownloadUrl)
