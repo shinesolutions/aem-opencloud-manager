@@ -7,7 +7,7 @@ aws:
   vpc_id: overwrite-me
 
 aem_opencloud:
-  version: 4.1.0-pre.7
+  version: 4.1.0-pre.8
   enable_slack_notifications: false
   config:
     artifact_url: https://overwrite-me/overwrite-me.tar.gz
@@ -28,7 +28,7 @@ aem_opencloud:
       content_healthcheck_descriptor_url:
   jenkins_sharedlibs:
     repo_url: https://github.com/shinesolutions/aem-opencloud-manager
-    repo_branch:  jenkins-sharedlibs-4.1.0-pre.7
+    repo_branch:  master
 
 jenkins:
   protocol: http
