@@ -97,26 +97,26 @@
         <trim>true</trim>
       </hudson.model.StringParameterDefinition>
       <hudson.model.StringParameterDefinition>
-        <name>PUBLSIH_ZONE</name>
-        <description>Default Zone_Name where Publish_Dispatcher_record had been located</description>
+        <name>PUBLISH_DISPATCHER_ZONE_NAME</name>
+        <description>DNS hosted zone name,which is connected to Publish Dispatcher</description>
+        <defaultValue>{{ aws.dns_records.publish_dispatcher.publish_dispatcher_hosted_zone_name }}</defaultValue>
+        <trim>true</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>PUBLISH_DISPATCHER_RECORD_SET</name>
+        <description>DNS record set,which is connected to Publish Dispatcher</description>
         <defaultValue></defaultValue>
         <trim>true</trim>
       </hudson.model.StringParameterDefinition>
       <hudson.model.StringParameterDefinition>
-        <name>PUBLISH_RECORD</name>
-        <description>Default DNS_Record_Name where Publish_Dispatcher had been located</description>
-        <defaultValue></defaultValue>
+        <name>AUTHOR_DISPATCHER_ZONE_NAME</name>
+        <description>DNS hosted zone name,which is connected to Author Dispatcher</description>
+        <defaultValue>{{ aws.dns_records.author_dispatcher.author_dispatcher_hosted_zone_name }}</defaultValue>
         <trim>true</trim>
       </hudson.model.StringParameterDefinition>
       <hudson.model.StringParameterDefinition>
-        <name>AUTHOR_ZONE</name>
-        <description>description: 'Default Zone_Name where Publish_Dispatcher_Record had been located</description>
-        <defaultValue></defaultValue>
-        <trim>true</trim>
-      </hudson.model.StringParameterDefinition>
-      <hudson.model.StringParameterDefinition>
-        <name>AUTHOR_RECORD</name>
-        <description>description: 'Default DNS_Record_Name where Author_Dispatcher had been located</description>
+        <name>AUTHOR_DISPATCHER_RECORD_SET</name>
+        <description>DNS record set,which is connected to Author Dispatcher</description>
         <defaultValue></defaultValue>
         <trim>true</trim>
       </hudson.model.StringParameterDefinition>

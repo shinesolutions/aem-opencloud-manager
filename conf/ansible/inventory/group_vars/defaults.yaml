@@ -5,6 +5,13 @@ aws:
     s3_bucket: overwrite-me
     s3_path: library
   vpc_id: overwrite-me
+  dns_records:
+    author_dispatcher:
+      author_dispatcher_hosted_zone_name: overwrite-me
+    publish_dispatcher:
+      publish_dispatcher_hosted_zone_name: overwrite-me
+    author_publish_dispatcher:
+      author_publish_dispatcher_hosted_zone_name: overwrite-me
 
 aem_opencloud:
   version: 4.1.0-pre.7

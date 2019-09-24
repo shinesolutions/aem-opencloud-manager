@@ -14,10 +14,10 @@ pipeline {
     }
     parameters {
         string(name: 'AOC_VERSION_AEM_AWS_STACK_BUILDER', defaultValue: config.library.aem_aws_stack_builder, description: 'Version of aem-aws-stack-builder repo to archive')
-        string(name: 'PUBLSIH_ZONE', defaultValue: '' , description: 'Default Zone_Name where Publish_dispatcher_record had been located')
-        string(name: 'AUTHOR_ZONE', defaultValue: '' , description: 'Default Zone_Name where Author_dispatcher_record had been located')
-        string(name: 'AUTHOR_RECORD', defaultValue: '' , description: 'Default DNS_Record_Name where Author_dispatcher had been located')
-        string(name: 'PUBLISH_RECORD', defaultValue: '' , description: 'Default DNS_Record_Name where Publish_dispatcher had been located')
+        string(name: 'PUBLISH_DISPATCHER_ZONE_NAME_ZONE', defaultValue: aws.dns_records.publish_dispatcher.publish_dispatcher_hosted_zone_name , description: 'DNS hosted zone name,which is connected to Publish Dispatcher')
+        string(name: 'AUTHOR_DISPATCHER_ZONE_NAME_ZONE', defaultValue: aws.dns_records.author_dispatcher.author_dispatcher_hosted_zone_name , description: 'DNS hosted zone name,which is connected to Author Dispatcher')
+        string(name: 'AUTHOR_DISPATCHER_RECORD_SET_RECORD', defaultValue: '' , description: 'DNS record set,which is connected to Author Dispatcher')
+        string(name: 'PUBLISH_DISPATCHER_RECORD_SET_RECORD', defaultValue: '' , description: 'DNS record set,which is connected to Publish Dispatcher')
     }
     stages {
         stage('Initialise pipeline') {
@@ -69,7 +69,7 @@ pipeline {
             steps {
                     JenkinsStagePreStep this
 
-                    ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make switch-dns-full-set config_path=${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE_AEM_AWS_STACK_BUILDER}/ stack_prefix=${params.STACK_PREFIX} publish_dispatcher_zone=${env.PUBLSIH_ZONE} publish_dispatcher_record=${env.PUBLISH_RECORD} author_dispatcher_zone=${env.AUTHOR_ZONE}  author_dispatcher_record=${env.AUTHOR_RECORD}")
+                    ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make switch-dns-full-set config_path=${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE_AEM_AWS_STACK_BUILDER}/ stack_prefix=${params.STACK_PREFIX} publish_dispatcher_zone=${env.PUBLISH_DISPATCHER_ZONE_NAME_ZONE} publish_dispatcher_record=${env.PUBLISH_DISPATCHER_RECORD_SET_RECORD} author_dispatcher_zone=${env.AUTHOR_DISPATCHER_ZONE_NAME_ZONE}  author_dispatcher_record=${env.AUTHOR_DISPATCHER_RECORD_SET_RECORD}")
             }
             post {
                 always {
