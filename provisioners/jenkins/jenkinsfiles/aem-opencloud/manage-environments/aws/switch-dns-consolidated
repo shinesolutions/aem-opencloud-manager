@@ -14,8 +14,6 @@ pipeline {
     }
     parameters {
         string(name: 'AOC_VERSION_AEM_AWS_STACK_BUILDER', defaultValue: config.library.aem_aws_stack_builder, description: 'Version of aem-aws-stack-builder repo to archive')
-        string(name: 'AUTHOR_PUBLISH_DISPATCHER_RECORD_SET', defaultValue: '' , description: 'DNS hosted zone name,which is connected to Author Publish Dispatcher')
-        string(name: 'AUTHOR_PUBLISH_DISPATCHER_HOSTED_ZONE', defaultValue: aws.dns_records.author_publish_dispatcher.author_publish_dispatcher_hosted_zone_name , description: 'DNS record set,which is connected to AuthorPublish Dispatcher')
     }
     stages {
         stage('Initialise pipeline') {
