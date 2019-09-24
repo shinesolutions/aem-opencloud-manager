@@ -65,7 +65,7 @@ pipeline {
             steps {
                     JenkinsStagePreStep this
 
-                    ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make delete-consolidated config_path=${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE_AEM_AWS_STACK_BUILDER}/ stack_prefix=${params.STACK_PREFIX} author_publish_dispatcher_hosted_zone=${AUTHOR_PUBLISH_DISPATCHER_HOSTED_ZONE} author_publish_dispatcher_record=${AUTHOR_PUBLISH_DISPATCHER_RECORD}")
+                    ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make switch-dns-consolidated config_path=${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE_AEM_AWS_STACK_BUILDER}/ stack_prefix=${params.STACK_PREFIX} author_publish_dispatcher_hosted_zone=${AUTHOR_PUBLISH_DISPATCHER_HOSTED_ZONE} author_publish_dispatcher_record=${AUTHOR_PUBLISH_DISPATCHER_RECORD}")
             }
             post {
                 always {
