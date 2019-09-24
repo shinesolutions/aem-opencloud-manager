@@ -2,6 +2,7 @@
 def configString = libraryResource 'aem_opencloud/config.json'
 def config = readJSON text: configString
 pipeline {
+ agent any
     agent {
         docker {
             image params.JENKINS_AGENT_DOCKER_IMAGE
