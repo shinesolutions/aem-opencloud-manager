@@ -282,6 +282,8 @@ Resources:
                   - cloudwatch:ListMetrics
                   - cloudwatch:PutMetricAlarm
                   - cloudwatch:PutMetricData
+                  - cloudwatch:PutDashboard
+                  - cloudwatch:DeleteDashboards
                   - dynamodb:BatchGetItem
                   - dynamodb:ConditionCheckItem
                   - dynamodb:CreateTable
@@ -627,6 +629,8 @@ Resources:
                   - cloudwatch:ListMetrics
                   - cloudwatch:PutMetricAlarm
                   - cloudwatch:PutMetricData
+                  - cloudwatch:PutDashboard
+                  - cloudwatch:DeleteDashboards
                   - dynamodb:BatchGetItem
                   - dynamodb:ConditionCheckItem
                   - dynamodb:CreateTable
