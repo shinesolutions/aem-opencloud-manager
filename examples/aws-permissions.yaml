@@ -193,6 +193,7 @@ Resources:
                   - cloudwatch:GetMetricWidgetImage
                   - cloudwatch:ListDashboards
                   - cloudwatch:ListMetrics
+                  - cloudwatch:PutDashboard
                   - cloudwatch:PutMetricAlarm
                   - cloudwatch:PutMetricData
                   - dynamodb:BatchGetItem
