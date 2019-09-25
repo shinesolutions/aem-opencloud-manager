@@ -271,6 +271,7 @@ Resources:
                   - cloudformation:ListStacks
                   - cloudformation:UpdateStack
                   - cloudwatch:DeleteAlarms
+                  - cloudwatch:DeleteDashboards
                   - cloudwatch:DescribeAlarmHistory
                   - cloudwatch:DescribeAlarms
                   - cloudwatch:DescribeAlarmsForMetric
@@ -617,6 +618,7 @@ Resources:
                   - cloudformation:ListStacks
                   - cloudformation:UpdateStack
                   - cloudwatch:DeleteAlarms
+                  - cloudwatch:DeleteDashboards
                   - cloudwatch:DescribeAlarmHistory
                   - cloudwatch:DescribeAlarms
                   - cloudwatch:DescribeAlarmsForMetric
