@@ -9,13 +9,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add Switch-DNS function to Jenkins environment parameter 
 
 ### Added
+- Add cloudwatch:PutDashboard and cloudwatch:DeleteDashboards permissions for AemAwsStackBuilderRolePolicy and OpenCloudUnifiedRolePolicy
+
+## [4.1.0-pre.7] - 2019-09-24
+
+### Added
 - Add OpenCloudUnifiedRole IAM role with unified permissions to aws-resources
 - Added parameter to AEM In-Place upgrade to skip repository migration
 - Add new configuration parameter to enable/disable SLACK notifications
 
 ### Changed
-- Upgrade Packer AEM to 4.11.1
-- Upgrade AEM AWS Stack Builder to 4.12.0
+- Upgrade Packer AEM to 4.12.0
+- Upgrade AEM AWS Stack Builder to 4.17.0
 - Rename make target jenkins-aws-user-resources to jenkins-aws-resources
 - Move stack_prefix from user config to make target arg for jenkins-aws-resources
 - Replace user_resources.aws.vpc_id with aws.vpc_id configuration

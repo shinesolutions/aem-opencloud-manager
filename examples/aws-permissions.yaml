@@ -184,6 +184,7 @@ Resources:
                   - cloudformation:ListStacks
                   - cloudformation:UpdateStack
                   - cloudwatch:DeleteAlarms
+                  - cloudwatch:DeleteDashboards
                   - cloudwatch:DescribeAlarmHistory
                   - cloudwatch:DescribeAlarms
                   - cloudwatch:DescribeAlarmsForMetric
@@ -193,6 +194,7 @@ Resources:
                   - cloudwatch:GetMetricWidgetImage
                   - cloudwatch:ListDashboards
                   - cloudwatch:ListMetrics
+                  - cloudwatch:PutDashboard
                   - cloudwatch:PutMetricAlarm
                   - cloudwatch:PutMetricData
                   - dynamodb:BatchGetItem
