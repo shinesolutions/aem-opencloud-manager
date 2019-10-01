@@ -97,7 +97,7 @@
         <trim>true</trim>
       </hudson.model.StringParameterDefinition>
       <hudson.model.StringParameterDefinition>
-        <name>PUBLISH_DISPATCHER_ZONE_NAME</name>
+        <name>PUBLISH_DISPATCHER_HOSTED_ZONE</name>
         <description>DNS hosted zone name,which is connected to Publish Dispatcher</description>
         <defaultValue>{{ aws.dns_records.publish_dispatcher.publish_dispatcher_hosted_zone_name }}</defaultValue>
         <trim>true</trim>
@@ -109,7 +109,7 @@
         <trim>true</trim>
       </hudson.model.StringParameterDefinition>
       <hudson.model.StringParameterDefinition>
-        <name>AUTHOR_DISPATCHER_ZONE_NAME</name>
+        <name>AUTHOR_DISPATCHER_HOSTED_ZONE</name>
         <description>DNS hosted zone name,which is connected to Author Dispatcher</description>
         <defaultValue>{{ aws.dns_records.author_dispatcher.author_dispatcher_hosted_zone_name }}</defaultValue>
         <trim>true</trim>
