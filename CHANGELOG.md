@@ -10,10 +10,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -  Upgrade AEM AWS Stack Builder to 4.3.3
 
 ## [4.0.2] - 2019-08-29
+
+### Changed
 - Upgrade AEM AWS Stack Builder to 4.3.2
 
 ## [4.0.1] - 2019-08-29
 
+### Changed
 - Upgrade Packer AEM to 4.4.2
 - Upgrade AEM AWS Stack Builder to 4.3.1
 - Upgrade AEM Stack Manager Messenger to 2.3.2
