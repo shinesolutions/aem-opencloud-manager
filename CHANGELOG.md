@@ -6,13 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 ### Added
-- Add Switch-DNS function to Jenkins environment parameter 
+- Add Switch-DNS function to Jenkins environment parameter
 
 ### Added
 - Add cloudwatch:PutDashboard and cloudwatch:DeleteDashboards permissions for AemAwsStackBuilderRolePolicy and OpenCloudUnifiedRolePolicy
 
 ### Changed
 - Upgrade AEM AWS Stack Builder to 4.18.0
+- Upgrade AEM Stack Manager Messenger to 2.8.0
 
 ## [4.1.0-pre.7] - 2019-09-24
 
