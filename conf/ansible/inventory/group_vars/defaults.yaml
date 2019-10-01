@@ -34,8 +34,8 @@ aem_opencloud:
       export_descriptor_url:
       content_healthcheck_descriptor_url:
   jenkins_sharedlibs:
-    repo_url: https://github.com/hoomaan-kh/aem-opencloud-manager
-    repo_branch: switch-dns
+    repo_url: https://github.com/shinesolutions/aem-opencloud-manager
+    repo_branch: master
 
 jenkins:
   protocol: http
