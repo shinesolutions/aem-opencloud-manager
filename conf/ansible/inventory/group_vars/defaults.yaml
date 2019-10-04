@@ -5,9 +5,16 @@ aws:
     s3_bucket: overwrite-me
     s3_path: library
   vpc_id: overwrite-me
+  dns_records:
+    author_dispatcher:
+      author_dispatcher_hosted_zone_name: overwrite-me
+    publish_dispatcher:
+      publish_dispatcher_hosted_zone_name: overwrite-me
+    author_publish_dispatcher:
+      author_publish_dispatcher_hosted_zone_name: overwrite-me
 
 aem_opencloud:
-  version: 4.1.0-pre.7
+  version: 4.1.0-pre.8
   enable_slack_notifications: false
   config:
     artifact_url: https://overwrite-me/overwrite-me.tar.gz
@@ -28,7 +35,7 @@ aem_opencloud:
       content_healthcheck_descriptor_url:
   jenkins_sharedlibs:
     repo_url: https://github.com/shinesolutions/aem-opencloud-manager
-    repo_branch: master
+    repo_branch:  master
 
 jenkins:
   protocol: http

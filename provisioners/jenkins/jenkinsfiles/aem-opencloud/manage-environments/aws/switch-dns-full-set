@@ -1,0 +1,96 @@
+@Library('aem-opencloud-manager') _
+def configString = libraryResource 'aem_opencloud/config.json'
+def config = readJSON text: configString
+pipeline {
+    agent {
+        docker {
+            image params.JENKINS_AGENT_DOCKER_IMAGE
+            args params.JENKINS_AGENT_DOCKER_ARGS
+        }
+    }
+    environment {
+        TMPDIR = "/tmp/shinesolutions/aem-opencloud-manager"
+        AOC_CONFIG_DIR = "${env.TMPDIR}/aem-opencloud-config"
+    }
+    parameters {
+        string(name: 'AOC_VERSION_AEM_AWS_STACK_BUILDER', defaultValue: config.library.aem_aws_stack_builder, description: 'Version of aem-aws-stack-builder repo to archive')
+    }
+    stages {
+        stage('Initialise pipeline') {
+            steps {
+                script {
+                    if (params.ENABLE_SLACK_NOTIFICATIONS == true) {
+                        slackSend (color: '#FFFF00', message: "START: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+                    }
+                }
+                JenkinsInit(this, params.AOC_CUSTOM_MANAGER_STEPS_ARTIFACT_URL, env.TMPDIR)
+                JenkinsPipelinePreStep this
+            }
+        }
+        stage('Prepare libraries') {
+            steps {
+                    JenkinsStagePreStep this
+                    AocPrepareLibrary(this, "aem-aws-stack-builder", params.AOC_VERSION_AEM_AWS_STACK_BUILDER, params.AWS_LIBRARY_S3_BUCKET, params.AWS_LIBRARY_S3_PATH, env.TMPDIR)
+                    AocPrepareConfig(this, params.AOC_CONFIG_ARTIFACT_URL, env.TMPDIR)
+            }
+            post {
+                always {
+                  JenkinsStagePostStep this
+                }
+            }
+        }
+        stage('Resolve dependencies') {
+            steps {
+                    JenkinsStagePreStep this
+                    ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make deps")
+            }
+            post {
+                always {
+                  JenkinsStagePostStep this
+                }
+            }
+        }
+        stage('Prepare configuration') {
+            steps {
+                    JenkinsStagePreStep this
+                    ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make config config_path=${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE_AEM_AWS_STACK_BUILDER}/ ")
+            }
+            post {
+                always {
+                  JenkinsStagePostStep this
+                }
+            }
+        }
+        stage('Switch DNS AEM OpenCloud Full-Set environment') {
+            steps {
+                    JenkinsStagePreStep this
+
+                    ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make switch-dns-full-set config_path=${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE_AEM_AWS_STACK_BUILDER}/ stack_prefix=${params.STACK_PREFIX} publish_dispatcher_hosted_zone=${params.PUBLISH_DISPATCHER_HOSTED_ZONE} publish_dispatcher_record_set=${params.PUBLISH_DISPATCHER_RECORD_SET} author_dispatcher_hosted_zone=${params.AUTHOR_DISPATCHER_HOSTED_ZONE}  author_dispatcher_record_set=${params.AUTHOR_DISPATCHER_RECORD_SET}")
+            }
+            post {
+                always {
+                  JenkinsStagePostStep this
+                }
+            }
+        }
+    }
+    post {
+        always {
+          JenkinsPipelinePostStep this
+        }
+        success {
+          script {
+            if (params.ENABLE_SLACK_NOTIFICATIONS == true) {
+                slackSend (color: '#00FF00', message: "SUCCESS: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+            }
+          }
+        }
+        failure {
+          script {
+            if (params.ENABLE_SLACK_NOTIFICATIONS == true) {
+                slackSend (color: '#FF0000', message: "FAILURE: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+            }
+          }
+        }
+    }
+}
