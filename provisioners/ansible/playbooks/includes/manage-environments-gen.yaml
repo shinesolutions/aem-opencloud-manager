@@ -7,7 +7,7 @@
 - name: Create a list of AEM Stack Manager manage environments jobs for AWS
   shell: echo {{ item.path }}
   with_filetree: ../../../provisioners/jenkins/jenkinsfiles/aem-opencloud/manage-environments/aws/
-  when: item.state == 'file' and ( item.path is match('create-full-set') or item.path is match('delete-full-set'))
+  when: item.state == 'file' and ( item.path is match('create-stack-manager') or item.path is match('delete-stack-manager'))
   register: manage_environments_aem_stack_manager_jobs
 
 - name: Trim skipped AEM Stack Manager manage environments jobs for AWS
