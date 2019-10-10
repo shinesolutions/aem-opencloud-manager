@@ -55,13 +55,13 @@ plain-credentials:1.5
 resource-disposer:0.12
 scm-api:2.3.0
 script-security:1.49
-ssh-credentials:1.14
+ssh-credentials:1.18
 ssh-slaves:1.29.1
 structs:1.17
 subversion:2.12.1
 timestamper:1.8.10
 token-macro:2.5
-trilead-api:1.0.1
+trilead-api:1.0.5
 workflow-aggregator:2.6
 workflow-api:2.33
 workflow-basic-steps:2.13
