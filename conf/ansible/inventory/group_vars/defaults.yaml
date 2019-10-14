@@ -14,7 +14,7 @@ aws:
       author_publish_dispatcher_hosted_zone_name: overwrite-me
 
 aem_opencloud:
-  version: 4.1.0-pre.8
+  version: 4.1.0-pre.9
   enable_slack_notifications: false
   config:
     artifact_url: https://overwrite-me/overwrite-me.tar.gz
@@ -35,7 +35,7 @@ aem_opencloud:
       content_healthcheck_descriptor_url:
   jenkins_sharedlibs:
     repo_url: https://github.com/shinesolutions/aem-opencloud-manager
-    repo_branch:  jenkins-sharedlibs-4.1.0-pre.8
+    repo_branch: master
 
 jenkins:
   protocol: http
