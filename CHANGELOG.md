@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+- Upgrade AEM Stack Manager Messenger to 2.9.0
+
 ## [4.2.0-pre.0] - 2019-10-20
 
 ### Changed
