@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+- Added new paramter to disable removal of the AEM Stack prerequisites #58
+
 ### Changed
 - Upgrade AEM Stack Manager Messenger to 2.9.0
 - Upgrade AEM Test Suite to 1.7.0
