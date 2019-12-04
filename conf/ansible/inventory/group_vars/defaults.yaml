@@ -35,7 +35,7 @@ aem_opencloud:
       content_healthcheck_descriptor_url:
   jenkins_sharedlibs:
     repo_url: https://github.com/shinesolutions/aem-opencloud-manager
-    repo_branch: master
+    repo_branch: 4.2.0-pre.1
 
 jenkins:
   protocol: http
