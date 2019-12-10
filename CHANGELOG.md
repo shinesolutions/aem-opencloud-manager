@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+- Upgrade AEM Test Suite to 1.8.0
+
 ## [4.2.0-pre.1] - 2019-12-04
 
 ### Changed
