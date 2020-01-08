@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upgrade AEM Stack Manager Messenger to 2.9.0
 - Upgrade AEM Test Suite to 1.7.0
 
+### Fixed
+- Fix generation of offline snapshot yaml file if destination dir does not exists #60
+
 ## [4.2.0-pre.0] - 2019-10-20
 
 ### Changed
