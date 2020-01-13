@@ -3,6 +3,6 @@
     "packer_aem": "4.19.0",
     "aem_aws_stack_builder": "4.27.0",
     "aem_stack_manager_messenger": "2.9.0",
-    "aem_test_suite": "1.9.0"
+    "aem_test_suite": "1.10.0"
   }
 }
