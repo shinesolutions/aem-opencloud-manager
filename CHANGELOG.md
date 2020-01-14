@@ -8,8 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Upgrade Packer AEM to 4.19.0
-- Upgrade AEM AWS Stack Builder to 4.27.0
-- Upgrade AEM Test Suite to 1.10.0
+- Upgrade AEM AWS Stack Builder to 4.28.0
+- Upgrade AEM Test Suite to 1.11.0
 - Upgrade default Jenkins agent Docker image to aem-platform-buildenv 1.3.0
 
 ## [4.2.0-pre.1] - 2019-12-04
