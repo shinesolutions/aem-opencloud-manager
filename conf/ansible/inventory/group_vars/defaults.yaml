@@ -5,7 +5,7 @@ aws:
     s3_path: library
 
 aem_opencloud:
-  version: 4.0.5
+  version: 4.0.6
   config:
     artifact_url: https://overwrite-me/overwrite-me.tar.gz
   custom_manager_steps:
@@ -25,7 +25,7 @@ aem_opencloud:
       content_healthcheck_descriptor_url:
   jenkins_sharedlibs:
     repo_url: https://github.com/shinesolutions/aem-opencloud-manager
-    repo_branch: jenkins-sharedlibs-4.0.5
+    repo_branch: jenkins-sharedlibs-4.0.6
 
 jenkins:
   protocol: http
