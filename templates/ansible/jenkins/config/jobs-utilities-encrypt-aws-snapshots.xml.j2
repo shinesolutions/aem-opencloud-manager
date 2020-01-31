@@ -1,0 +1,101 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<flow-definition plugin="workflow-job@2.31">
+  <actions/>
+  <description>AEM OpenCloud Jenkins job provisioned with AEM OpenCloud Manager.</description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+  <org.jenkinsci.plugins.workflow.job.properties.DisableConcurrentBuildsJobProperty/>
+  <hudson.model.ParametersDefinitionProperty>
+    <parameterDefinitions>
+      <hudson.model.ChoiceParameterDefinition>
+        <name>SNAPSHOT_TYPE</name>
+        <description>(conditional) Encrypt snapshots based on the Snapshot Tag 'SnapshotType'. Only works when parameter SNAPSHOT_ID is empty.</description>
+        <defaultValue>offline</defaultValue>
+        <choices class="java.util.Arrays$ArrayList">
+          <a class="string-array">
+            <string>offline</string>
+            <string>live</string>
+            <string>orchestration</string>
+          </a>
+        </choices>
+      </hudson.model.ChoiceParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>SNAPSHOT_IDS</name>
+        <description>(conditional) Comma seperated list of snapshots to encrypt.</description>
+        <defaultValue></defaultValue>
+        <trim>true</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>KMS_KEY_ID</name>
+        <description>(optional) KMS Key ID to encrypt the new snapshots with. If no KMS Key ID is provided the default AWS KMS key is usedn instead.</description>
+        <defaultValue></defaultValue>
+        <trim>true</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>SOURCE_AWS_REGION</name>
+        <description>(optional) Source AWS Region of the EC2 snapshots.</description>
+        <defaultValue>ap-southeast-2</defaultValue>
+        <trim>true</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.BooleanParameterDefinition>
+        <name>REMOVE_UNENCRYPTED</name>
+        <description>(optional) If activated Unencrypted Snapshots will be removed after they were successfully encrypted.</description>
+        <defaultValue>true</defaultValue>
+        <trim>true</trim>
+      </hudson.model.BooleanParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>WAIT_TIME</name>
+        <description>(optional) Wait time in seconds until the EC2 Snapshot copy process times out.</description>
+        <defaultValue>3600</defaultValue>
+        <trim>true</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.BooleanParameterDefinition>
+        <name>ENABLE_SLACK_NOTIFICATIONS</name>
+        <description>(optional) If activated SLACK notifications will be send out.</description>
+        <defaultValue>{{ aem_opencloud.enable_slack_notifications }}</defaultValue>
+        <trim>true</trim>
+      </hudson.model.BooleanParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>JENKINS_AGENT_DOCKER_IMAGE</name>
+        <description>The name of Docker image to be used as Jenkins build pipeline agent.</description>
+        <defaultValue>{{ jenkins.agent.docker_image }}</defaultValue>
+        <trim>true</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>JENKINS_AGENT_DOCKER_ARGS</name>
+        <description>The CLI args for Jenkins to use when running Docker CLI.</description>
+        <defaultValue>{{ jenkins.agent.docker_args }}</defaultValue>
+        <trim>true</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>AOC_CUSTOM_MANAGER_STEPS_ARTIFACT_URL</name>
+        <description>URL to the AEM OpenCloud Manager custom manager steps artifact.</description>
+        <defaultValue>{{ aem_opencloud.custom_manager_steps.artifact_url }}</defaultValue>
+        <trim>true</trim>
+      </hudson.model.StringParameterDefinition>
+    </parameterDefinitions>
+  </hudson.model.ParametersDefinitionProperty>
+</properties>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition" plugin="workflow-cps@2.61">
+    <scm class="hudson.plugins.git.GitSCM" plugin="git@3.9.1">
+      <configVersion>2</configVersion>
+      <userRemoteConfigs>
+        <hudson.plugins.git.UserRemoteConfig>
+          <url>{{ aem_opencloud.jenkins_sharedlibs.repo_url }}</url>
+        </hudson.plugins.git.UserRemoteConfig>
+      </userRemoteConfigs>
+      <branches>
+        <hudson.plugins.git.BranchSpec>
+          <name>{{ aem_opencloud.jenkins_sharedlibs.repo_branch }}</name>
+        </hudson.plugins.git.BranchSpec>
+      </branches>
+      <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+      <submoduleCfg class="list"/>
+      <extensions/>
+    </scm>
+    <scriptPath>provisioners/jenkins/jenkinsfiles/aem-opencloud/utilities/aws/{{ item.item.path }}/</scriptPath>
+    <lightweight>true</lightweight>
+  </definition>
+  <triggers/>
+  <disabled>false</disabled>
+</flow-definition>

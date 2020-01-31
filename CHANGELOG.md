@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+- Add new Jenkins Job category `utilities` for general utility jobs
+- Add utility pipeline `encrypt-snapshots` for encrypting OpenCloud Snapshots on AWS
+
 ## [4.2.0-pre.2] - 2010-01-21
 
 ### Changed
