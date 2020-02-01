@@ -1,0 +1,23 @@
+{
+  "resources": [
+    {
+      "path": "conf/ansible/inventory/group_vars/defaults.yaml",
+      "type": "yaml",
+      "params": {
+        "property": "aem_opencloud.version"
+      }
+    },
+    {
+      "path": "conf/ansible/inventory/group_vars/defaults.yaml",
+      "type": "yaml",
+      "params": {
+        "property": "aem_opencloud.jenkins_sharedlibs.repo_branch",
+        "post_release_value": "master"
+      }
+    },
+    {
+      "path": "CHANGELOG.md",
+      "type": "keep-a-changelog"
+    }
+  ]
+}
