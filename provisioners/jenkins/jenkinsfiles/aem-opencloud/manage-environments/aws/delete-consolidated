@@ -64,8 +64,14 @@ pipeline {
         stage('Delete AEM OpenCloud Consolidated environment') {
             steps {
                     JenkinsStagePreStep this
+                    script {
+                        if (params.REMOVE_PREREQUISITES) {
+                          ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make delete-consolidated config_path=${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE_AEM_AWS_STACK_BUILDER}/ stack_prefix=${params.STACK_PREFIX}")
+                        } else {
+                          ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make delete-consolidated-main config_path=${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE_AEM_AWS_STACK_BUILDER}/ stack_prefix=${params.STACK_PREFIX}")
+                      }
+                  }
 
-                    ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make delete-consolidated config_path=${env.AOC_CONFIG_DIR}/aem-aws-stack-builder/${params.AOC_CONFIG_PROFILE_AEM_AWS_STACK_BUILDER}/ stack_prefix=${params.STACK_PREFIX}")
             }
             post {
                 always {
