@@ -7,7 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 ### Added
+
 - Added new build parameter REMOVE_PREREQUISITES to disable removal of the AEM Stack prerequisites for delete Full-Set and Consolidated #58
+
+### Changed
+- Upgrade Packer AEM to 4.20.0
+- Upgrade AEM AWS Stack Builder to 4.30.0
 
 ## [4.2.0-pre.2] - 2010-01-21
 
