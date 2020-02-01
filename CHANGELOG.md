@@ -9,7 +9,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Added new build parameter REMOVE_PREREQUISITES to disable removal of the AEM Stack prerequisites for delete Full-Set and Consolidated #58
 
+## [4.2.0-pre.2] - 2010-01-21
+
 ### Changed
+- Upgrade Packer AEM to 4.20.0
+- Upgrade AEM AWS Stack Builder to 4.30.0
+- Upgrade AEM Stack Manager Messenger to 2.10.0
+- Upgrade AEM Test Suite to 1.13.0
+- Upgrade default Jenkins agent Docker image to aem-platform-buildenv 1.3.0
+
+## [4.2.0-pre.1] - 2019-12-04
+
+### Changed
+- Upgrade Packer AEM to 4.16.0
+- Upgrade AEM AWS Stack Builder to 4.24.0
 - Upgrade AEM Stack Manager Messenger to 2.9.0
 - Upgrade AEM Test Suite to 1.7.0
 

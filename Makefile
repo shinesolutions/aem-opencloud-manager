@@ -1,6 +1,3 @@
-DOCKER_IMAGE := aem-opencloud/jenkins-master:latest
-CONTAINER_NAME := jenkins
-
 ci: clean deps lint test-jenkins-aws-gen
 
 stage:
@@ -110,6 +107,9 @@ endef
 ################################################################################
 # Temporary utility targets
 ################################################################################
+
+DOCKER_IMAGE := aem-opencloud/jenkins-master:latest
+CONTAINER_NAME := jenkins
 
 docker-run: clean docker-build
 	docker run -p 8080:8080 --name "${CONTAINER_NAME}" "${DOCKER_IMAGE}"
