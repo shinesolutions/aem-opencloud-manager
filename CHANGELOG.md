@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Added new build parameter REMOVE_PREREQUISITES to disable removal of the AEM Stack prerequisites for delete Full-Set and Consolidated #58
+- Added aem65 to machine images integration testing
 
 ### Changed
 - Upgrade Packer AEM to 4.20.0

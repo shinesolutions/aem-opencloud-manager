@@ -74,6 +74,30 @@ tests:
     params: []
 
   ##############################################################################
+  # aws-amazon-linux2-aem65
+  ##############################################################################
+
+  - path: job/machine-images/job/aws/job/aws-amazon-linux2-aem65/
+    job: author
+    params: []
+
+  - path: job/machine-images/job/aws/job/aws-amazon-linux2-aem65/
+    job: author-publish-dispatcher
+    params: []
+
+  - path: job/machine-images/job/aws/job/aws-amazon-linux2-aem65/
+    job: dispatcher
+    params: []
+
+  - path: job/machine-images/job/aws/job/aws-amazon-linux2-aem65/
+    job: java
+    params: []
+
+  - path: job/machine-images/job/aws/job/aws-amazon-linux2-aem65/
+    job: publish
+    params: []
+
+  ##############################################################################
   # aws-rhel7-aem62
   ##############################################################################
 
@@ -142,5 +166,29 @@ tests:
     params: []
 
   - path: job/machine-images/job/aws/job/aws-rhel7-aem64/
+    job: publish
+    params: []
+
+  ##############################################################################
+  # aws-rhel7-aem65
+  ##############################################################################
+
+  - path: job/machine-images/job/aws/job/aws-rhel7-aem65/
+    job: author
+    params: []
+
+  - path: job/machine-images/job/aws/job/aws-rhel7-aem65/
+    job: author-publish-dispatcher
+    params: []
+
+  - path: job/machine-images/job/aws/job/aws-rhel7-aem65/
+    job: dispatcher
+    params: []
+
+  - path: job/machine-images/job/aws/job/aws-rhel7-aem65/
+    job: java
+    params: []
+
+  - path: job/machine-images/job/aws/job/aws-rhel7-aem65/
     job: publish
     params: []
