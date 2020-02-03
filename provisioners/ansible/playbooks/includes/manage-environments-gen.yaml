@@ -276,7 +276,7 @@
   vars:
     aem_architecture_type: full-set
   template:
-    src: ../../../templates/ansible/jenkins/config/jobs-manage-environments-aem.xml.j2
+    src: ../../../templates/ansible/jenkins/config/jobs-manage-environments-aem-delete.xml.j2
     dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/manage-environments/aws/{{ item[0].item.path }}-{{ item[2].item.path }}-{{ item[3].item.path }}/{{ item[1].item.path }}/config.xml
     mode: '0644'
   with_nested:
