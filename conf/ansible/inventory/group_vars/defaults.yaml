@@ -1,4 +1,3 @@
----
 aws:
   region: overwrite-me
   library:
@@ -12,31 +11,29 @@ aws:
       publish_dispatcher_hosted_zone_name: overwrite-me
     author_publish_dispatcher:
       author_publish_dispatcher_hosted_zone_name: overwrite-me
-
 aem_opencloud:
-  version: 4.2.0-pre.3
+  version: 4.2.0
   enable_slack_notifications: false
   config:
-    artifact_url: https://overwrite-me/overwrite-me.tar.gz
+    artifact_url: 'https://overwrite-me/overwrite-me.tar.gz'
   custom_manager_steps:
-    artifact_url:
+    artifact_url: null
   custom_image_provisioner:
-    artifact_url:
+    artifact_url: null
   custom_stack_provisioner:
-    artifact_url:
+    artifact_url: null
   descriptors:
     consolidated:
-      deployment_descriptor_url:
-      export_descriptor_url:
-      content_healthcheck_descriptor_url:
+      deployment_descriptor_url: null
+      export_descriptor_url: null
+      content_healthcheck_descriptor_url: null
     full-set:
-      deployment_descriptor_url:
-      export_descriptor_url:
-      content_healthcheck_descriptor_url:
+      deployment_descriptor_url: null
+      export_descriptor_url: null
+      content_healthcheck_descriptor_url: null
   jenkins_sharedlibs:
-    repo_url: https://github.com/shinesolutions/aem-opencloud-manager
-    repo_branch: master
-
+    repo_url: 'https://github.com/shinesolutions/aem-opencloud-manager'
+    repo_branch: 4.2.0
 jenkins:
   protocol: http
   host: overwrite-me
@@ -47,6 +44,6 @@ jenkins:
     docker_image: 'shinesolutions/aem-platform-buildenv:1.3.0'
     docker_args: ''
   os:
-    jenkins_home:
-    user:
-    group:
+    jenkins_home: null
+    user: null
+    group: null
