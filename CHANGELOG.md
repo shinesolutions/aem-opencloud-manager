@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+- Upgrade AEM AWS Stack Builder to 4.32.0
+
+### Fixed
+- Fix aggressive CPU high alarm by increasing threshold to 60 (warning) and 90 (critical)
+
 ## 4.2.0 - 2020-02-03
 ### Added
 - Added new build parameter REMOVE_PREREQUISITES to disable removal of the AEM Stack prerequisites for delete Full-Set and Consolidated [#58]
