@@ -6,6 +6,9 @@ stage:
 clean:
 	rm -rf logs/ stage/
 
+release:
+	rtk release
+
 ################################################################################
 # Dependencies resolution targets.
 # For deps-test-local target, the local dependencies must be available on the

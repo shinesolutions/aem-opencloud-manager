@@ -1,6 +1,67 @@
 ---
 tests:
 
-  - path: job/installation/job/aws/
-    job: mirror-aem-opencloud-libraries
-    params: []
+  - path: job/manage-environments/job/aws/job/aem-stack-manager-sandpit/
+    job: create-stack-manager
+    params: [
+      'STACK_PREFIX=test-aws-aem-sm'
+    ]
+  # TODO: enable tests below after support for running test pipeline synchronously (wait for pipeline to finish) has been added
+  #
+  # - path: job/manage-environments/job/aws/job/aem-consolidated-amazon-linux2-aem65-sandpit-sandpit/
+  #   job: create-consolidated
+  #   params: [
+  #     'STACK_PREFIX=test-aws-aem-con-amz2-aem65',
+  #     'STACK_MANAGER_STACK_PREFIX=test-aws-aem-sm'
+  #   ]
+  #
+  # # - path: job/manage-environments/job/aws/job/aem-consolidated-amazon-linux2-aem65-sandpit-sandpit/
+  # #   job: delete-consolidated
+  # #   params: [
+  # #     'STACK_PREFIX=test-aws-aem-con-amz2-aem65'
+  # #   ]
+  # #
+  # - path: job/manage-environments/job/aws/job/aem-consolidated-rhel7-aem65-sandpit-sandpit/
+  #   job: create-consolidated
+  #   params: [
+  #     'STACK_PREFIX=test-aws-aem-con-rhel7-aem65',
+  #     'STACK_MANAGER_STACK_PREFIX=test-aws-aem-sm'
+  #   ]
+  #
+  # # - path: job/manage-environments/job/aws/job/aem-consolidated-rhel7-aem65-sandpit-sandpit/
+  # #   job: delete-consolidated
+  # #   params: [
+  # #     'STACK_PREFIX=test-aws-aem-con-rhel7-aem65'
+  # #   ]
+  # #
+  # - path: job/manage-environments/job/aws/job/aem-full-set-amazon-linux2-aem65-sandpit-sandpit/
+  #   job: create-full-set
+  #   params: [
+  #     'STACK_PREFIX=test-aws-aem-fs-amz2-aem65',
+  #     'STACK_MANAGER_STACK_PREFIX=test-aws-aem-sm'
+  #   ]
+  #
+  # # - path: job/manage-environments/job/aws/job/aem-full-set-amazon-linux2-aem65-sandpit-sandpit/
+  # #   job: delete-full-set
+  # #   params: [
+  # #     'STACK_PREFIX=test-aws-aem-fs-amz2-aem65'
+  # #   ]
+  # #
+  # - path: job/manage-environments/job/aws/job/aem-full-set-rhel7-aem65-sandpit-sandpit/
+  #   job: create-full-set
+  #   params: [
+  #     'STACK_PREFIX=test-aws-aem-fs-rhel7-aem65',
+  #     'STACK_MANAGER_STACK_PREFIX=test-aws-aem-sm'
+  #   ]
+  #
+  # # - path: job/manage-environments/job/aws/job/aem-full-set-rhel7-aem65-sandpit-sandpit/
+  # #   job: delete-full-set
+  # #   params: [
+  # #     'STACK_PREFIX=test-aws-aem-fs-rhel7-aem65'
+  # #   ]
+  # #
+  # # - path: job/manage-environments/job/aws/job/aem-stack-manager-sandpit/
+  # #   job: delete-stack-manager
+  # #   params: [
+  # #     'STACK_PREFIX=test-aws-aem-sm'
+  # #   ]

@@ -17,18 +17,34 @@
 - name: Create a list of AEM Consolidated manage environments jobs for AWS
   shell: echo {{ item.path }}
   with_filetree: ../../../provisioners/jenkins/jenkinsfiles/aem-opencloud/manage-environments/aws/
-  when: item.state == 'file' and ( item.path is match('create-consolidated') or item.path is match('delete-consolidated') )
+  when: item.state == 'file' and item.path is match('create-consolidated')
   register: manage_environments_aem_consolidated_jobs
+
+- name: Create a list of AEM Consolidated manage environments deletion jobs for AWS
+  shell: echo {{ item.path }}
+  with_filetree: ../../../provisioners/jenkins/jenkinsfiles/aem-opencloud/manage-environments/aws/
+  when: item.state == 'file' and item.path is match('delete-consolidated')
+  register: manage_environments_delete_aem_consolidated_jobs
 
 - name: Trim skipped AEM Consolidated manage environments jobs for AWS
   set_fact:
     manage_environments_aem_consolidated_jobs_trimmed: "{{ manage_environments_aem_consolidated_jobs | trim_skipped() }}"
 
+- name: Trim skipped AEM Consolidated manage environments deletion jobs for AWS
+  set_fact:
+    manage_environments_delete_aem_consolidated_jobs_trimmed: "{{ manage_environments_delete_aem_consolidated_jobs | trim_skipped() }}"
+
 - name: Create a list of AEM Full-Set manage environments jobs for AWS
   shell: echo {{ item.path }}
   with_filetree: ../../../provisioners/jenkins/jenkinsfiles/aem-opencloud/manage-environments/aws/
-  when: item.state == 'file' and ( item.path is match('create-full-set') or item.path is match('delete-full-set'))
+  when: item.state == 'file' and item.path is match('create-full-set')
   register: manage_environments_aem_full_set_jobs
+
+- name: Create a list of AEM Full-Set manage environments deletion jobs for AWS
+  shell: echo {{ item.path }}
+  with_filetree: ../../../provisioners/jenkins/jenkinsfiles/aem-opencloud/manage-environments/aws/
+  when: item.state == 'file' and item.path is match('delete-full-set')
+  register: manage_environments_delete_aem_full_set_jobs
 
 - name: Create a list of AEM Consolidated-Switch-DNS manage environments job for AWS
   shell: echo {{ item.path }}
@@ -54,6 +70,10 @@
   set_fact:
     manage_environments_aem_full_set_jobs_trimmed: "{{ manage_environments_aem_full_set_jobs | trim_skipped() }}"
 
+- name: Trim skipped AEM Full-Set manage environments deletion jobs for AWS
+  set_fact:
+    manage_environments_delete_aem_full_set_jobs_trimmed: "{{ manage_environments_delete_aem_full_set_jobs | trim_skipped() }}"
+
 - name: "Generate jobs for AEM Stack Manager manage environments configuration profile directories"
   file:
     path: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/manage-environments/aws/{{ item[0].item.path }}/{{ item[1].item.path }}/
@@ -71,6 +91,17 @@
   with_nested:
     - "{{ aem_aws_stack_builder_aem_consolidated_profiles_trimmed.results }}"
     - "{{ manage_environments_aem_consolidated_jobs_trimmed.results }}"
+    - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
+    - "{{ aem_test_suite_profiles_trimmed.results }}"
+
+- name: "Generate jobs for AEM Consolidated manage environments deletion configuration profile directories"
+  file:
+    path: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/manage-environments/aws/{{ item[0].item.path }}-{{ item[2].item.path }}-{{ item[3].item.path }}/{{ item[1].item.path }}/
+    state: directory
+    mode: '0776'
+  with_nested:
+    - "{{ aem_aws_stack_builder_aem_consolidated_profiles_trimmed.results }}"
+    - "{{ manage_environments_delete_aem_consolidated_jobs_trimmed.results }}"
     - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
     - "{{ aem_test_suite_profiles_trimmed.results }}"
 
@@ -96,6 +127,16 @@
     - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
     - "{{ aem_test_suite_profiles_trimmed.results }}"
 
+- name: "Generate jobs for AEM Full-Set manage environments deletion configuration profile directories"
+  file:
+    path: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/manage-environments/aws/{{ item[0].item.path }}-{{ item[2].item.path }}-{{ item[3].item.path }}/{{ item[1].item.path }}/
+    state: directory
+    mode: '0776'
+  with_nested:
+    - "{{ aem_aws_stack_builder_aem_full_set_profiles_trimmed.results }}"
+    - "{{ manage_environments_delete_aem_full_set_jobs_trimmed.results }}"
+    - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
+    - "{{ aem_test_suite_profiles_trimmed.results }}"
 
 - name: "Generate jobs for AEM Full-Set manage environments configuration profile directories"
   file:
@@ -128,6 +169,17 @@
     - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
     - "{{ aem_test_suite_profiles_trimmed.results }}"
 
+- name: "Generate jobs for AEM Consolidated configuration profile config.xml for manage-environments deletion configuration profile components"
+  template:
+    src: '../../../templates/ansible/jenkins/config/category-config-profile.xml.j2'
+    dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/manage-environments/aws/{{ item[0].item.path }}-{{ item[2].item.path }}-{{ item[3].item.path }}/config.xml
+    mode: '0644'
+  with_nested:
+    - "{{ aem_aws_stack_builder_aem_consolidated_profiles_trimmed.results }}"
+    - "{{ manage_environments_delete_aem_consolidated_jobs_trimmed.results }}"
+    - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
+    - "{{ aem_test_suite_profiles_trimmed.results }}"
+
 - name: "Generate jobs for AEM Switch-DNS-Consolidated configuration profile config.xml for manage-environments configuration profile components"
   template:
     src: '../../../templates/ansible/jenkins/config/category-config-profile.xml.j2'
@@ -147,6 +199,17 @@
   with_nested:
     - "{{ aem_aws_stack_builder_aem_full_set_profiles_trimmed.results }}"
     - "{{ manage_environments_aem_full_set_jobs_trimmed.results }}"
+    - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
+    - "{{ aem_test_suite_profiles_trimmed.results }}"
+
+- name: "Generate jobs for AEM Full-Set configuration profile config.xml for manage-environments deletion configuration profile components"
+  template:
+    src: '../../../templates/ansible/jenkins/config/category-config-profile.xml.j2'
+    dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/manage-environments/aws/{{ item[0].item.path }}-{{ item[2].item.path }}-{{ item[3].item.path }}/config.xml
+    mode: '0644'
+  with_nested:
+    - "{{ aem_aws_stack_builder_aem_full_set_profiles_trimmed.results }}"
+    - "{{ manage_environments_delete_aem_full_set_jobs_trimmed.results }}"
     - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
     - "{{ aem_test_suite_profiles_trimmed.results }}"
 
@@ -183,6 +246,19 @@
     - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
     - "{{ aem_test_suite_profiles_trimmed.results }}"
 
+- name: "Generate jobs for AEM Consolidated config.xml for manage-environments deletion configuration profile components"
+  vars:
+    aem_architecture_type: consolidated
+  template:
+    src: ../../../templates/ansible/jenkins/config/jobs-manage-environments-aem-delete.xml.j2
+    dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/manage-environments/aws/{{ item[0].item.path }}-{{ item[2].item.path }}-{{ item[3].item.path }}/{{ item[1].item.path }}/config.xml
+    mode: '0644'
+  with_nested:
+    - "{{ aem_aws_stack_builder_aem_consolidated_profiles_trimmed.results }}"
+    - "{{ manage_environments_delete_aem_consolidated_jobs_trimmed.results }}"
+    - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
+    - "{{ aem_test_suite_profiles_trimmed.results }}"
+
 - name: "Generate jobs for AEM Full-Set config.xml for manage-environments configuration profile components"
   vars:
     aem_architecture_type: full-set
@@ -193,6 +269,19 @@
   with_nested:
     - "{{ aem_aws_stack_builder_aem_full_set_profiles_trimmed.results }}"
     - "{{ manage_environments_aem_full_set_jobs_trimmed.results }}"
+    - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
+    - "{{ aem_test_suite_profiles_trimmed.results }}"
+
+- name: "Generate jobs for AEM Full-Set config.xml for manage-environments deletion configuration profile components"
+  vars:
+    aem_architecture_type: full-set
+  template:
+    src: ../../../templates/ansible/jenkins/config/jobs-manage-environments-aem-delete.xml.j2
+    dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/manage-environments/aws/{{ item[0].item.path }}-{{ item[2].item.path }}-{{ item[3].item.path }}/{{ item[1].item.path }}/config.xml
+    mode: '0644'
+  with_nested:
+    - "{{ aem_aws_stack_builder_aem_full_set_profiles_trimmed.results }}"
+    - "{{ manage_environments_delete_aem_full_set_jobs_trimmed.results }}"
     - "{{ aem_stack_manager_messenger_profiles_trimmed.results }}"
     - "{{ aem_test_suite_profiles_trimmed.results }}"
 

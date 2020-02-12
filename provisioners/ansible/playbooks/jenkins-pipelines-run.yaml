@@ -11,6 +11,6 @@
         name: test_config
 
     - name: "{{ lookup('env', 'test_category') }}: Run Jenkins pipelines"
-      shell: JENKINS_URL={{ jenkins.protocol }}://{{ jenkins.username }}:{{ jenkins.password }}@{{ jenkins.host }}:{{ jenkins.port }}/job/aem-opencloud-{{ aem_opencloud.version }}/{{ item.path }} nestor build {{ item.job }} {{ item.params | join('&') }}
+      shell: JENKINS_URL={{ jenkins.protocol }}://{{ jenkins.username }}:{{ jenkins.password }}@{{ jenkins.host }}:{{ jenkins.port }}/job/aem-opencloud-{{ aem_opencloud.version }}/{{ item.path }} nestor build {{ item.job }} "{{ item.params | join('&') }}"
       no_log: False
       with_items: "{{ test_config.tests }}"

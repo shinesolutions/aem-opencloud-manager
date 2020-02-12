@@ -18,6 +18,7 @@ def call(script, String sourceAuthorSnapshotId, String sourcePublishSnapshotId, 
   }
 
   script.sh """
+    mkdir -p ${configPath}/
     echo -e "${extra_conf}" > ${configPath}/zzz_offline_snapshot.yaml
   """
 }
