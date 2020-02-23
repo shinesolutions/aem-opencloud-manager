@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Add new Jenkins Job category `utilities` for general utility jobs
 - Add utility pipeline `encrypt-snapshots` for encrypting OpenCloud Snapshots on AWS
+- Added installation integration test for rhel7 aem65
 
 ### Changed
 - Upgrade AEM AWS Stack Builder to 4.34.0

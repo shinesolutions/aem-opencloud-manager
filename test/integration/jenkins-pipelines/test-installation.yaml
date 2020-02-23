@@ -18,6 +18,10 @@ tests:
     params: []
 
   - path: job/installation/job/aws/
+    job: mirror-stack-builder-libraries-aem-consolidated-amazon-linux2-aem65
+    params: []
+
+  - path: job/installation/job/aws/
     job: mirror-stack-builder-libraries-aem-consolidated-rhel7-aem62
     params: []
 
@@ -27,6 +31,10 @@ tests:
 
   - path: job/installation/job/aws/
     job: mirror-stack-builder-libraries-aem-consolidated-rhel7-aem64
+    params: []
+
+  - path: job/installation/job/aws/
+    job: mirror-stack-builder-libraries-aem-consolidated-rhel7-aem65
     params: []
 
   - path: job/installation/job/aws/
@@ -46,6 +54,10 @@ tests:
     params: []
 
   - path: job/installation/job/aws/
+    job: mirror-stack-builder-libraries-aem-full-set-amazon-linux2-aem65
+    params: []
+
+  - path: job/installation/job/aws/
     job: mirror-stack-builder-libraries-aem-full-set-rhel7-aem62
     params: []
 
@@ -55,4 +67,8 @@ tests:
 
   - path: job/installation/job/aws/
     job: mirror-stack-builder-libraries-aem-full-set-rhel7-aem64
+    params: []
+
+  - path: job/installation/job/aws/
+    job: mirror-stack-builder-libraries-aem-full-set-rhel7-aem65
     params: []
