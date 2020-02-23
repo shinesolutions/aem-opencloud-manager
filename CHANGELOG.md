@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add new Jenkins Job category `utilities` for general utility jobs
 - Add utility pipeline `encrypt-snapshots` for encrypting OpenCloud Snapshots on AWS
 
+### Fixed
+- Fix Jenkins Shared Libraries' Git path
+
 ## 4.3.0 - 2020-02-11
 ### Changed
 - Upgrade Packer AEM to 4.22.0
