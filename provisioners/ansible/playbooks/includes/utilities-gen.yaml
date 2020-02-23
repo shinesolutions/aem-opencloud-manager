@@ -1,0 +1,31 @@
+---
+
+########################################################################
+# Generate testing Jenkins jobs.
+########################################################################
+
+- name: Create a list of utility jobs for AWS
+  shell: echo {{ item.path }}
+  with_filetree: ../../../provisioners/jenkins/jenkinsfiles/aem-opencloud/utilities/aws/
+  when: item.state == 'file'
+  register: utilities_jobs
+
+- name: Trim utility jobs for AWS
+  set_fact:
+    utilities_jobs_trimmed: "{{ utilities_jobs | trim_skipped() }}"
+
+- name: "Generate utility aws snapshots encryption jobs directories"
+  file:
+    path: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/utilities/aws/{{ item.item.path }}
+    state: directory
+    mode: '0776'
+  with_items:
+    - "{{ utilities_jobs_trimmed.results }}"
+
+- name: "Generate jobs for utility aws snapshots encryption config.xml"
+  template:
+    src: '../../../templates/ansible/jenkins/config/jobs-utilities-encrypt-aws-snapshots.xml.j2'
+    dest: ../../../stage/jenkins/jobs/aem-opencloud-{{ aem_opencloud.version }}/utilities/aws/{{ item.item.path }}/config.xml
+    mode: '0644'
+  with_items:
+    - "{{ utilities_jobs_trimmed.results }}"

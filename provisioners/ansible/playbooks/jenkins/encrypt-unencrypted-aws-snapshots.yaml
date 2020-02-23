@@ -1,0 +1,131 @@
+---
+# This playbook gets excluvely executed by the AEM OpenCloud Manager pipeline encrypt-aws-snapshots
+# And will encrypt unencrypted AEM OpenCloud Snapshots
+
+- name: Encrypt not encrypted Snapshots via Tag SnapshotType or provided comma seperated list of Snapshot IDs
+  hosts: all
+  gather_facts: false
+  connection: local
+  vars:
+    # snapshot_list is used to save all found unencrypted snapshots
+    snapshot_list: []
+    # encrypted_snapshot_ids_list is used to save all
+    # returned encrypted snapshot ids
+    encrypted_snapshot_ids_list: []
+    # unencrypted_and_encrypted_snapshot_ids_list is used to save all
+    # returned encrypted snapshot ids to it's unencrypted parent
+    # so we can verify if a snapshot copy error occured
+    unencrypted_and_encrypted_snapshot_ids_list: []
+
+  tasks:
+  - name: "Gather Snapshots by provided snapshot-ids"
+    ec2_snapshot_info:
+      snapshot_ids: "{{ snapshot_ids.split(',') }}"
+    when: (snapshot_ids is defined and snapshot_ids != '') or
+          (snapshot_ids is defined and snapshot_ids != '') or
+          (snapshot_ids is defined and snapshot_ids != '')
+    register: found_snapshot_ids
+
+  - name: "Gather Snapshots by Snapshot Type {{ snapshot_type }}"
+    ec2_snapshot_info:
+      filters:
+        "tag:SnapshotType": "{{ snapshot_type }}"
+    when: (snapshot_type is defined and snapshot_type != '' and snapshot_ids is undefined) or
+          (snapshot_type is defined and snapshot_type != '' and snapshot_ids == '') or
+          (snapshot_type is defined and snapshot_type != '' and not snapshot_ids)
+    register: found_offline_snapshot_ids
+
+  - name: "Add unencrypted Snapshots provided via snapshot-ids to list of found snapshots"
+    set_fact:
+      snapshot_list: "{{ snapshot_list + [item] }}"
+    when: found_snapshot_ids.snapshots is defined and (found_snapshot_ids.snapshots | length > 0) and item.state == 'completed' and not item.encrypted
+    with_items:
+      - "{{ found_snapshot_ids.snapshots }}"
+
+  - name: "Add unencrypted provided via snapshot-type to list of found snapshots"
+    set_fact:
+      snapshot_list: "{{ snapshot_list + [item] }}"
+    when: found_offline_snapshot_ids.snapshots is defined and (found_offline_snapshot_ids.snapshots | length > 0) and item.state == 'completed' and not item.encrypted
+    with_items:
+      - "{{ found_offline_snapshot_ids.snapshots }}"
+
+  # We are sorting all found Snapshot IDs from the oldest to the most
+  # recent ones so the snapshot are encrypted in the historical correct order
+  # to avoid confusions how old whhich snapshot is
+  - name: "Sort found snapshots from oldest to most recent ones"
+    set_fact:
+      snapshot_list: "{{ snapshot_list | sort(attribute='start_time') }}"
+    when: snapshot_list is defined and (snapshot_list | length > 0)
+
+  - name: "Encrypt snapshots"
+    ec2_snapshot_copy:
+      source_region: "{{ source_aws_region }}"
+      source_snapshot_id: "{{ item.snapshot_id }}"
+      description: "{{ item.description }}"
+      tags: "{{ item.tags }}"
+      encrypted: yes
+      kms_key_id: "{{ kms_key_id }}"
+      wait: true
+      wait_timeout: "{{ wait_time }}"
+    when: snapshot_list is defined and (snapshot_list | length > 0)
+    register: encrypted_snapshots
+    with_items:
+      - "{{ snapshot_list }}"
+
+    # We setup a list based on the results we got when we encrypted the AWS Snapshots
+    # The result contains the unencrypted snapshot id and the encrypted snapshot id
+    # for each snapshot we are encrypting. Therefore we are saving both to verify if
+    # the encryption was successful
+  - name: "Save new Snapshot IDs for validation"
+    set_fact:
+      unencrypted_and_encrypted_snapshot_ids_list: "{{ unencrypted_and_encrypted_snapshot_ids_list + [{'unencrypted_snapshot_id': item.item.snapshot_id, 'encrypted_snapshot_id': item.snapshot_id}] }}"
+    when: snapshot_list is defined and (snapshot_list | length > 0)
+    with_items:
+      - "{{ encrypted_snapshots.results }}"
+
+  - name: "Gather information of encrypted snapshots for validation"
+    ec2_snapshot_info:
+      snapshot_ids: "{{ unencrypted_and_encrypted_snapshot_ids_list | map(attribute='encrypted_snapshot_id') | list }}"
+    when: snapshot_list is defined and (snapshot_list | length > 0)
+    register: encrypted_snapshot_facts
+
+  - name: "Fail if no encrypted snapshots were found for validation"
+    fail:
+      msg: |
+        ERROR: No Snapshots for validation were found
+
+        Debug message:
+          {{ encrypted_snapshot_facts }}
+    when: (snapshot_list is defined and (snapshot_list | length > 0) and encrypted_snapshot_facts is undefined) or
+          (snapshot_list is defined and (snapshot_list | length > 0) and encrypted_snapshot_facts.snapshots is undefined)
+
+  #
+  # To make sure that we don't delete any unencrypted snapshots which
+  # were not encrypted or were the encryption resulted in an error
+  # we are failing the playbook.
+  - name: "Fail if encrypted snapshot is not encrypted or has errors"
+    fail:
+      msg: |
+        ERRROR: Error while encrypting Snapshots.
+
+        Unencrypted Snapshot-id: {{ unencrypted_and_encrypted_snapshot_ids_list | selectattr('encrypted_snapshot_id', 'equalto', item.snapshot_id) | map(attribute='unencrypted_snapshot_id') }}
+
+        Encrypted Snapshot-id: {{ item.snapshot_id }}
+
+        Debug message:
+
+    when: (snapshot_list is defined and (snapshot_list | length > 0) and not item.encrypted) or
+          (snapshot_list is defined and (snapshot_list | length > 0) and item.state == 'error')
+    with_items:
+      - "{{ encrypted_snapshot_facts.snapshots }}"
+
+  - name: "Remove unencrypted encrypted snapshots by Snapshot Type {{ snapshot_type }}"
+    ec2_snapshot:
+      region: "{{ source_aws_region }}"
+      snapshot_id: "{{ item.unencrypted_snapshot_id }}"
+      state: absent
+      wait: true
+      wait_timeout: "{{ wait_time }}"
+    when: (remove_unencrypted | bool  and (item | length > 0) and item.unencrypted_snapshot_id is defined)
+    with_items:
+      - "{{ unencrypted_and_encrypted_snapshot_ids_list }}"
