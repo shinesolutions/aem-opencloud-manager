@@ -79,7 +79,7 @@
       </userRemoteConfigs>
       <branches>
         <hudson.plugins.git.BranchSpec>
-          <name>refs/tags/{{ aem_opencloud.jenkins_sharedlibs.repo_branch }}</name>
+          <name>{% if aem_opencloud.jenkins_sharedlibs.repo_branch != 'master' %}refs/tags/{% endif %}{{ aem_opencloud.jenkins_sharedlibs.repo_branch }}</name>
         </hudson.plugins.git.BranchSpec>
       </branches>
       <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
