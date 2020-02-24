@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Upgrade AEM AWS Stack Builder to 4.34.0
+- Upgrade default Jenkins agent Docker image to aem-platform-buildenv 1.6.0
 
 ### Fixed
 - Fix Jenkins Shared Libraries' Git path
