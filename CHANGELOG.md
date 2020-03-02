@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upgrade default Jenkins agent Docker image to aem-platform-buildenv 1.6.0
 - Upgrade AEM Test Suite to 1.15.0
 - Upgrade AEM Stack Manager Messenger to 2.11.0
+- Upgrade Packer AEM to 4.23.0
 
 ### Fixed
 - Fix Jenkins Shared Libraries' Git path
