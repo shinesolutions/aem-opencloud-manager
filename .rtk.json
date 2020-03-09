@@ -16,6 +16,15 @@
       }
     },
     {
+      "path": "conf/ansible/inventory/group_vars/defaults.yaml",
+      "type": "yaml",
+      "params": {
+        "property": "aem_opencloud.jenkins_sharedlibs.repo_branch_prefix",
+        "release_value": "refs/tags/",
+        "post_release_value": "''"
+      }
+    },
+    {
       "path": "CHANGELOG.md",
       "type": "keep-a-changelog"
     }
