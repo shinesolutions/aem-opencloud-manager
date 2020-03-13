@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+- Upgrade AEM AWS Stack Builder to 4.36.1
+
 ## 4.5.0 - 2020-03-09
 ### Added
 - Add `aem_opencloud.jenkins_sharedlibs.repo_branch_prefix` configuration property
