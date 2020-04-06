@@ -7,6 +7,11 @@ The following configurations are available for users to customise:
 |------|-------------|-----------|---------|
 | aws.library.s3_bucket | S3 Bucket to upload/download AEM OpenCloud libraries to/from | Mandatory | |
 | aws.library.s3_path | S3 Path to the location of the AEM OpenCloud library artifacts | Optional | `library` |
+| aws.region | [AWS region name](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html) | Mandatory | |
+| aws.vpc_id | VPC for DNS records | Mandatory | |
+| aws.dns_records.author_dispatcher.author_dispatcher_hosted_zone_name| Hosted Zone for author dispatcher of a full-set environment | Mandatory | |
+| aws.dns_records.publish_dispatcher.publish_dispatcher_hosted_zone_name| Hosted Zone for publish dispatcher of a full-set environment | Mandatory | |
+| aws.dns_records.author_publish_dispatcher.author_publish_dispatcher_hosted_zone_name| Hosted Zone for a consolidated environment | Mandatory | |
 | aem_opencloud.version | AEM OpenCloud version value to be displayed on Jenkins folder with format `aem-opencloud-<version>` | Optional | The current AEM OpenCloud version |
 | aem_opencloud.config.artifact_url | URL to the location of the AEM OpenCloud configuration artifact in tar.gz format. s3:// http:// or https:// Protocols can be used. | Mandatory | |
 | aem_opencloud.custom_manager_steps.artifact_url | URL to the location of the AEM OpenCloud [Custom Manager Steps](https://github.com/shinesolutions/aem-opencloud-manager/blob/master/docs/customisation-points.md#custom-manager-steps) artifact in tar.gz format. s3:// http:// or https:// Protocols can be used. | Mandatory | |
