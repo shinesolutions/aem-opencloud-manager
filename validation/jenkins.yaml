@@ -1,0 +1,48 @@
+---
+protocol:
+    type: string
+    allowed:
+        - http
+        - https
+
+host:
+    type: string
+    forbidden: 
+        - overwrite-me
+
+port:
+    type: integer
+    min: 0
+    max: 65535
+
+username:
+    type: string
+    forbidden: 
+        - overwrite-me
+
+password:
+    type: string
+    forbidden: 
+        - overwrite-me
+
+agent:
+    type: dict
+    schema:
+        docker_image:
+            type: string
+        docker_args:
+            type: string
+            nullable: True
+
+os:
+    type: dict
+    schema:
+        jenkins_home:
+            type: string
+            nullable: True
+        user:
+            type: string
+            nullable: True
+        group:
+            type: string
+            nullable: True

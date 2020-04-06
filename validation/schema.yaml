@@ -1,0 +1,21 @@
+---
+aws:
+    type: dict
+    required: True
+    allow_unknown: False
+    empty: False
+    schema: !include aws.yaml
+
+aem_opencloud:
+    type: dict
+    required: True
+    allow_unknown: False
+    empty: False
+    schema: !include opencloud.yaml
+
+jenkins:
+    type: dict
+    required: True
+    allow_unknown: False
+    empty: False
+    schema: !include jenkins.yaml

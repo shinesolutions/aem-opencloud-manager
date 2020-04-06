@@ -9,6 +9,11 @@
       - name: pipeline-utility-steps
         version: 2.3.0
 
+  roles:
+    - role: '../../../../ansible-vars-schema-validator/roles/validator'
+      vars:
+        schema: '../../../validation/schema.yaml'
+
   tasks:
 
     - name: Install Jenkins plugins

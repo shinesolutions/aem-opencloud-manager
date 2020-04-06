@@ -1,0 +1,71 @@
+---
+version:
+    type: string
+
+enable_slack_notifications:
+    type: boolean
+
+config:
+    type: dict
+    schema:
+        artifact_url:
+            type: string
+            regex: (s3://|http://|https://|file://)(.+)
+
+custom_manager_steps:
+    type: dict
+    schema:
+        artifact_url:
+            type: string
+            regex: (s3://|http://|https://|file://)(.+)
+
+custom_image_provisioner:
+    type: dict
+    schema:
+        artifact_url:
+            type: string
+            regex: (s3://|http://|https://|file://)(.+)
+
+custom_stack_provisioner:
+    type: dict
+    schema:
+        artifact_url:
+            type: string
+            regex: (s3://|http://|https://|file://)(.+)
+
+descriptors:
+    type: dict
+    schema:
+        consolidated:
+            type: dict
+            schema:
+                deployment_descriptor_url:
+                    type: string
+                    regex: (s3://|http://|https://|file://)(.+)
+                export_descriptor_url:
+                    type: string
+                    regex: (s3://|http://|https://|file://)(.+)
+                content_healthcheck_descriptor_url:
+                    type: string
+                    regex: (s3://|http://|https://|file://)(.+)
+        full-set:
+            type: dict
+            schema:
+                deployment_descriptor_url:
+                    type: string
+                    regex: (s3://|http://|https://|file://)(.+)
+                export_descriptor_url:
+                    type: string
+                    regex: (s3://|http://|https://|file://)(.+)
+                content_healthcheck_descriptor_url:
+                    type: string
+                    regex: (s3://|http://|https://|file://)(.+)
+
+jenkins_sharedlibs:
+    type: dict
+    schema:
+        repo_url:
+            type: string
+            regex: (s3://|http://|https://|file://)(.+)
+        repo_branch:
+            type: string

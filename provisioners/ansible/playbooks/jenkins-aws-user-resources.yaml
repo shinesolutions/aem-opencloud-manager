@@ -6,6 +6,11 @@
   vars:
     stack_prefix: "{{ user_resources.aws.stack_prefix }}"
 
+  roles:
+    - role: '../../../../ansible-vars-schema-validator/roles/validator'
+      vars:
+        schema: '../../../validation/schema.yaml'
+
   tasks:
 
     - name: print playbook directory

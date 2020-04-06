@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+-  Add variable validation
+
 ## 4.6.2 - 2020-03-19
 ### Changed
 - Upgrade AEM AWS Stack Builder to 4.38.0
