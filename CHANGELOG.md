@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Upgrade AEM Stack Manager Messenger to 2.12.0
 - Upgrade AEM AWS Stack Builder to 4.40.0
+- Upgrade Packer AEM to 4.25.0
 
 ## 4.7.0 - 2020-04-15
 ### Changed
