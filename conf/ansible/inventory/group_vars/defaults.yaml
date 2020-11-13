@@ -33,7 +33,7 @@ aem_opencloud:
       content_healthcheck_descriptor_url: null
   jenkins_sharedlibs:
     repo_url: 'https://github.com/shinesolutions/aem-opencloud-manager'
-    repo_branch: master
+    repo_branch: dev-hoomaan-aem-65
     repo_branch_prefix: ''''''
 jenkins:
   protocol: http
