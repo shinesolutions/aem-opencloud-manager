@@ -20,7 +20,7 @@
       "type": "yaml",
       "params": {
         "property": "aem_opencloud.jenkins_sharedlibs.repo_branch_prefix",
-        "release_value": "refs/tags/",
+        "release_value": "",
         "post_release_value": "''"
       }
     },
