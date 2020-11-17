@@ -8,10 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 ### Changed
 - Upgrade default Jenkins agent Docker image to aem-platform-buildenv 1.7.0
+- Upgrade Packer AEM to 4.27.0
 
 ## 4.9.0 - 2020-06-15
 ### Changed
-- Upgrade Packer AEM to 4.25.0
+- Upgrade Packer AEM to 4.26.0
 - Upgrade AEM AWS Stack Builder to 4.41.0
 
 ## 4.8.0 - 2020-05-14
