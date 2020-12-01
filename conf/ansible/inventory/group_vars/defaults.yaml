@@ -12,7 +12,7 @@ aws:
     author_publish_dispatcher:
       author_publish_dispatcher_hosted_zone_name: overwrite-me
 aem_opencloud:
-  version: 4.11.1-pre.0
+  version: 4.11.2-pre.0
   enable_slack_notifications: false
   config:
     artifact_url: 'https://overwrite-me/overwrite-me.tar.gz'
@@ -42,7 +42,7 @@ jenkins:
   username: overwrite-me
   password: overwrite-me
   agent:
-    docker_image: 'shinesolutions/aem-platform-buildenv:1.7.0'
+    docker_image: 'shinesolutions/aem-platform-buildenv:1.7.1'
     docker_args: ''
   os:
     jenkins_home: null
