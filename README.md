@@ -1,4 +1,4 @@
-[![Build Status](https://img.shields.io/travis/shinesolutions/aem-opencloud-manager.svg)](http://travis-ci.org/shinesolutions/aem-opencloud-manager)
+[![Build Status](https://github.com/shinesolutions/aem-opencloud-manager/workflows/CI/badge.svg)](https://github.com/shinesolutions/aem-opencloud-manager/actions?query=workflow%3ACI)
 
 AEM OpenCloud Manager
 ---------------------
