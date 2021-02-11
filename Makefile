@@ -8,6 +8,9 @@ clean:
 
 release:
 	rtk release
+	
+publish:
+	gh release upload $(version) stage/aem-opencloud-manager-$(version).tar.gz
 
 ################################################################################
 # Dependencies resolution targets.
@@ -120,4 +123,4 @@ docker-run: clean docker-build
 docker-build:
 	docker build . -t "${DOCKER_IMAGE}"
 
-.PHONY: ci stage clean deps deps-test deps-test-local lint jenkins-aws jenkins-aws-gen jenkins-aws-provision docker-run docker-build
+.PHONY: ci stage clean deps deps-test deps-test-local lint jenkins-aws jenkins-aws-gen jenkins-aws-provision docker-run docker-build release publish
