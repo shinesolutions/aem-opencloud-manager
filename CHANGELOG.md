@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 ### Changed
 - Update boto3 to 1.17.8
+- Update Docker image to shinesolutions/aem-platform-buildenv:2.0.0
 
 ## 5.1.0 - 2021-02-11
 ### Changed
