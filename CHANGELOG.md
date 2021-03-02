@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 ### Changed
+- Update Ansible Python Interpreter to Python3
 - Update boto3 to 1.17.8
 - Update Ansible to 3.0.0
 - Update ansible-lint to 5.0.2
