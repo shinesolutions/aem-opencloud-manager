@@ -16,12 +16,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upgrade AEM Stack Manager Messenger to 2.14.0
 - Upgrade Packer AEM to 5.2.0
 - Upgrade AEM AWS Stack Builder to 5.2.1
+- Updated AWS resources template 
+
 
 ### Removed
 - Removed python module lxml
-
-### Updated
-- Updated resources template based on required policies for Ansible 3.0.0
 
 ## 5.1.0 - 2021-02-11
 ### Changed
