@@ -13,10 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update python-jenkins to 1.7.0
 - Update Docker image to shinesolutions/aem-platform-buildenv:2.0.0
 - Upgrade AEM Stack Manager Messenger to 2.14.0
+- Upgrade Packer AEM to 5.2.0
 
 ### Removed
 - Removed python module lxml
-
 
 ## 5.1.0 - 2021-02-11
 ### Changed
