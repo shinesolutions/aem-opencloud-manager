@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update Docker image to shinesolutions/aem-platform-buildenv:2.0.0
 - Upgrade AEM Stack Manager Messenger to 2.14.0
 - Upgrade Packer AEM to 5.2.0
-- Upgrade AEM AWS Stack Builder to 5.2.0
+- Upgrade AEM AWS Stack Builder to 5.2.1
 
 ### Removed
 - Removed python module lxml
