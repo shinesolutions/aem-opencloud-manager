@@ -20,6 +20,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - Removed python module lxml
 
+### Updated
+- Updated resources template based on required policies for Ansible 3.0.0
+
 ## 5.1.0 - 2021-02-11
 ### Changed
 - Upgrade AEM AWS Stack Builder to 5.1.0
