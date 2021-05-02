@@ -7,15 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 ### Changed
+- Upgrade AEM AWS Stack Builder to 5.3.0
+- Upgrade Packer AEM to 5.4.0
+- Upgrade AEM Stack Manager Messenger to 2.14.1
 - Update Ansible Python Interpreter to Python3
 - Update boto3 to 1.17.8
 - Update Ansible to 3.0.0
 - Update ansible-lint to 5.0.2
 - Update python-jenkins to 1.7.0
 - Update Docker image to shinesolutions/aem-platform-buildenv:2.0.0
-- Upgrade AEM Stack Manager Messenger to 2.14.0
-- Upgrade Packer AEM to 5.2.0
-- Upgrade AEM AWS Stack Builder to 5.2.1
 - Updated AWS resources template 
 
 
