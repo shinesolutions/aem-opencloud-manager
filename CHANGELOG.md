@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## 5.2.0 - 2021-05-02
 ### Changed
 - Upgrade AEM AWS Stack Builder to 5.3.0
 - Upgrade Packer AEM to 5.4.0
@@ -16,8 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update ansible-lint to 5.0.2
 - Update python-jenkins to 1.7.0
 - Update Docker image to shinesolutions/aem-platform-buildenv:2.0.0
-- Updated AWS resources template 
-
+- Updated AWS resources template
 
 ### Removed
 - Removed python module lxml
