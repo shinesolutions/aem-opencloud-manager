@@ -10,6 +10,7 @@ release:
 	rtk release
 	
 publish:
+	gh release create $(version) --title $(version) --notes "" || echo "Release $(version) has been created on GitHub"
 	gh release upload $(version) stage/aem-opencloud-manager-$(version).tar.gz
 
 ################################################################################
