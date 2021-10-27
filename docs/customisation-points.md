@@ -5,8 +5,8 @@ Since every user has a unique standard operating environment and security requir
 
 ### Configuration
 
-You can set up a number of [configuration properties](https://github.com/shinesolutions/aem-opencloud-manager/blob/master/docs/configuration.md) to suit your requirements.
-Have a look at the [user config examples](https://github.com/shinesolutions/aem-helloworld-config/tree/master/aem-opencloud-manager/) for reference on what configuration values you need to set.
+You can set up a number of [configuration properties](https://github.com/shinesolutions/aem-opencloud-manager/blob/main/docs/configuration.md) to suit your requirements.
+Have a look at the [user config examples](https://github.com/shinesolutions/aem-helloworld-config/tree/main/aem-opencloud-manager/) for reference on what configuration values you need to set.
 
 This allows you to create a number of configuration profiles. For example, if you need to provision multiple Jenkins instances, e.g. one CI/CD environment in prod and several CI/CD environments in non-prod.
 

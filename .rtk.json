@@ -12,7 +12,7 @@
       "type": "yaml",
       "params": {
         "property": "aem_opencloud.jenkins_sharedlibs.repo_branch",
-        "post_release_value": "master"
+        "post_release_value": "main"
       }
     },
     {

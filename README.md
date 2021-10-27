@@ -10,11 +10,11 @@ These pipelines can be provisioned to a CI/CD system (currently only supports Je
 Learn more about AEM OpenCloud Manager:
 
 * [Installation](https://github.com/shinesolutions/aem-opencloud-manager#installation)
-* [Configuration](https://github.com/shinesolutions/aem-opencloud-manager/blob/master/docs/configuration.md)
+* [Configuration](https://github.com/shinesolutions/aem-opencloud-manager/blob/main/docs/configuration.md)
 * [Usage](https://github.com/shinesolutions/aem-opencloud-manager#usage)
 * [Testing](https://github.com/shinesolutions/aem-opencloud-manager#testing)
-* [AWS Permissions](https://github.com/shinesolutions/aem-opencloud-manager/blob/master/docs/aws-permissions.md)
-* [Customisation Points](https://github.com/shinesolutions/aem-opencloud-manager/blob/master/docs/customisation-points.md)
+* [AWS Permissions](https://github.com/shinesolutions/aem-opencloud-manager/blob/main/docs/aws-permissions.md)
+* [Customisation Points](https://github.com/shinesolutions/aem-opencloud-manager/blob/main/docs/customisation-points.md)
 
 AEM OpenCloud Manager is part of [AEM OpenCloud](https://aemopencloud.io) platform.
 
@@ -27,7 +27,7 @@ Installation
   * [GNU Make](https://www.gnu.org/software/make/)<br/>
 
   Alternatively, you can use [AEM Platform BuildEnv](https://github.com/shinesolutions/aem-platform-buildenv) Docker container to run AEM OpenCloud Manager build targets.
-- Resolve the [Python packages](https://github.com/shinesolutions/aem-opencloud-manager/blob/master/requirements.txt) dependencies by running `make deps`
+- Resolve the [Python packages](https://github.com/shinesolutions/aem-opencloud-manager/blob/main/requirements.txt) dependencies by running `make deps`
 - Provision required plugins onto Jenkins instance: `make jenkins-init config_path=<path/to/config/dir>`, which installs the following plugins:
   * [Pipeline Utility Steps plugin](https://plugins.jenkins.io/pipeline-utility-steps)
 - Approve the following script signatures, unfortunately you currently have to approve these methods manually one by one via prompts on Jenkins log output.
@@ -41,8 +41,8 @@ Installation
 Usage
 -----
 
-- Set up the required [AWS Permissions](https://github.com/shinesolutions/aem-opencloud-manager/blob/master/docs/aws-permissions.md)
-- Create [configuration file](https://github.com/shinesolutions/aem-opencloud-manager/blob/master/docs/configuration.md)
+- Set up the required [AWS Permissions](https://github.com/shinesolutions/aem-opencloud-manager/blob/main/docs/aws-permissions.md)
+- Create [configuration file](https://github.com/shinesolutions/aem-opencloud-manager/blob/main/docs/configuration.md)
 - Generate and provision the pipelines onto a Jenkins instance: `make jenkins-aws config_path=<path/to/config/dir>`
 - Visit your Jenkins instance and you should find a new folder named `aem-opencloud-<version>`
 

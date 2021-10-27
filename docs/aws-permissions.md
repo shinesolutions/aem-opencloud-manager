@@ -7,7 +7,7 @@ The lists are separated by AEM OpenCloud libraries which are used by specific pi
 If your security design allows all pipelines to be run from a single role, you can add all permissions in one.
 Otherwise, you can separate them in multiple roles as necessary.
 
-Check out the [example CloudFormation template](https://github.com/shinesolutions/aem-opencloud-manager/blob/master/examples/aws-permissions.yaml) for provisioning these AWS permissions.
+Check out the [example CloudFormation template](https://github.com/shinesolutions/aem-opencloud-manager/blob/main/examples/aws-permissions.yaml) for provisioning these AWS permissions.
 
 | Library | Pipeline Categories |
 |---------|---------------------|
