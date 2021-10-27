@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upgrade AEM Stack Manager Messenger to 2.14.2
 - Upgrade AEM Test Suite to 2.1.0
 
-## ## 5.3.1 - 2021-06-18
+## 5.3.1 - 2021-06-18
 ### Changed
 - Upgrade Packer AEM to 5.5.1
 
