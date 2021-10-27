@@ -6,9 +6,17 @@ stage:
 clean:
 	rm -rf logs/ stage/
 
-release:
-	rtk release
-	
+release-major:
+	rtk release --release-increment-type major
+
+release-minor:
+	rtk release --release-increment-type minor
+
+release-patch:
+	rtk release --release-increment-type patch
+
+release: release-minor
+
 publish:
 	gh release create $(version) --title $(version) --notes "" || echo "Release $(version) has been created on GitHub"
 	gh release upload $(version) stage/aem-opencloud-manager-$(version).tar.gz
@@ -124,4 +132,4 @@ docker-run: clean docker-build
 docker-build:
 	docker build . -t "${DOCKER_IMAGE}"
 
-.PHONY: ci stage clean deps deps-test deps-test-local lint jenkins-aws jenkins-aws-gen jenkins-aws-provision docker-run docker-build release publish
+.PHONY: ci stage clean deps deps-test deps-test-local lint jenkins-aws jenkins-aws-gen jenkins-aws-provision docker-run docker-build release release-major release-minor release-patch publish

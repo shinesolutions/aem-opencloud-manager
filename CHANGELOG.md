@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+- Add release-major, release-minor, and release-patch Makefile targets and GitHub Actions
+
 ### Changed
 - Upgrade Packer AEM to 5.6.0
 - Upgrade AEM AWS Stack Builder to 5.5.0
