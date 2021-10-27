@@ -34,7 +34,7 @@ aem_opencloud:
   jenkins_sharedlibs:
     repo_url: 'https://github.com/shinesolutions/aem-opencloud-manager'
     repo_branch: master
-    repo_branch_prefix: ''''''
+    repo_branch_prefix: ''
 jenkins:
   protocol: http
   host: overwrite-me
