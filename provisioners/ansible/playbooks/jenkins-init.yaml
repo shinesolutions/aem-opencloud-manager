@@ -15,8 +15,8 @@
       jenkins_plugin:
         name: "{{ item.name }}"
         version: "{{ item.version }}"
-        url_username: "{{ jenkins.username }}"
-        url_password: "{{ jenkins.password }}"
+        url_username: "{{ lookup('env', 'JENKINS_USERNAME') | default(jenkins.username, true) }}"
+        url_password: "{{ lookup('env', 'JENKINS_PASSWORD') | default(jenkins.password, true) }}"
         url: "{{ jenkins.protocol }}://{{ jenkins.host }}:{{ jenkins.port }}"
         jenkins_home: "{{ jenkins.os.jenkins_home }}"
         owner: "{{ jenkins.os.user }}"
