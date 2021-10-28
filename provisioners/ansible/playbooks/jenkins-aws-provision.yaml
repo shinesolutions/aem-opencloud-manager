@@ -9,8 +9,8 @@
       jenkins_job:
         config: "{{ lookup('file', '../../../stage/jenkins/jobs/{{ item.path }}') }}"
         name: "{{ item.path| replace('/config.xml', '') }}"
-        password: "{{ jenkins.password }}"
+        password: "{{ lookup('env', 'JENKINS_PASSWORD') | default(jenkins.password, true) }}"
         url: "{{ jenkins.protocol }}://{{ jenkins.host }}:{{ jenkins.port }}"
-        user: "{{ jenkins.username }}"
+        user: "{{ lookup('env', 'JENKINS_USERNAME') | default(jenkins.username, true) }}"
       with_filetree: ../../../stage/jenkins/jobs
       when: item.state == 'file'
