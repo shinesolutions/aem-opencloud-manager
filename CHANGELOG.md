@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Add JENKINS_USERNAME, JENKINS_PASSWORD env vars support
 
+### Changed
+- Upgrade AEM AWS Stack Builder to 5.5.1
+
 ## 5.4.0 - 2021-10-27
 ### Added
 - Add release-major, release-minor, and release-patch Makefile targets and GitHub Actions
