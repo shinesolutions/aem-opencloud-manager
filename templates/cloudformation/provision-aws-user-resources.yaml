@@ -785,6 +785,7 @@ Resources:
                   - ssmmessages:OpenControlChannel
                   - ssmmessages:OpenDataChannel
                   - ec2:ReplaceIamInstanceProfileAssociation
+                  - iam:GetInstanceProfile
                   - iam:ListInstanceProfiles
                   - iam:ListInstanceProfilesForRole
 
