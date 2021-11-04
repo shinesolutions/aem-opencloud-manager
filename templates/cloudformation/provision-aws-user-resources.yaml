@@ -727,7 +727,7 @@ Resources:
                   - iam:PutRolePolicy
                   - iam:RemoveRoleFromInstanceProfile
                   - iam:UploadServerCertificate
-                  - kms:Decrypt
+                  - kms:*
                   - lambda:AddPermission
                   - lambda:CreateAlias
                   - lambda:CreateFunction
@@ -780,6 +780,10 @@ Resources:
                   - ssm:GetParameters
                   - ssm:GetParametersByPath
                   - ssm:PutParameter
+                  - ssmmessages:CreateControlChannel
+                  - ssmmessages:CreateDataChannel
+                  - ssmmessages:OpenControlChannel
+                  - ssmmessages:OpenDataChannel
                   - ec2:ReplaceIamInstanceProfileAssociation
                   - iam:ListInstanceProfiles
                   - iam:ListInstanceProfilesForRole
