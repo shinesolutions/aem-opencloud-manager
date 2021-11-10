@@ -160,6 +160,7 @@ Resources:
                   - ec2:RunInstances
                   - ec2:StopInstances
                   - ec2:TerminateInstances
+                  - iam:GetInstanceProfile
                   - iam:PassRole
                   - kms:Decrypt
                   - secretsmanager:GetSecretValue
@@ -373,6 +374,7 @@ Resources:
                   - iam:DeleteRolePolicy
                   - iam:DetachRolePolicy
                   - iam:DeletePolicy
+                  - iam:GetInstanceProfile
                   - iam:GetPolicy
                   - iam:GetRole
                   - iam:ListPolicyVersions
