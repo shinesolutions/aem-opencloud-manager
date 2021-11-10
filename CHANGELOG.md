@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+- Upgrade Packer AEM to 5.7.0
+- Upgrade AEM AWS Stack Builder to 5.6.0
+- Upgrade AEM Stack Manager Messenger to 2.15.0
+
 ## 5.5.0 - 2021-11-04
 ### Added
 - Add JENKINS_USERNAME, JENKINS_PASSWORD env vars support
