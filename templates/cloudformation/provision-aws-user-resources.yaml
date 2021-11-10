@@ -162,7 +162,9 @@ Resources:
                   - ec2:TerminateInstances
                   - iam:PassRole
                   - kms:Decrypt
+                  - secretsmanager:DeleteSecret
                   - secretsmanager:GetSecretValue
+                  - ssm:DeleteParameter
                   - ssm:GetParameterHistory
                   - ssm:GetParametersByPath
                   - ssm:GetParameters
@@ -373,6 +375,7 @@ Resources:
                   - iam:DeleteRolePolicy
                   - iam:DetachRolePolicy
                   - iam:DeletePolicy
+                  - iam:GetInstanceProfile
                   - iam:GetPolicy
                   - iam:GetRole
                   - iam:ListPolicyVersions
@@ -720,6 +723,7 @@ Resources:
                   - iam:DeleteRole
                   - iam:DeleteRolePolicy
                   - iam:DetachRolePolicy
+                  - iam:GetInstanceProfile
                   - iam:GetPolicy
                   - iam:GetRole
                   - iam:ListPolicyVersions
@@ -748,6 +752,7 @@ Resources:
                   - s3:*
                   - sdb:DeleteDomain
                   - secretsmanager:CreateSecret
+                  - secretsmanager:DeleteSecret
                   - secretsmanager:GetSecretValue
                   - secretsmanager:TagResource
                   - sns:AddPermission
@@ -775,6 +780,7 @@ Resources:
                   - ssm:CreateDocument
                   - ssm:DeleteDocument
                   - ssm:DescribeDocument
+                  - ssm:DeleteParameter
                   - ssm:GetParameter
                   - ssm:GetParameterHistory
                   - ssm:GetParameters
