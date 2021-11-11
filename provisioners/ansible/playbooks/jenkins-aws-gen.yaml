@@ -26,7 +26,7 @@
       get_url:
         url: "{{ aem_opencloud.config.artifact_url }}"
         dest: ../../../stage/aem-opencloud-config.tar.gz
-      when: aem_opencloud.config.artifact_url.startswith('http')
+      when: aem_opencloud.config.artifact_url.startswith('http') and aem_opencloud.skip_gen_config_download == false
 
     - name: Download AEM OpenCloud Configuration artifact (s3)
       aws_s3:
@@ -34,15 +34,17 @@
         object: "{{ '/'.join(aem_opencloud.config.artifact_url.split('/')[3:]) }}"
         dest: ../../../stage/aem-opencloud-config.tar.gz
         mode: get
-      when: aem_opencloud.config.artifact_url.startswith('s3')
+      when: aem_opencloud.config.artifact_url.startswith('s3') and aem_opencloud.skip_gen_config_download == false
 
     - name: Chmod aem-opencloud-config.tar.gz
       file:
         path: ../../../stage/aem-opencloud-config.tar.gz
         mode: 0660
+      when: aem_opencloud.skip_gen_config_download == false
 
     - name: Unarchive gzip artifact due to Ansible limitation
       shell: tar --strip-components=1 -xvzf ../../../stage/aem-opencloud-config.tar.gz --directory ../../../stage/aem-opencloud-config/ warn=False
+      when: aem_opencloud.skip_gen_config_download == false
 
     ########################################################################
     # Traverse AEM OpenCloud Configuration files and list down all available
