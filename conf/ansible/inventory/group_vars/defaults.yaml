@@ -3,7 +3,6 @@ aws:
   library:
     s3_bucket: overwrite-me
     s3_path: library
-  vpc_id: overwrite-me
   dns_records:
     author_dispatcher:
       author_dispatcher_hosted_zone_name: overwrite-me

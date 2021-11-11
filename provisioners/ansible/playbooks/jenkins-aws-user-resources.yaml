@@ -98,4 +98,3 @@
         template_parameters:
           keyName: "{{ stack_prefix }}-ec2-key"
           aemBucketPrefix: "{{ stack_prefix }}"
-          aemVpcId: "{{ aws.vpc_id }}"

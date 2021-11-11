@@ -8,7 +8,6 @@ The following configurations are available for users to customise:
 | aws.library.s3_bucket | S3 Bucket to upload/download AEM OpenCloud libraries to/from | Mandatory | |
 | aws.library.s3_path | S3 Path to the location of the AEM OpenCloud library artifacts | Optional | `library` |
 | aws.region | [AWS region name](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html) | Mandatory | |
-| aws.vpc_id | VPC for DNS records | Mandatory | |
 | aws.dns_records.author_dispatcher.author_dispatcher_hosted_zone_name| Hosted Zone for author dispatcher of a full-set environment | Mandatory | |
 | aws.dns_records.publish_dispatcher.publish_dispatcher_hosted_zone_name| Hosted Zone for publish dispatcher of a full-set environment | Mandatory | |
 | aws.dns_records.author_publish_dispatcher.author_publish_dispatcher_hosted_zone_name| Hosted Zone for a consolidated environment | Mandatory | |

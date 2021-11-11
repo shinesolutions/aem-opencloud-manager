@@ -15,10 +15,6 @@ Parameters:
     Type: String
     Description: S3 Bucket prefix name for Artefact, Packer and Stack Builder buckets
 
-  aemVpcId:
-    Type: String
-    Description: VPC Id for the security Groups to be created
-
 Resources:
 
   AemArtefactBucket:
