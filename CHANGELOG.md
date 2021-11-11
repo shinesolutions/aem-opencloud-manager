@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upgrade AEM AWS Stack Builder to 5.6.0
 - Upgrade AEM Stack Manager Messenger to 2.15.0
 - Updated AWS Resources roles with delete-related permissions
+- jenkins-aws-gen Make target no longer enforces the deletion of previously generated Jenkinsfiles
 
 ### Removed
 - Remove aws.vpc_id configuration since it's no longer used
