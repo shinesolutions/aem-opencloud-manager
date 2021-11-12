@@ -70,6 +70,7 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
+**/secrets/**
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -191,5 +192,6 @@ dmypy.json
 # Ignore all local history of files
 .history
 .ionide
+
 
 # End of https://www.toptal.com/developers/gitignore/api/ansible,macos,visualstudiocode,python
