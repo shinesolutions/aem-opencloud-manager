@@ -156,6 +156,7 @@ Resources:
                   - ec2:RunInstances
                   - ec2:StopInstances
                   - ec2:TerminateInstances
+                  - iam:GetInstanceProfile
                   - iam:PassRole
                   - kms:Decrypt
                   - secretsmanager:DeleteSecret
@@ -787,6 +788,7 @@ Resources:
                   - ssmmessages:OpenControlChannel
                   - ssmmessages:OpenDataChannel
                   - ec2:ReplaceIamInstanceProfileAssociation
+                  - iam:GetInstanceProfile
                   - iam:ListInstanceProfiles
                   - iam:ListInstanceProfilesForRole
 
