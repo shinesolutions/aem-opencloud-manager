@@ -20,6 +20,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - Remove aws.vpc_id configuration since it's no longer used
 
+### Fixed
+- Fix missing Create AEM AWS Stack Builder pipeline
+
 ## 5.5.0 - 2021-11-04
 ### Added
 - Add JENKINS_USERNAME, JENKINS_PASSWORD env vars support
