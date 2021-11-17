@@ -16,12 +16,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upgrade AEM Stack Manager Messenger to 2.15.0
 - Updated AWS Resources roles with delete-related permissions
 - jenkins-aws-gen Make target no longer enforces the deletion of previously generated Jenkinsfiles at stage/jenkins/jobs/aem-opencloud-*/
+- Upgrade Ansible to 4.8.0
+- Upgrade boto3 to 1.20.0
 
 ### Removed
 - Remove aws.vpc_id configuration since it's no longer used
 
 ### Fixed
-- Fix missing Create AEM AWS Stack Builder pipeline
+- Fix missing Create AEM AWS Stack Builder Resources pipeline
 
 ## 5.5.0 - 2021-11-04
 ### Added
