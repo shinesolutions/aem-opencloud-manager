@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add aem_opencloud.skip_gen_config_download configuration property
 
 ### Changed
-- Upgrade Packer AEM to 5.9.0
+- Upgrade Packer AEM to 5.10.0
 - Upgrade AEM AWS Stack Builder to 5.9.0
 - Upgrade AEM Test Suite to 2.3.0
 - Upgrade AEM Stack Manager Messenger to 2.15.0
