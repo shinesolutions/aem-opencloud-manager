@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Upgrade Packer AEM to 5.10.0
-- Upgrade AEM AWS Stack Builder to 5.10.0
+- Upgrade AEM AWS Stack Builder to 5.11.0
 - Upgrade AEM Test Suite to 2.5.0
 - Upgrade AEM Stack Manager Messenger to 2.15.0
 - Updated AWS Resources roles with delete-related permissions
