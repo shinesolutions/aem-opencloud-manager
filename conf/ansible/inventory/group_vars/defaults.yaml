@@ -11,7 +11,7 @@ aws:
     author_publish_dispatcher:
       author_publish_dispatcher_hosted_zone_name: overwrite-me
 aem_opencloud:
-  version: 5.7.1-pre.0
+  version: 5.8.0
   enable_slack_notifications: false
   skip_gen_config_download: false
   config:
@@ -33,8 +33,8 @@ aem_opencloud:
       content_healthcheck_descriptor_url: null
   jenkins_sharedlibs:
     repo_url: https://github.com/shinesolutions/aem-opencloud-manager
-    repo_branch: main
-    repo_branch_prefix: ''''''
+    repo_branch: 5.8.0
+    repo_branch_prefix: refs/tags/
 jenkins:
   protocol: http
   host: overwrite-me
