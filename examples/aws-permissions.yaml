@@ -338,6 +338,7 @@ Resources:
                   - ssm:GetParameters
                   - ssm:GetParametersByPath
                   - ssm:PutParameter
+                  - ssm:ListTagsForResource
                 Resource: "*"
               - Effect: Allow
                 Action:
