@@ -183,6 +183,7 @@ Resources:
                   - cloudformation:ListStackResources
                   - cloudformation:ListStacks
                   - cloudformation:UpdateStack
+                  - cloudformation:ListChangeSets
                   - cloudwatch:DeleteAlarms
                   - cloudwatch:DeleteDashboards
                   - cloudwatch:DescribeAlarmHistory
@@ -230,12 +231,10 @@ Resources:
                   - ec2:CopyImage
                   - ec2:CreateImage
                   - ec2:CreateKeyPair
-                  - ec2:CreateKeyPair
                   - ec2:CreateSecurityGroup
                   - ec2:CreateSnapshot
                   - ec2:CreateTags
                   - ec2:CreateVolume
-                  - ec2:DeleteKeyPair
                   - ec2:DeleteKeyPair
                   - ec2:DeleteSecurityGroup
                   - ec2:DeleteSnapshot
@@ -246,7 +245,6 @@ Resources:
                   - ec2:DescribeImageAttribute
                   - ec2:DescribeImages
                   - ec2:DescribeInstances
-                  - ec2:DescribeKeyPairs
                   - ec2:DescribeKeyPairs
                   - ec2:DescribeRegions
                   - ec2:DescribeSecurityGroupReferences
@@ -338,6 +336,7 @@ Resources:
                   - ssm:GetParameters
                   - ssm:GetParametersByPath
                   - ssm:PutParameter
+                  - ssm:ListTagsForResource
                 Resource: "*"
               - Effect: Allow
                 Action:
