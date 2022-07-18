@@ -1,6 +1,6 @@
 {
   "library": {
-    "packer_aem": "5.13.0",
+    "packer_aem": "5.15.0",
     "aem_aws_stack_builder": "5.12.4",
     "aem_stack_manager_messenger": "2.15.0",
     "aem_test_suite": "2.6.0"
