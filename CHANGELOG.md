@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+- Add AWS_REGION optional param to blue/green testing
+- Add GenerateOfflineSnapshotConfigV2 with additional aws_region arg
+
 ### Changed
 - Upgrade Packer AEM to 5.15.0
 

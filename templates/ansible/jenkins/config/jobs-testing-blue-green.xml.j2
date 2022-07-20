@@ -114,6 +114,12 @@
         <defaultValue>{{ aws.library.s3_path }}</defaultValue>
         <trim>true</trim>
       </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>AWS_REGION</name>
+        <description>(optional) AWS Region which snapshots will resides.</description>
+        <defaultValue>{{ aws.region }}</defaultValue>
+        <trim>true</trim>
+      </hudson.model.StringParameterDefinition>
     </parameterDefinitions>
   </hudson.model.ParametersDefinitionProperty>
 </properties>
