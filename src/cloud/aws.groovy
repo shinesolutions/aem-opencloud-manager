@@ -40,5 +40,4 @@ def get_latest_ec2_snapshot(script, stack_prefix, aem_id, snapshot_type) {
  */
 def get_latest_ec2_snapshot_v2(script, stack_prefix, aem_id, snapshot_type, aws_region) {
   sh(returnStdout: true, script: """aws ec2 describe-snapshots --region "${aws_region}" --filter '{"Name":"tag:StackPrefix","Values":["${stack_prefix}"]}' '{"Name":"tag:SnapshotType","Values":["${snapshot_type}"]}' '{"Name":"tag:AemId","Values":["${aem_id}"]}'|jq -r '.[]|max_by(.StartTime).SnapshotId'""")
-  """)
 }
