@@ -240,7 +240,7 @@ pipeline {
         stage('Prepare configuration for green AEM environment') {
             steps {
                     JenkinsStagePreStep this
-                    GenerateOfflineSnapshotConfig(this, params.SOURCE_AUTHOR_SNAPSHOT_ID, params.SOURCE_PUBLISH_SNAPSHOT_ID, params.STACK_PREFIX_BLUE, env.AOC_CONFIG_PROFILE_DIR_AEM_AWS_STACK_BUILDER)
+                    GenerateOfflineSnapshotConfigV2(this, params.SOURCE_AUTHOR_SNAPSHOT_ID, params.SOURCE_PUBLISH_SNAPSHOT_ID, params.STACK_PREFIX_BLUE, env.AOC_CONFIG_PROFILE_DIR_AEM_AWS_STACK_BUILDER, params.AWS_REGION)
                     ExecCommand(this, env.TMPDIR, "aem-aws-stack-builder", "make config config_path=${env.AOC_CONFIG_PROFILE_DIR_AEM_AWS_STACK_BUILDER}")
                     ExecCommand(this, env.TMPDIR, "aem-test-suite", "make config-aem-aws config_path=${env.AOC_CONFIG_PROFILE_DIR_AEM_TEST_SUITE}")
             }
