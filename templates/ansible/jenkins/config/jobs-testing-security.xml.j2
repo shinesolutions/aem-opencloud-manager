@@ -13,6 +13,30 @@
         <trim>true</trim>
       </hudson.model.BooleanParameterDefinition>
       <hudson.model.StringParameterDefinition>
+        <name>PUBLISH_DISPATCHER_HOSTED_ZONE</name>
+        <description>DNS hosted zone name,which is connected to Publish Dispatcher</description>
+        <defaultValue>{{ aws.dns_records.publish_dispatcher.publish_dispatcher_hosted_zone_name }}</defaultValue>
+        <trim>true</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>PUBLISH_DISPATCHER_RECORD_SET</name>
+        <description>DNS record set,which is connected to Publish Dispatcher</description>
+        <defaultValue></defaultValue>
+        <trim>true</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>AUTHOR_DISPATCHER_HOSTED_ZONE</name>
+        <description>DNS hosted zone name,which is connected to Author Dispatcher</description>
+        <defaultValue>{{ aws.dns_records.author_dispatcher.author_dispatcher_hosted_zone_name }}</defaultValue>
+        <trim>true</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
+        <name>AUTHOR_DISPATCHER_RECORD_SET</name>
+        <description>DNS record set,which is connected to Author Dispatcher</description>
+        <defaultValue></defaultValue>
+        <trim>true</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
         <name>AOC_DEPLOYMENT_DESCRIPTOR_URL</name>
         <description>URL where deployment descriptor file is located.</description>
         <defaultValue>{{ aem_opencloud.descriptors[aem_architecture_type].deployment_descriptor_url }}</defaultValue>
@@ -34,84 +58,6 @@
         <name>AOC_CUSTOM_STACK_PROVISIONER_ARTIFACT_URL</name>
         <description>URL where custom stack provisioner artifact is located.</description>
         <defaultValue>{{ aem_opencloud.custom_stack_provisioner.artifact_url }}</defaultValue>
-        <trim>true</trim>
-      </hudson.model.StringParameterDefinition>
-      <hudson.model.ChoiceParameterDefinition>
-        <name>DEPLOY_PACKAGE_ACTIVATE</name>
-        <description>Enable package activation</description>
-        <choices class="java.util.Arrays$ArrayList">
-          <a class="string-array">
-            <string>true</string>
-            <string>false</string>
-          </a>
-        </choices>
-      </hudson.model.ChoiceParameterDefinition>
-      <hudson.model.ChoiceParameterDefinition>
-        <name>DEPLOY_PACKAGE_FORCE</name>
-        <description>Force package installation</description>
-        <choices class="java.util.Arrays$ArrayList">
-          <a class="string-array">
-            <string>true</string>
-            <string>false</string>
-          </a>
-        </choices>
-      </hudson.model.ChoiceParameterDefinition>
-      <hudson.model.StringParameterDefinition>
-        <name>DEPLOY_PACKAGE_GROUP</name>
-        <description>Package group name</description>
-        <defaultValue></defaultValue>
-        <trim>true</trim>
-      </hudson.model.StringParameterDefinition>
-      <hudson.model.StringParameterDefinition>
-        <name>DEPLOY_PACKAGE_NAME</name>
-        <description>Package name</description>
-        <defaultValue></defaultValue>
-        <trim>true</trim>
-      </hudson.model.StringParameterDefinition>
-      <hudson.model.ChoiceParameterDefinition>
-        <name>DEPLOY_PACKAGE_REPLICATE</name>
-        <description>Enable package replication</description>
-        <choices class="java.util.Arrays$ArrayList">
-          <a class="string-array">
-            <string>true</string>
-            <string>false</string>
-          </a>
-        </choices>
-      </hudson.model.ChoiceParameterDefinition>
-      <hudson.model.StringParameterDefinition>
-        <name>DEPLOY_PACKAGE_SOURCE</name>
-        <defaultValue></defaultValue>
-        <description>Absoloute path to package source can include filename or not. If not provide without trailing /.</description>
-        <trim>true</trim>
-      </hudson.model.StringParameterDefinition>
-      <hudson.model.StringParameterDefinition>
-        <name>DEPLOY_PACKAGE_VERSION</name>
-        <description>Package version</description>
-        <defaultValue></defaultValue>
-        <trim>true</trim>
-      </hudson.model.StringParameterDefinition>
-      <hudson.model.StringParameterDefinition>
-        <name>IMPORT_PACKAGE_GROUP</name>
-        <description>Package group name</description>
-        <defaultValue></defaultValue>
-        <trim>true</trim>
-      </hudson.model.StringParameterDefinition>
-      <hudson.model.StringParameterDefinition>
-        <name>IMPORT_PACKAGE_NAME</name>
-        <description>Package name</description>
-        <defaultValue></defaultValue>
-        <trim>true</trim>
-      </hudson.model.StringParameterDefinition>
-      <hudson.model.StringParameterDefinition>
-        <name>IMPORT_PACKAGE_DATESTAMP</name>
-        <description>Package date stamp</description>
-        <defaultValue></defaultValue>
-        <trim>true</trim>
-      </hudson.model.StringParameterDefinition>
-      <hudson.model.StringParameterDefinition>
-        <name>IMPORT_PACKAGE_SOURCE_STACK_PREFIX</name>
-        <description>Stack Prefix from the source stack where the package was exported from.</description>
-        <defaultValue></defaultValue>
         <trim>true</trim>
       </hudson.model.StringParameterDefinition>
       <hudson.model.StringParameterDefinition>
@@ -176,7 +122,7 @@
       </hudson.model.StringParameterDefinition>
     </parameterDefinitions>
   </hudson.model.ParametersDefinitionProperty>
-  </properties>
+</properties>
   <definition class="org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition" plugin="workflow-cps@2.61">
     <scm class="hudson.plugins.git.GitSCM" plugin="git@3.9.1">
       <configVersion>2</configVersion>

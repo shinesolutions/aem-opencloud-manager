@@ -55,10 +55,87 @@ pipeline {
                 }
             }
         }
-        stage('Run acceptance tests') {
+        stage('Prepare configuration') {
+            steps {
+                    JenkinsStagePreStep this
+                    ExecCommand(this, env.TMPDIR, "aem-test-suite", "make config-aem-aws config_path=${env.AOC_CONFIG_PROFILE_DIR_AEM_TEST_SUITE}")
+            }
+            post {
+                always {
+                    JenkinsStagePostStep this
+                }
+            }
+        }
+        stage('Architecture') {
             steps {
                 JenkinsStagePreStep this
-                ExecCommand(this, env.TMPDIR, "aem-test-suite", "make test-acceptance-${params.AEM_ARCHITECTURE} config_path=${env.AOC_CONFIG_PROFILE_DIR_AEM_TEST_SUITE} stack_prefix=${params.STACK_PREFIX}")
+                ExecCommand(this, env.TMPDIR, "aem-test-suite", "make test-acceptance-architecture-${params.AEM_ARCHITECTURE} config_path=${env.AOC_CONFIG_PROFILE_DIR_AEM_TEST_SUITE} stack_prefix=${params.STACK_PREFIX}")
+            }
+            post {
+                always {
+                  JenkinsStagePostStep this
+                }
+            }
+        }
+        stage('Author-Primary') {
+            steps {
+                JenkinsStagePreStep this
+                ExecCommand(this, env.TMPDIR, "aem-test-suite", "make test-acceptance-author-primary config_path=${env.AOC_CONFIG_PROFILE_DIR_AEM_TEST_SUITE} stack_prefix=${params.STACK_PREFIX}")
+            }
+            post {
+                always {
+                  JenkinsStagePostStep this
+                }
+            }
+        }
+        stage('Author-Standby') {
+            steps {
+                JenkinsStagePreStep this
+                ExecCommand(this, env.TMPDIR, "aem-test-suite", "make test-acceptance-author-standby config_path=${env.AOC_CONFIG_PROFILE_DIR_AEM_TEST_SUITE} stack_prefix=${params.STACK_PREFIX}")
+            }
+            post {
+                always {
+                  JenkinsStagePostStep this
+                }
+            }
+        }
+        stage('Publish') {
+            steps {
+                JenkinsStagePreStep this
+                ExecCommand(this, env.TMPDIR, "aem-test-suite", "make test-acceptance-publish config_path=${env.AOC_CONFIG_PROFILE_DIR_AEM_TEST_SUITE} stack_prefix=${params.STACK_PREFIX}")
+            }
+            post {
+                always {
+                  JenkinsStagePostStep this
+                }
+            }
+        }
+        stage('Author-Dispatcher') {
+            steps {
+                JenkinsStagePreStep this
+                ExecCommand(this, env.TMPDIR, "aem-test-suite", "make test-acceptance-author-dispatcher config_path=${env.AOC_CONFIG_PROFILE_DIR_AEM_TEST_SUITE} stack_prefix=${params.STACK_PREFIX}")
+            }
+            post {
+                always {
+                  JenkinsStagePostStep this
+                }
+            }
+        }
+        stage('Publish-Dispatcher') {
+            steps {
+                JenkinsStagePreStep this
+                ExecCommand(this, env.TMPDIR, "aem-test-suite", "make test-acceptance-publish-dispatcher config_path=${env.AOC_CONFIG_PROFILE_DIR_AEM_TEST_SUITE} stack_prefix=${params.STACK_PREFIX}")
+            }
+            post {
+                always {
+                  JenkinsStagePostStep this
+                }
+            }
+        }
+        stage('Orchestrator') {
+            steps {
+                JenkinsStagePreStep this
+                ExecCommand(this, env.TMPDIR, "aem-test-suite", "make test-acceptance-orchestrator config_path=${env.AOC_CONFIG_PROFILE_DIR_AEM_TEST_SUITE} stack_prefix=${params.STACK_PREFIX}")
             }
             post {
                 always {

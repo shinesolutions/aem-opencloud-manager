@@ -6,6 +6,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
+### Added
+- Added new Pipeline to run security test for Full-Set & Consolidated
+- Added new parameter to operational task test-aem-security pipeline to inject AEM Host to test via input parameters
+
+### Changed
+- Reorganised Full-Set/Consolidated Platform Testing pipeline so they trigger the existing pipelines for the testing
+- Reorganised Full-Set Blue/Green Testing pipeline so they trigger the existing pipelines for the testing
+- Reorganised Full-Set Recovery Testing pipeline so they trigger the existing pipelines for the testing
+- Reorganised Full-Set Author Standby Testing pipeline so they trigger the existing pipelines for the testing
+- Improved readability of operational task test-acceptance by separating each acceptance test into an own stage
+
+### Fixed
+- Fixed Green stack creation in Blue/Green Testing pipeline to use the offline-snapshots from the Blue stack for stack creation #57
 
 ## 5.12.0 - 2022-08-16
 ### Changed

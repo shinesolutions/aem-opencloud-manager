@@ -14,10 +14,10 @@ pipeline {
         TMPDIR = "/tmp/shinesolutions/aem-opencloud-manager"
         AOC_CONFIG_DIR = "${env.TMPDIR}/aem-opencloud-config"
         AOC_CONFIG_PROFILE_DIR_AEM_TEST_SUITE = "${env.AOC_CONFIG_DIR}/aem-test-suite/${params.AOC_CONFIG_PROFILE_AEM_TEST_SUITE}/"
-
     }
     parameters {
         string(name: 'AOC_VERSION_AEM_TEST_SUITE', defaultValue: config.library.aem_test_suite, description: 'Version of aem-test-suite repo to archive')
+        string(name: 'AEM_HOST', defaultValue: '', description: '(Optional) DNS Name of the AEM Host to run the test against, e.g. author.aemopencloud.cms')
     }
     stages {
         stage('Initialise pipeline') {
@@ -69,6 +69,11 @@ pipeline {
         }
         stage('Run Security test') {
             steps {
+                script {
+                  if (!params.AEM_HOST.isEmpty()) {
+                    env.aem_host = params.AEM_HOST
+                  }
+                }
                 JenkinsStagePreStep this
                 ExecCommand(this, env.TMPDIR, "aem-test-suite", "make test-security-${params.AEM_SECURITY_TEST_PLAN} stack_prefix=${params.STACK_PREFIX}")
             }
