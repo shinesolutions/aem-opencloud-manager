@@ -47,6 +47,7 @@ pipeline {
                     build job: "../../../manage-environments/aws/${params.AOC_STACK_MANAGER_CONFIG_PROFILE_AEM_AWS_STACK_BUILDER}/create-stack-manager/",
                     parameters: [
                       booleanParam(name: 'ENABLE_SLACK_NOTIFICATIONS', value: params.ENABLE_SLACK_NOTIFICATIONS),
+                      string(name: 'AOC_CONFIG_PROFILE_AEM_AWS_STACK_BUILDER', value: params.AOC_STACK_MANAGER_CONFIG_PROFILE_AEM_AWS_STACK_BUILDER),
                       string(name: 'STACK_PREFIX', value: params.STACK_MANAGER_STACK_PREFIX)
                     ]
             }
@@ -68,16 +69,57 @@ pipeline {
                     ]
             }
         }
-        stage('Promote Author Standby to Author primary') {
+        stage('Switch DNS ') {
+          steps {
+            build job: "../../../manage-environments/aws/${params.AOC_AEM_STACK_CONFIG_PROFILE_AEM_AWS_STACK_BUILDER}-${AOC_CONFIG_PROFILE_AEM_STACK_MANAGER_MESSENGER}-${AOC_CONFIG_PROFILE_AEM_TEST_SUITE}/switch-dns-full-set/",
+            parameters: [
+              booleanParam(name: 'ENABLE_SLACK_NOTIFICATIONS', value: params.ENABLE_SLACK_NOTIFICATIONS),
+              string(name: 'STACK_PREFIX', value: params.STACK_PREFIX),
+              string(name: 'PUBLISH_DISPATCHER_HOSTED_ZONE', value: params.PUBLISH_DISPATCHER_HOSTED_ZONE),
+              string(name: 'PUBLISH_DISPATCHER_RECORD_SET', value: params.PUBLISH_DISPATCHER_RECORD_SET),
+              string(name: 'AUTHOR_DISPATCHER_HOSTED_ZONE', value: params.AUTHOR_DISPATCHER_HOSTED_ZONE),
+              string(name: 'AUTHOR_DISPATCHER_RECORD_SET', value: params.AUTHOR_DISPATCHER_RECORD_SET)
+            ]
+          }
+        }
+        stage('Run AEM Security test') {
+          failFast true
+          parallel {
+          stage('AEM Author Security test') {
             steps {
-              build job: "../../../operational-tasks/${params.AOC_CONFIG_PROFILE_AEM_STACK_MANAGER_MESSENGER}/promote-author/",
+              build job: "../../../operational-tasks/${params.AOC_CONFIG_PROFILE_AEM_STACK_MANAGER_MESSENGER}/test-aem-security/${params.AOC_CONFIG_PROFILE_AEM_TEST_SUITE}/",
               parameters: [
                 booleanParam(name: 'ENABLE_SLACK_NOTIFICATIONS', value: params.ENABLE_SLACK_NOTIFICATIONS),
                 string(name: 'STACK_PREFIX', value: params.STACK_PREFIX),
-                string(name: 'STACK_MANAGER_STACK_PREFIX', value: params.STACK_MANAGER_STACK_PREFIX),
+                string(name: 'AEM_SECURITY_TEST_PLAN', value: 'author'),
+                string(name: 'AEM_HOST', value: "${params.AUTHOR_DISPATCHER_RECORD_SET}.${params.AUTHOR_DISPATCHER_HOSTED_ZONE}")
               ]
             }
+          }
+          // stage('AEM Publish Security test') {
+          //   steps {
+          //     build job: "../../../operational-tasks/${params.AOC_CONFIG_PROFILE_AEM_STACK_MANAGER_MESSENGER}/test-aem-security/${params.AOC_CONFIG_PROFILE_AEM_TEST_SUITE}/",
+          //     parameters: [
+          //       booleanParam(name: 'ENABLE_SLACK_NOTIFICATIONS', value: params.ENABLE_SLACK_NOTIFICATIONS),
+          //       string(name: 'STACK_PREFIX', value: params.STACK_PREFIX),
+          //       string(name: 'AEM_SECURITY_TEST_PLAN', value: 'publish'),
+          //       string(name: 'AEM_SECURITY_TEST_PLAN', value: 'author')
+          //     ]
+          //   }
+          // }
+          stage('AEM Publish-Dispatcher Security test') {
+            steps {
+              build job: "../../../operational-tasks/${params.AOC_CONFIG_PROFILE_AEM_STACK_MANAGER_MESSENGER}/test-aem-security/${params.AOC_CONFIG_PROFILE_AEM_TEST_SUITE}/",
+              parameters: [
+                booleanParam(name: 'ENABLE_SLACK_NOTIFICATIONS', value: params.ENABLE_SLACK_NOTIFICATIONS),
+                string(name: 'STACK_PREFIX', value: params.STACK_PREFIX),
+                string(name: 'AEM_SECURITY_TEST_PLAN', value: 'publish-dispatcher'),
+                string(name: 'AEM_HOST', value: "${params.PUBLISH_DISPATCHER_RECORD_SET}.${params.PUBLISH_DISPATCHER_HOSTED_ZONE}")
+              ]
+            }
+          }
         }
+      }
     }
     post {
         always {
@@ -89,7 +131,8 @@ pipeline {
           build job: "../../../manage-environments/aws/${params.AOC_STACK_MANAGER_CONFIG_PROFILE_AEM_AWS_STACK_BUILDER}/delete-stack-manager/",
           parameters: [
             booleanParam(name: 'ENABLE_SLACK_NOTIFICATIONS', value: params.ENABLE_SLACK_NOTIFICATIONS),
-            string(name: 'STACK_PREFIX', value: params.STACK_MANAGER_STACK_PREFIX)
+            string(name: 'AOC_CONFIG_PROFILE_AEM_AWS_STACK_BUILDER', value: params.AOC_STACK_MANAGER_CONFIG_PROFILE_AEM_AWS_STACK_BUILDER),
+            string(name: 'STACK_PREFIX', value: params.STACK_MANAGER_STACK_PREFIX),
           ]
           JenkinsPipelinePostStep this
         }
