@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Added new Pipeline to run security test for Full-Set & Consolidated
 - Added new parameter to operational task test-aem-security pipeline to inject AEM Host to test via input parameters
+- Add jenkins_agent.label configuration
 
 ### Changed
 - Reorganised Full-Set/Consolidated Platform Testing pipeline so they trigger the existing pipelines for the testing

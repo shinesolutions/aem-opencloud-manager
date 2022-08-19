@@ -4,6 +4,9 @@ def config = readJSON text: configString
 pipeline {
     agent {
         docker {
+            if (params.JENKINS_AGENT_LABEL?.trim()) {
+                label params.JENKINS_AGENT_LABEL
+            }
             image params.JENKINS_AGENT_DOCKER_IMAGE
             args params.JENKINS_AGENT_DOCKER_ARGS
         }

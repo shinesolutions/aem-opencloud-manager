@@ -28,6 +28,7 @@ The following configurations are available for users to customise:
 | jenkins.port | Port of the Jenkins server | Mandatory | `8080` |
 | jenkins.username | Jenkins username to create jobs. | Mandatory | |
 | jenkins.password | Jenkins user password. | Mandatory | |
+| jenkins.agent.label | Jenkins build agent label, leave empty is not needed | Optional | `` |
 | jenkins.agent.docker_image | Jenkins Docker agent image to use | Optional | `shinesolutions/aem-platform-buildenv:latest` |
 | jenkins.agent.docker_args | Additional Jenkins Docker agent CLI launch arguments | Optional | |
 | jenkins.os.jenkins_home | [Jenkins home](https://wiki.jenkins.io/display/JENKINS/Administering+Jenkins) directory. | Optional | |

@@ -12,7 +12,10 @@ def date = getDate()
 def id = genId()
 pipeline {
     agent {
-        docker {
+            docker {
+              if (params.JENKINS_AGENT_LABEL?.trim()) {
+                label params.JENKINS_AGENT_LABEL
+            }
             image params.JENKINS_AGENT_DOCKER_IMAGE
             args params.JENKINS_AGENT_DOCKER_ARGS
         }

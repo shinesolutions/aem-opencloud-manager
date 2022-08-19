@@ -36,6 +36,12 @@
         </choices>
       </hudson.model.ChoiceParameterDefinition>
       <hudson.model.StringParameterDefinition>
+        <name>JENKINS_AGENT_LABEL</name>
+        <description>The label of Jenkins build pipeline agent, leave empty if no label needed.</description>
+        <defaultValue>{{ jenkins.agent.label }}</defaultValue>
+        <trim>true</trim>
+      </hudson.model.StringParameterDefinition>
+      <hudson.model.StringParameterDefinition>
         <name>JENKINS_AGENT_DOCKER_IMAGE</name>
         <description>The name of Docker image to be used as Jenkins build pipeline agent.</description>
         <defaultValue>{{ jenkins.agent.docker_image }}</defaultValue>
