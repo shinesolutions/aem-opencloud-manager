@@ -69,13 +69,16 @@ pipeline {
         }
         stage('Run Security test') {
             steps {
+                JenkinsStagePreStep this
                 script {
                   if (!params.AEM_HOST.isEmpty()) {
                     env.aem_host = params.AEM_HOST
+                    ExecCommand(this, env.TMPDIR, "aem-test-suite", "aem_host=${params.AEM_HOST} make test-security-${params.AEM_SECURITY_TEST_PLAN} stack_prefix=${params.STACK_PREFIX}")
+                  }
+                  else {
+                    ExecCommand(this, env.TMPDIR, "aem-test-suite", "make test-security-${params.AEM_SECURITY_TEST_PLAN} stack_prefix=${params.STACK_PREFIX}")
                   }
                 }
-                JenkinsStagePreStep this
-                ExecCommand(this, env.TMPDIR, "aem-test-suite", "make test-security-${params.AEM_SECURITY_TEST_PLAN} stack_prefix=${params.STACK_PREFIX}")
             }
             post {
                 always {
