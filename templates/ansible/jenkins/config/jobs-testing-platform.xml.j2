@@ -193,7 +193,7 @@
       </userRemoteConfigs>
       <branches>
         <hudson.plugins.git.BranchSpec>
-          <name>{% if aem_opencloud.jenkins_sharedlibs.repo_branch != 'main' %}refs/tags/{% endif %}{{ aem_opencloud.jenkins_sharedlibs.repo_branch }}</name>
+          <name>{% if aem_opencloud.jenkins_sharedlibs.repo_branch != 'main' %}{% endif %}{{ aem_opencloud.jenkins_sharedlibs.repo_branch }}</name>
         </hudson.plugins.git.BranchSpec>
       </branches>
       <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
