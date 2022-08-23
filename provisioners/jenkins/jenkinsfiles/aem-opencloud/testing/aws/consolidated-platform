@@ -268,7 +268,7 @@ pipeline {
                 string(name: 'STACK_PREFIX', value: params.STACK_PREFIX),
                 string(name: 'STACK_MANAGER_STACK_PREFIX', value: params.STACK_MANAGER_STACK_PREFIX),
                 string(name: 'AEM_COMPONENT', value: 'author-publish-dispatcher'),
-                string(name: 'AEM_ID', value: 'author'),
+                string(name: 'AEM_ID', value: 'publish'),
                 string(name: 'PACKAGE_DATESTAMP', value: package_datestamp),
                 string(name: 'PACKAGE_GROUP', value: params.IMPORT_PACKAGE_GROUP),
                 string(name: 'PACKAGE_NAME', value: params.IMPORT_PACKAGE_NAME),

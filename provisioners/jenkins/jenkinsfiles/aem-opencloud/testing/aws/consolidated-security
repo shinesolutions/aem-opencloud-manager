@@ -31,7 +31,7 @@ pipeline {
         string(name: 'SOURCE_PUBLISH_SNAPSHOT_ID', defaultValue: '', description: 'Source Snapshot ID from the Publish repository')
         string(name: 'SOURCE_SNAPSHOT_STACK_PREFIX', defaultValue: '', description: 'Source Stack Prefix to get source Snapshot IDs from.')
         string(name: 'STACK_MANAGER_STACK_PREFIX', defaultValue: 'aoc-sm-' + id, description: 'Stack Manager Stack Prefix to create for the test.')
-        string(name: 'STACK_PREFIX', defaultValue: 'aoc-fs-' + id, description: 'AEM Stack Stack Prefix to create for the test.')
+        string(name: 'STACK_PREFIX', defaultValue: 'aoc-con-' + id, description: 'AEM Stack Stack Prefix to create for the test.')
     }
     stages {
         stage('Initialise Jenkins pipeline') {
@@ -79,18 +79,18 @@ pipeline {
             parameters: [
               booleanParam(name: 'ENABLE_SLACK_NOTIFICATIONS', value: params.ENABLE_SLACK_NOTIFICATIONS),
               string(name: 'STACK_PREFIX', value: params.STACK_PREFIX),
-              string(name: 'AUTHOR_PUBLISH_DISPATCHER_HOSTED_ZONE', value: params.AUTHOR_DISPATCHER_HOSTED_ZONE),
-              string(name: 'AUTHOR_PUBLISH_DISPATCHER_RECORD_SET', value: params.AUTHOR_DISPATCHER_RECORD_SET)
+              string(name: 'AUTHOR_PUBLISH_DISPATCHER_HOSTED_ZONE', value: params.PUBLISH_DISPATCHER_HOSTED_ZONE),
+              string(name: 'AUTHOR_PUBLISH_DISPATCHER_RECORD_SET', value: params.PUBLISH_DISPATCHER_RECORD_SET)
             ]
           }
         }
-        stage('AEM Author Security test') {
+        stage('AEM Pulish-Dispatcher Security test') {
           steps {
             build job: "../../../operational-tasks/${params.AOC_CONFIG_PROFILE_AEM_STACK_MANAGER_MESSENGER}/test-aem-security/${params.AOC_CONFIG_PROFILE_AEM_TEST_SUITE}/",
             parameters: [
               booleanParam(name: 'ENABLE_SLACK_NOTIFICATIONS', value: params.ENABLE_SLACK_NOTIFICATIONS),
               string(name: 'STACK_PREFIX', value: params.STACK_PREFIX),
-              string(name: 'AEM_SECURITY_TEST_PLAN', value: 'author')
+              string(name: 'AEM_SECURITY_TEST_PLAN', value: 'publish-dispatcher'),
               string(name: 'AEM_HOST', value: "${params.AUTHOR_DISPATCHER_RECORD_SET}.${params.AUTHOR_DISPATCHER_HOSTED_ZONE}")
             ]
           }
