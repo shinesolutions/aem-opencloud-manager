@@ -43,7 +43,7 @@ jenkins:
   password: overwrite-me
   agent:
     label: ''
-    docker_image: shinesolutions/aem-platform-buildenv:2.0.0
+    docker_image: shinesolutions/aem-platform-buildenv:3.0.0
     docker_args: ''
   os:
     jenkins_home: null
