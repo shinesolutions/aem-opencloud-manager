@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## 5.13.0 - 2022-08-25
 ### Added
 - Added new Pipeline to run security test for Full-Set & Consolidated
 - Added new parameter to operational task test-aem-security pipeline to inject AEM Host to test via input parameters
@@ -24,7 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update Docker image to shinesolutions/aem-platform-buildenv:3.0.0
 
 ### Fixed
-- Fixed Green stack creation in Blue/Green Testing pipeline to use the offline-snapshots from the Blue stack for stack creation #57
+- Fixed Green stack creation in Blue/Green Testing pipeline to use the offline-snapshots from the Blue stack for stack creation [#57]
 
 ## 5.12.0 - 2022-08-16
 ### Changed
