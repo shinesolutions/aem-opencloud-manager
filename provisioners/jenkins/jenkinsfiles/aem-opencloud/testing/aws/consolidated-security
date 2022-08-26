@@ -89,7 +89,7 @@ pipeline {
               booleanParam(name: 'ENABLE_SLACK_NOTIFICATIONS', value: params.ENABLE_SLACK_NOTIFICATIONS),
               string(name: 'STACK_PREFIX', value: params.STACK_PREFIX),
               string(name: 'AEM_SECURITY_TEST_PLAN', value: 'publish-dispatcher'),
-              string(name: 'AEM_HOST', value: "${params.AUTHOR_DISPATCHER_RECORD_SET}.${params.AUTHOR_DISPATCHER_HOSTED_ZONE}")
+              string(name: 'AEM_HOST', value: "${params.PUBLISH_DISPATCHER_RECORD_SET}.${params.PUBLISH_DISPATCHER_HOSTED_ZONE}")
             ]
           }
         }
