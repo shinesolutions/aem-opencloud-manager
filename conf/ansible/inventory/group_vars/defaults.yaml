@@ -39,8 +39,8 @@ jenkins:
   protocol: http
   host: overwrite-me
   port: 8080
-  username: admin
-  password: 11e8f4638e7b0201246a3b162401f9fd94
+  username: overwrite-me
+  password: overwrite-me
   agent:
     label: ''
     docker_image: shinesolutions/aem-platform-buildenv:3.2.0
