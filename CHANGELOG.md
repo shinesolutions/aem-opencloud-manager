@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 ### Changed
-- Upgrade AEM AWS Stack Builder to 5.16.0
+- Upgrade AEM AWS Stack Builder to 5.16.1
 - Upgrade Packer AEM to 5.16.1
 - Upgrade AEM Test Suite to 2.9.0
 - Update Docker image to shinesolutions/aem-platform-buildenv:3.2.0
