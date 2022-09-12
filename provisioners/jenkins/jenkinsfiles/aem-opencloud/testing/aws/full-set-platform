@@ -73,12 +73,14 @@ pipeline {
         }
         stage('Run acceptance tests') {
             steps {
-                build job: "../../../operational-tasks/${params.AOC_CONFIG_PROFILE_AEM_STACK_MANAGER_MESSENGER}/test-acceptance/${params.AOC_CONFIG_PROFILE_AEM_TEST_SUITE}/",
-                parameters: [
-                  booleanParam(name: 'ENABLE_SLACK_NOTIFICATIONS', value: params.ENABLE_SLACK_NOTIFICATIONS),
-                  string(name: 'STACK_PREFIX', value: params.STACK_PREFIX),
-                  string(name: 'AEM_ARCHITECTURE', value: 'full-set')
-                ]
+                retry(3) {
+                    build job: "../../../operational-tasks/${params.AOC_CONFIG_PROFILE_AEM_STACK_MANAGER_MESSENGER}/test-acceptance/${params.AOC_CONFIG_PROFILE_AEM_TEST_SUITE}/",
+                    parameters: [
+                      booleanParam(name: 'ENABLE_SLACK_NOTIFICATIONS', value: params.ENABLE_SLACK_NOTIFICATIONS),
+                      string(name: 'STACK_PREFIX', value: params.STACK_PREFIX),
+                      string(name: 'AEM_ARCHITECTURE', value: 'full-set')
+                    ]
+                }
             }
         }
         stage('Unschedule live snapshots') {

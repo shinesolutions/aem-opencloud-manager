@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 ### Changed
+- Update Full-Set Platform Testing pipeline
 - Upgrade AEM AWS Stack Builder to 5.17.0
 - Upgrade Packer AEM to 5.18.1
 - Upgrade AEM Test Suite to 2.10.0
