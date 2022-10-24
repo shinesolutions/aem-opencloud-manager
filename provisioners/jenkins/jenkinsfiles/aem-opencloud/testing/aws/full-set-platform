@@ -73,7 +73,7 @@ pipeline {
         }
         stage('Run acceptance tests') {
             steps {
-                retry(3) {
+                retry(10) {
                     build job: "../../../operational-tasks/${params.AOC_CONFIG_PROFILE_AEM_STACK_MANAGER_MESSENGER}/test-acceptance/${params.AOC_CONFIG_PROFILE_AEM_TEST_SUITE}/",
                     parameters: [
                       booleanParam(name: 'ENABLE_SLACK_NOTIFICATIONS', value: params.ENABLE_SLACK_NOTIFICATIONS),
