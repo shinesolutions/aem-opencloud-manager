@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upgrade AEM AWS Stack Builder to 5.17.0
 - Upgrade Packer AEM to 5.19.0
 - Upgrade AEM Test Suite to 2.10.0
+- Modified retry counter from 3 to 10 for `create-full-set` pipeline stage `Run acceptance tests`.
 
 ## 5.15.0 - 2022-09-02
 ### Changed

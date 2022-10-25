@@ -95,7 +95,7 @@ pipeline {
         stage('Run acceptance tests') {
             steps {
                     JenkinsStagePreStep this
-                    retry(3) {
+                    retry(10) {
                       ExecCommand(this, env.TMPDIR, "aem-test-suite", "make test-acceptance-full-set config_path=${env.AOC_CONFIG_PROFILE_DIR_AEM_TEST_SUITE} stack_prefix=${params.STACK_PREFIX}")
                     }
             }
