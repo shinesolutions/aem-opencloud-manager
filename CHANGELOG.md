@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 ### Changed
 - Upgrade AEM stack builder to 5.19.0
+- Upgrade Packer AEM to 5.21.0
+
 ## 5.16.0 - 2022-11-15
 ### Changed
 - Update Full-Set Platform Testing pipeline
