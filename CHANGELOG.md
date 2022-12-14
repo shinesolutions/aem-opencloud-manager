@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
-- Upgrade AEM Test Suite to 2.11.0
+- Upgrade AEM Test Suite to 2.11.0 RS-28
 
 ## 5.17.2 - 2022-11-30
 ### Fixed
