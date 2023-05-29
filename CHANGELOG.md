@@ -7,7 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 ### Changed
-- Upgrade AEM Test Suite to 2.11.0 RS-28
+- Upgrade AEM Test Suite to 2.12.0
+
 ### Fixed
 - Fix enable-saml and disable-saml pipelines RS-85
 
