@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 ### Changed
+- Simplify GitHub Actions release workflows to not use custom action
 - Upgrade AEM Test Suite to 2.12.0
 
 ### Fixed
