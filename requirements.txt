@@ -1,3 +1,4 @@
+actionlint-py==1.7.12.24
 ansible==4.8.0
 ansible-lint==5.0.7
 boto==2.49.0
