@@ -50,6 +50,8 @@ deps-test-local: stage
 
 lint:
 	# ansible-lint provisioners/ansible/playbooks/*.yaml
+	actionlint -shellcheck= .github/workflows/*.yaml
+	mdl README.md
 
 ################################################################################
 # Provision Jenkins with plugins and pipelines.
